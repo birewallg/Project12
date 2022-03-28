@@ -1,12 +1,12 @@
 package local.uniclog;
 
-import local.uniclog.instructions.Instructions;
+import local.uniclog.actions.ActionsInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstructionsList {
-    private List<Instructions> commands = new ArrayList<>();
+public class ActionProcessor {
+    private List<ActionsInterface> commands = new ArrayList<>();
 
     public void loadInstructions() {
         // todo parse command
@@ -16,7 +16,7 @@ public class InstructionsList {
         commands.clear();
     }
 
-    public void addCommand(Instructions instruction) {
+    public void addCommand(ActionsInterface instruction) {
         commands.add(instruction);
     }
 }
