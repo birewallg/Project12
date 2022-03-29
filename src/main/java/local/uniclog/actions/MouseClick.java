@@ -6,12 +6,13 @@ import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
-import java.awt.event.InputEvent;
+
+import static java.awt.event.InputEvent.BUTTON1_DOWN_MASK;
 
 @Slf4j
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class MouseClick extends ActionAbstract {
     private Point point = new Point(0, 0);
     private Integer action = 0;
@@ -26,8 +27,8 @@ public class MouseClick extends ActionAbstract {
                 case 1:
                     Robot robot = getRobot();
                     robot.mouseMove(point.x, point.y);
-                    robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                    robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                    robot.mousePress(BUTTON1_DOWN_MASK);
+                    robot.mouseRelease(BUTTON1_DOWN_MASK);
                     break;
 
                 case 2:
@@ -36,6 +37,7 @@ public class MouseClick extends ActionAbstract {
 
                 default:
                     log.info("MouseClick: {}", getType());
+                    break;
             }
             log.info("MouseClick: {}", this);
         } catch (AWTException e) {
