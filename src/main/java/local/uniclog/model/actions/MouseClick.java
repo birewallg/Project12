@@ -1,8 +1,9 @@
-package local.uniclog.actions;
+package local.uniclog.model.actions;
 
+import local.uniclog.model.ActionType;
+import local.uniclog.model.ActionsInterface;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.*;
@@ -12,12 +13,16 @@ import static java.awt.event.InputEvent.BUTTON1_DOWN_MASK;
 @Slf4j
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = true)
-public class MouseClick extends ActionAbstract {
+public class MouseClick implements ActionsInterface {
+    @Builder.Default
     private Point point = new Point(0, 0);
+    @Builder.Default
     private Integer action = 0;
+    @Builder.Default
     private Integer count = 0;
+    @Builder.Default
     private Integer period = 0;
+    @Builder.Default
     private Integer sleepAfter = 0;
 
     @Override

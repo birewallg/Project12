@@ -1,4 +1,4 @@
-package local.uniclog.actions;
+package local.uniclog.model;
 
 /**
  * click_l - (x, y, up/down/click, count, period, sleepAfter)

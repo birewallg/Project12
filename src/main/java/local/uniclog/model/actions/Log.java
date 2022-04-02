@@ -1,9 +1,11 @@
-package local.uniclog.actions;
+package local.uniclog.model.actions;
 
+import local.uniclog.model.ActionType;
+import local.uniclog.model.ActionsInterface;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Log extends ActionAbstract {
+public class Log implements ActionsInterface {
 
     public Log(String description) {
 
