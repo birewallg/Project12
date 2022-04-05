@@ -3,7 +3,6 @@ package local.uniclog.utils.gson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -27,7 +26,7 @@ public class GsonObjectWrapper {
         }
     }
 
-    public <T> T readContainer(Type typeOfObject, Class<T> typeOfContainer) {
+    public <T> T readContainer(Type typeOfObject, Type typeOfContainer) {
         try (var reader = new FileReader(CONFIG_LIST_JSON)) {
             return getGsonObject(typeOfObject).fromJson(reader, typeOfContainer);
         } catch (Exception e) {
