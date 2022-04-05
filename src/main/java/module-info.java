@@ -8,6 +8,9 @@ module local.uniclog {
     requires java.desktop;
     requires com.google.gson;
 
+    opens local.uniclog.model.actions to com.google.gson;
+    opens local.uniclog.model to com.google.gson;
+
     opens local.uniclog.ui to javafx.fxml;
     exports local.uniclog;
 }
