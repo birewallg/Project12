@@ -31,21 +31,10 @@ public class MouseClick implements ActionsInterface {
     @SneakyThrows
     public void execute(String... args) {
         switch (action) {
-            case "BUTTON1":
-                mouseAction(BUTTON1_DOWN_MASK);
-                break;
-
-            case "BUTTON2":
-                mouseAction(BUTTON2_DOWN_MASK);
-                break;
-
-            case "BUTTON3":
-                mouseAction(BUTTON3_DOWN_MASK);
-                break;
-
-            default:
-                log.info("MouseClick: {}", getType());
-                break;
+            case "BUTTON1" -> mouseAction(BUTTON1_DOWN_MASK);
+            case "BUTTON2" -> mouseAction(BUTTON2_DOWN_MASK);
+            case "BUTTON3" -> mouseAction(BUTTON3_DOWN_MASK);
+            default -> log.info("MouseClick: {}", getType());
         }
         log.info("MouseClick: {}", this);
     }
