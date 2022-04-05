@@ -1,6 +1,5 @@
-package local.uniclog.utils;
+package local.uniclog.model;
 
-import local.uniclog.model.ActionsInterface;
 import lombok.Data;
 
 import java.util.ArrayList;

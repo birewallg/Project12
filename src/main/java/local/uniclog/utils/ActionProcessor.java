@@ -1,5 +1,6 @@
 package local.uniclog.utils;
 
+import local.uniclog.model.ActionContainer;
 import local.uniclog.model.ActionsInterface;
 import local.uniclog.utils.gson.GsonObjectWrapper;
 import lombok.Data;
