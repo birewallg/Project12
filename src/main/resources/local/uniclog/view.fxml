@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane prefHeight="389.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="local.uniclog.ui.UiController">
+            fx:controller="local.uniclog.ui.AppController">
    <ToggleButton fx:id="exit" layoutX="421.0" mnemonicParsing="false" onAction="#onExit" prefHeight="25.0"
                  prefWidth="32.0" styleClass="gui-exit-button" AnchorPane.rightAnchor="-2.0"
                  AnchorPane.topAnchor="0.0"/>

@@ -6,7 +6,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
 import local.uniclog.utils.FileServiceWrapper;
 
-public class UiController {
+public class AppController {
     // Main Controls ==================================================
     @FXML
     private ToggleButton exit;
