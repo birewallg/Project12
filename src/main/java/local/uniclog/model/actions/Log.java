@@ -14,7 +14,7 @@ public class Log implements ActionsInterface {
 
     @Override
     public void execute(String... args) {
-        log.info(getType().toString());
+        log.debug(getType().toString());
     }
 
     @Override

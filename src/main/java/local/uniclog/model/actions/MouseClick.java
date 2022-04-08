@@ -34,9 +34,9 @@ public class MouseClick implements ActionsInterface {
             case "BUTTON1" -> mouseAction(BUTTON1_DOWN_MASK);
             case "BUTTON2" -> mouseAction(BUTTON2_DOWN_MASK);
             case "BUTTON3" -> mouseAction(BUTTON3_DOWN_MASK);
-            default -> log.info("MouseClick: {}", getType());
+            default -> log.debug("MouseClick: {}", getType());
         }
-        log.info("MouseClick: {}", this);
+        log.debug("MouseClick: {}", this);
     }
 
     private void mouseAction(int buttonCode) {
@@ -53,7 +53,7 @@ public class MouseClick implements ActionsInterface {
                     TimeUnit.MILLISECONDS.sleep(sleepAfter);
             }
         } catch (InterruptedException | AWTException e) {
-            log.info("MouseClick Error: {}, object {}", e.getMessage(), this);
+            log.error("MouseClick Error: {}, object {}", e.getMessage(), this);
             Thread.currentThread().interrupt();
         }
     }

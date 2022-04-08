@@ -8,8 +8,10 @@ import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 import static com.sun.jna.Pointer.nativeValue;
 import static com.sun.jna.platform.win32.WinUser.VK_CONTROL;
@@ -18,7 +20,7 @@ import static com.sun.jna.platform.win32.WinUser.VK_CONTROL;
 public class JnaKeyHookService {
     private static final AtomicBoolean hook = new AtomicBoolean(false);
 
-    public boolean initialize(boolean hook) {
+    public boolean initialize(boolean hook, Function<Boolean, Point> actionCallBack) {
         if (JnaKeyHookService.hook.get() == hook) {
             return hook;
         }
@@ -26,7 +28,7 @@ public class JnaKeyHookService {
         if (!JnaKeyHookService.hook.get()) {
             return false;
         }
-        var jnaKeyHookThread = new JnaKeyHookThread();
+        var jnaKeyHookThread = new JnaKeyHookThread(actionCallBack);
         var thread = new Thread(jnaKeyHookThread);
         thread.start();
 
@@ -35,6 +37,11 @@ public class JnaKeyHookService {
 
     private static class JnaKeyHookThread implements Runnable {
         private WinUser.HHOOK hHook;
+        private final Function<Boolean, Point> actionCallBack;
+
+        private JnaKeyHookThread(Function<Boolean, Point> actionCallBack) {
+            this.actionCallBack = actionCallBack;
+        }
 
         @SneakyThrows
         @Override
@@ -43,7 +50,7 @@ public class JnaKeyHookService {
             LowLevelKeyboardProc lpfn = (nCode, wParam, lParam) -> {
                 if (nCode >= 0) {
                     switch (wParam.intValue()) {
-                        case WinUser.WM_KEYDOWN, WinUser.WM_SYSKEYDOWN -> handleKeyDown(lParam.vkCode);
+                        case WinUser.WM_KEYUP, WinUser.WM_SYSKEYUP -> handleKeyDown(lParam.vkCode);
                     }
                 }
                 var wlParam = new WinDef.LPARAM(nativeValue(lParam.getPointer()));
@@ -51,10 +58,10 @@ public class JnaKeyHookService {
             };
             hHook = User32.INSTANCE.SetWindowsHookEx(WinUser.WH_KEYBOARD_LL, lpfn, hMod, 0);
             if (hHook == null) {
-                log.info("Hook is not set");
+                log.error("Hook is not set");
                 return;
             }
-            log.info("Hooked");
+            log.debug("Hooked");
 
             var msg = new WinUser.MSG();
             while (JnaKeyHookService.hook.get()) {
@@ -63,14 +70,14 @@ public class JnaKeyHookService {
             }
 
             if (User32.INSTANCE.UnhookWindowsHookEx(hHook)) {
-                log.info("Unhooked");
+                log.debug("Unhooked");
             }
         }
 
         private void handleKeyDown(int vkCode) {
-            log.info("Key = {}", vkCode);
+            log.debug("Key = {}", vkCode);
             if (vkCode == VK_CONTROL || vkCode == 162) {
-                log.info("VK_CONTROL pressed!");
+                actionCallBack.apply(true);
             }
         }
     }
