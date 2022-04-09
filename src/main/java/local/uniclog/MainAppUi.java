@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Objects;
 
 import static javafx.stage.StageStyle.UNDECORATED;
 
@@ -27,7 +26,6 @@ public class MainAppUi extends Application {
             stage.setY(mouseEvent.getScreenY() + delta.getY());
         });
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style/css.css")).toExternalForm());
         stage.setOpacity(0.95);
         stage.initStyle(UNDECORATED);
         stage.setTitle("Simple Clicker");
