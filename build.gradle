@@ -6,6 +6,7 @@ plugins {
 }
 
 group 'local.uniclog'
+version = '0.1'
 
 repositories {
     mavenCentral()
@@ -50,11 +51,14 @@ jlink {
     }
     jpackage {
         appVersion = '0.1'
-        imageOptions = ["--icon", "D:/dev/Project12/src/main/resources/local/uniclog/img/txt_icon.ico",
-                        "--vendor", "Uniclog Software"]
+        icon = "src/main/resources/local/uniclog/img/txt_icon.ico"
+        imageOptions = [
+                "--vendor", "Uniclog Software",
+                '--app-version', version
+        ]
         installerType = 'msi'
         installerOptions = [
-                '--win-shortcut'
+                '--win-dir-chooser', '--win-shortcut'
         ]
     }
 }
