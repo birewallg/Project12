@@ -29,7 +29,6 @@ javafx {
 dependencies {
     implementation 'org.controlsfx:controlsfx:11.1.1'
 
-    implementation 'com.google.code.gson:gson:2.9.0'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     implementation 'org.projectlombok:lombok:1.18.22'
     implementation 'org.slf4j:slf4j-simple:1.8.0-beta4'

@@ -73,16 +73,14 @@ public class AppController {
      * Button: Load configuration
      */
     public void onLoad() {
-        FileServiceWrapper file = new FileServiceWrapper();
-        textAreaConsole.setText(file.read());
+        textAreaConsole.setText(FileServiceWrapper.read());
     }
 
     /**
      * Button: Save configuration to file
      */
     public void onSave() {
-        FileServiceWrapper file = new FileServiceWrapper();
-        file.write(textAreaConsole.getText());
+        FileServiceWrapper.write(textAreaConsole.getText());
     }
 
     /**

@@ -10,7 +10,11 @@ import java.util.Scanner;
 public class FileServiceWrapper {
     public static final String CONFIG_LIST_JSON = "config_list.json";
 
-    public void write(String object) {
+    private FileServiceWrapper() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void write(String object) {
         try (var writer = new FileWriter(CONFIG_LIST_JSON)) {
             writer.write(object);
         } catch (Exception e) {
@@ -18,7 +22,7 @@ public class FileServiceWrapper {
         }
     }
 
-    public String read() {
+    public static String read() {
         try (var reader = new FileReader(CONFIG_LIST_JSON); var scan = new Scanner(reader)) {
             var builder = new StringBuilder();
             while (scan.hasNextLine()) {
