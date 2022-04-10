@@ -61,12 +61,23 @@
     -fx-background-color: RGBA(0, 0, 0, 0.4);
 }
 
-.gui-button {
+.gui-button-green {
+    -fx-background-color: #298e3b;
+    -fx-text-fill: white;
+}
+
+.gui-button-green:hover {
+    -fx-text-fill: white;
+    -fx-background-color: #298e3b;
+    -fx-opacity: 0.7;
+}
+
+.gui-button-red {
     -fx-background-color: #871417;
     -fx-text-fill: white;
 }
 
-.gui-button:hover {
+.gui-button-red:hover {
     -fx-text-fill: white;
     -fx-background-color: #5b0000;
     -fx-opacity: 0.7;
