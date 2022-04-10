@@ -8,10 +8,9 @@ import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.awt.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 import static com.sun.jna.Pointer.nativeValue;
 import static com.sun.jna.platform.win32.WinUser.VK_CONTROL;
@@ -20,7 +19,7 @@ import static com.sun.jna.platform.win32.WinUser.VK_CONTROL;
 public class JnaKeyHookService {
     private static final AtomicBoolean hook = new AtomicBoolean(false);
 
-    public boolean initialize(boolean hook, Function<Boolean, Point> actionCallBack) {
+    public boolean initialize(boolean hook, Consumer<Boolean> actionCallBack) {
         if (JnaKeyHookService.hook.get() == hook) {
             return hook;
         }
@@ -37,9 +36,9 @@ public class JnaKeyHookService {
 
     private static class JnaKeyHookThread implements Runnable {
         private WinUser.HHOOK hHook;
-        private final Function<Boolean, Point> actionCallBack;
+        private final Consumer<Boolean> actionCallBack;
 
-        private JnaKeyHookThread(Function<Boolean, Point> actionCallBack) {
+        private JnaKeyHookThread(Consumer<Boolean> actionCallBack) {
             this.actionCallBack = actionCallBack;
         }
 
@@ -77,7 +76,7 @@ public class JnaKeyHookService {
         private void handleKeyDown(int vkCode) {
             log.debug("Key = {}", vkCode);
             if (vkCode == VK_CONTROL || vkCode == 162) {
-                actionCallBack.apply(true);
+                actionCallBack.accept(true);
             }
         }
     }

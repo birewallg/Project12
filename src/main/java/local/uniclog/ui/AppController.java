@@ -1,23 +1,25 @@
 package local.uniclog.ui;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import local.uniclog.model.ActionType;
+import local.uniclog.model.MouseButtonType;
+import local.uniclog.model.actions.MouseClick;
 import local.uniclog.services.FileServiceWrapper;
 import local.uniclog.services.JnaKeyHookService;
 import local.uniclog.services.MouseServiceWrapper;
 import lombok.extern.slf4j.Slf4j;
 
-import java.awt.*;
-import java.util.function.Function;
+import java.util.function.Consumer;
+
+import static local.uniclog.model.MouseButtonType.BUTTON1;
 
 @Slf4j
 public class AppController {
+    @FXML
+    private ChoiceBox<MouseButtonType> setMouseActionChoiceBox;
     @FXML
     private TextField setMouseActionCountTextField;
     @FXML
@@ -29,7 +31,7 @@ public class AppController {
     @FXML
     private Pane setMousePane;
     @FXML
-    private TextArea textArea;
+    private TextArea textAreaConsole;
     @FXML
     private ToggleButton exit;
     @FXML
@@ -52,6 +54,8 @@ public class AppController {
         log.debug("App Controller init");
 
         setActionChoiceBox.getItems().setAll(ActionType.values());
+        setMouseActionChoiceBox.getItems().setAll(MouseButtonType.values());
+        setMouseActionChoiceBox.setValue(BUTTON1);
 
         setActionChoiceBox.getSelectionModel()
                 .selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -61,29 +65,57 @@ public class AppController {
                 });
     }
 
+    /**
+     * Button: Load configuration
+     */
     public void onLoad() {
         FileServiceWrapper file = new FileServiceWrapper();
-        textArea.setText(file.read());
+        textAreaConsole.setText(file.read());
     }
 
+    /**
+     * Button: Save configuration to file
+     */
     public void onSave() {
         FileServiceWrapper file = new FileServiceWrapper();
-        file.write(textArea.getText());
+        file.write(textAreaConsole.getText());
     }
 
+    /**
+     * Button: Read Coordinates
+     */
     public void setMouseActionReaderAction() {
 
-        Function<Boolean, Point> getMouseInfoFunc = info -> getMouseInfo();
+        Consumer<Boolean> getMouseInfoFunc = this::setMouseInfo;
 
-        if (initializeHookListener)
+        if (initializeHookListener) {
             setMouseActionReaderButton.setText("Stop Action Read");
-        else setMouseActionReaderButton.setText("Start Action Read");
+            setMouseActionReaderButton.setStyle("-fx-background-color: #5b0000");
+        } else {
+            setMouseActionReaderButton.setText("Start Action Read");
+            setMouseActionReaderButton.setStyle("-fx-background-color: linear-gradient(#61a2b1, #2A5058)");
+        }
         JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
         jnaKeyHookService.initialize(initializeHookListener, getMouseInfoFunc);
         initializeHookListener = !initializeHookListener;
     }
 
-    public Point getMouseInfo() {
-        return MouseServiceWrapper.getMousePointer();
+    /**
+     * Add mouse info to TextArea Console
+     *
+     * @param ignore ignore
+     */
+    public void setMouseInfo(Boolean ignore) {
+        MouseClick action = MouseClick.builder()
+                .action(setMouseActionChoiceBox.getValue())
+                .point(MouseServiceWrapper.getMousePointer())
+                .count(Integer.getInteger(setMouseActionCountTextField.getText(), 0))
+                .period(Long.getLong(setMouseActionPeriodTextField.getText(), 0L))
+                .sleepAfter(Long.getLong(setMouseActionSleepAfterTextField.getText(), 0L))
+                .build();
+
+        textAreaConsole.setText(textAreaConsole.getText()
+                + "\n"
+                + action.toString());
     }
 }

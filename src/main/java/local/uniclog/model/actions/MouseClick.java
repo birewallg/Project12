@@ -2,6 +2,7 @@ package local.uniclog.model.actions;
 
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
+import local.uniclog.model.MouseButtonType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -11,6 +12,8 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 import static java.awt.event.InputEvent.*;
+import static java.lang.String.format;
+import static local.uniclog.model.MouseButtonType.BUTTON1;
 
 @Slf4j
 @Data
@@ -19,11 +22,11 @@ public class MouseClick implements ActionsInterface {
     @Builder.Default
     private Point point = new Point(0, 0);
     @Builder.Default
-    private String action = "";
+    private MouseButtonType action = BUTTON1;
     @Builder.Default
     private Integer count = 0;
     @Builder.Default
-    private Long wait = 50L;
+    private Long period = 50L;
     @Builder.Default
     private Long sleepAfter = 0L;
 
@@ -31,9 +34,9 @@ public class MouseClick implements ActionsInterface {
     @SneakyThrows
     public void execute(String... args) {
         switch (action) {
-            case "BUTTON1" -> mouseAction(BUTTON1_DOWN_MASK);
-            case "BUTTON2" -> mouseAction(BUTTON2_DOWN_MASK);
-            case "BUTTON3" -> mouseAction(BUTTON3_DOWN_MASK);
+            case BUTTON1 -> mouseAction(BUTTON1_DOWN_MASK);
+            case BUTTON2 -> mouseAction(BUTTON2_DOWN_MASK);
+            case BUTTON3 -> mouseAction(BUTTON3_DOWN_MASK);
             default -> log.debug("MouseClick: {}", getType());
         }
         log.debug("MouseClick: {}", this);
@@ -47,7 +50,7 @@ public class MouseClick implements ActionsInterface {
                 robot.mouseMove(point.x, point.y);
                 robot.mousePress(buttonCode);
                 robot.mouseRelease(buttonCode);
-                TimeUnit.MILLISECONDS.sleep(wait);
+                TimeUnit.MILLISECONDS.sleep(period);
                 loopCount++;
                 if (loopCount.equals(count))
                     TimeUnit.MILLISECONDS.sleep(sleepAfter);
@@ -56,6 +59,19 @@ public class MouseClick implements ActionsInterface {
             log.error("MouseClick Error: {}, object {}", e.getMessage(), this);
             Thread.currentThread().interrupt();
         }
+    }
+
+    @Override
+    public String toString() {
+        return format(
+                "%s [action=%s, point(%d|%d), count=%d, wait=%d, sleepAfter=%d]",
+                getType().name(),
+                action,
+                point.x, point.y,
+                count,
+                period,
+                sleepAfter
+        );
     }
 
     @Override
