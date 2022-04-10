@@ -100,7 +100,7 @@ public class AppController {
         }
 
         JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
-        jnaKeyHookService.initialize(initializeHookListener, this::setMouseInfo);
+        jnaKeyHookService.initialize(initializeHookListener, this::setMouseInfo, 162, false);
         initializeHookListener = !initializeHookListener;
     }
 
@@ -125,12 +125,17 @@ public class AppController {
     }
 
     public void onRunAction() {
-        onRunActionComplete(initializeRunExecute);
+        onRunActionCompleteByUser(initializeRunExecute);
+        // hook ctrl to stop
+        JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
+        jnaKeyHookService.initialize(initializeRunExecute, this::onRunActionCompleteByUser, 162, true);
+        // start action execute
         ActionProcessExecuteService actionProcessExecuteService = new ActionProcessExecuteService();
-        actionProcessExecuteService.initialize(initializeRunExecute, textAreaConsole.getText(), this::onRunActionComplete);
+        actionProcessExecuteService.initialize(initializeRunExecute, textAreaConsole.getText(), this::onRunActionCompleteCallback);
+
     }
 
-    public void onRunActionComplete(Boolean complete) {
+    public void onRunActionCompleteByUser(Boolean complete) {
         if (complete.equals(false)) {
             Platform.runLater(() -> {
                 onRunActionButton.setText("Stop");
@@ -138,12 +143,27 @@ public class AppController {
             });
             initializeRunExecute = true;
         } else {
+            ActionProcessExecuteService.stop();
+
             Platform.runLater(() -> {
                 onRunActionButton.setText("Run");
                 onRunActionButton.getStyleClass().removeAll(GUI_BUTTON_RED);
                 onRunActionButton.getStyleClass().add(GUI_BUTTON_GREEN);
+                onRunActionButton.setDisable(true);
             });
             initializeRunExecute = false;
         }
+    }
+
+    public void onRunActionCompleteCallback(Boolean ignore) {
+        JnaKeyHookService.stop();
+
+        Platform.runLater(() -> {
+            onRunActionButton.setText("Run");
+            onRunActionButton.getStyleClass().removeAll(GUI_BUTTON_RED);
+            onRunActionButton.getStyleClass().add(GUI_BUTTON_GREEN);
+            onRunActionButton.setDisable(false);
+        });
+        initializeRunExecute = false;
     }
 }

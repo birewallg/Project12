@@ -13,13 +13,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static com.sun.jna.Pointer.nativeValue;
-import static com.sun.jna.platform.win32.WinUser.VK_CONTROL;
 
 @Slf4j
 public class JnaKeyHookService {
     private static final AtomicBoolean hook = new AtomicBoolean(false);
 
-    public boolean initialize(boolean hook, Consumer<Boolean> actionCallBack) {
+    public boolean initialize(boolean hook, Consumer<Boolean> actionCallBack, int keyCode, boolean stopByHook) {
         if (JnaKeyHookService.hook.get() == hook) {
             return hook;
         }
@@ -27,19 +26,27 @@ public class JnaKeyHookService {
         if (!JnaKeyHookService.hook.get()) {
             return false;
         }
-        var jnaKeyHookThread = new JnaKeyHookThread(actionCallBack);
+        var jnaKeyHookThread = new JnaKeyHookThread(actionCallBack, keyCode, stopByHook);
         var thread = new Thread(jnaKeyHookThread);
         thread.start();
 
         return true;
     }
 
+    public static void stop() {
+        JnaKeyHookService.hook.set(false);
+    }
+
     private static class JnaKeyHookThread implements Runnable {
         private WinUser.HHOOK hHook;
         private final Consumer<Boolean> actionCallBack;
+        private final int keyCode;
+        private final boolean stopByHook;
 
-        private JnaKeyHookThread(Consumer<Boolean> actionCallBack) {
+        private JnaKeyHookThread(Consumer<Boolean> actionCallBack, int keyCode, boolean stopByHook) {
             this.actionCallBack = actionCallBack;
+            this.keyCode = keyCode;
+            this.stopByHook = stopByHook;
         }
 
         @SneakyThrows
@@ -75,8 +82,12 @@ public class JnaKeyHookService {
 
         private void handleKeyDown(int vkCode) {
             log.debug("Key = {}", vkCode);
-            if (vkCode == VK_CONTROL || vkCode == 162) {
+
+            if (vkCode == keyCode) {
                 actionCallBack.accept(true);
+                if (stopByHook) {
+                    JnaKeyHookService.hook.set(false);
+                }
             }
         }
     }

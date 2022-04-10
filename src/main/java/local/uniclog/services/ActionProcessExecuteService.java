@@ -28,6 +28,10 @@ public class ActionProcessExecuteService {
         return true;
     }
 
+    public static void stop() {
+        ActionProcessExecuteService.hook.set(false);
+    }
+
     private static class ActionProcessExecuteThread implements Runnable {
         private final ActionProcessService service = new ActionProcessService();
         private final Consumer<Boolean> actionCallBack;
