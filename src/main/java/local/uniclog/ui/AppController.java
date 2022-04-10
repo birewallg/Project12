@@ -1,5 +1,6 @@
 package local.uniclog.ui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -7,20 +8,21 @@ import javafx.stage.Stage;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.MouseButtonType;
 import local.uniclog.model.actions.MouseClick;
-import local.uniclog.services.ActionProcessService;
+import local.uniclog.services.ActionProcessExecuteService;
 import local.uniclog.services.FileServiceWrapper;
 import local.uniclog.services.JnaKeyHookService;
 import local.uniclog.services.MouseServiceWrapper;
 import local.uniclog.utils.DataUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
-import java.util.function.Consumer;
-
-import static local.uniclog.model.MouseButtonType.BUTTON1;
+import static local.uniclog.model.MouseButtonType.BUTTON_L;
 
 @Slf4j
 public class AppController {
+    private static final String GUI_BUTTON_RED = "gui-button-red";
+    private static final String GUI_BUTTON_GREEN = "gui-button-green";
+    @FXML
+    private Button onRunActionButton;
     @FXML
     private ChoiceBox<MouseButtonType> setMouseActionChoiceBox;
     @FXML
@@ -41,7 +43,7 @@ public class AppController {
     private ChoiceBox<ActionType> setActionChoiceBox;
 
     private boolean initializeHookListener = true;
-    private final ActionProcessService actionProcessService = new ActionProcessService();
+    private boolean initializeRunExecute = false;
 
     // Main Controls Block ============================================
     public void onExit() {
@@ -59,7 +61,7 @@ public class AppController {
 
         setActionChoiceBox.getItems().setAll(ActionType.values());
         setMouseActionChoiceBox.getItems().setAll(MouseButtonType.values());
-        setMouseActionChoiceBox.setValue(BUTTON1);
+        setMouseActionChoiceBox.setValue(BUTTON_L);
 
         setActionChoiceBox.getSelectionModel()
                 .selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -87,18 +89,18 @@ public class AppController {
      * Button: Read Coordinates
      */
     public void setMouseActionReaderAction() {
-
-        Consumer<Boolean> getMouseInfoFunc = this::setMouseInfo;
-
         if (initializeHookListener) {
             setMouseActionReaderButton.setText("Stop Action Read");
-            setMouseActionReaderButton.setStyle("-fx-background-color: #5b0000");
+            setMouseActionReaderButton.getStyleClass().removeAll();
+            setMouseActionReaderButton.getStyleClass().add(GUI_BUTTON_RED);
         } else {
             setMouseActionReaderButton.setText("Start Action Read");
-            setMouseActionReaderButton.setStyle("-fx-background-color: linear-gradient(#61a2b1, #2A5058)");
+            setMouseActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
+            setMouseActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
         }
+
         JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
-        jnaKeyHookService.initialize(initializeHookListener, getMouseInfoFunc);
+        jnaKeyHookService.initialize(initializeHookListener, this::setMouseInfo);
         initializeHookListener = !initializeHookListener;
     }
 
@@ -115,16 +117,33 @@ public class AppController {
                 .period(DataUtils.getLong(setMouseActionPeriodTextField.getText(), 0L))
                 .sleepAfter(DataUtils.getLong(setMouseActionSleepAfterTextField.getText(), 0L))
                 .build();
-
-        textAreaConsole.setText(textAreaConsole.getText()
-                + "\n"
-                + action.toString());
+        Platform.runLater(() -> textAreaConsole
+                .setText(textAreaConsole.getText()
+                        + "\n"
+                        + action.toString())
+        );
     }
 
     public void onRunAction() {
-        actionProcessService.getConfiguration(
-                Arrays.stream(textAreaConsole.getText().trim().replaceAll("[ \\t\\x0B\\f\\r]", "")
-                        .split("\n")).toList());
-        actionProcessService.executeActionContainer();
+        onRunActionComplete(initializeRunExecute);
+        ActionProcessExecuteService actionProcessExecuteService = new ActionProcessExecuteService();
+        actionProcessExecuteService.initialize(initializeRunExecute, textAreaConsole.getText(), this::onRunActionComplete);
+    }
+
+    public void onRunActionComplete(Boolean complete) {
+        if (complete.equals(false)) {
+            Platform.runLater(() -> {
+                onRunActionButton.setText("Stop");
+                onRunActionButton.getStyleClass().add(GUI_BUTTON_RED);
+            });
+            initializeRunExecute = true;
+        } else {
+            Platform.runLater(() -> {
+                onRunActionButton.setText("Run");
+                onRunActionButton.getStyleClass().removeAll(GUI_BUTTON_RED);
+                onRunActionButton.getStyleClass().add(GUI_BUTTON_GREEN);
+            });
+            initializeRunExecute = false;
+        }
     }
 }
