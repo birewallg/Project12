@@ -3,9 +3,9 @@ package local.uniclog.model;
 import java.util.Arrays;
 
 public enum MouseButtonType {
-    BUTTON1("BUTTON1"),
-    BUTTON2("BUTTON2"),
-    BUTTON3("BUTTON3");
+    BUTTON_L("BUTTON_L"),
+    BUTTON_R("BUTTON_R"),
+    BUTTON_M("BUTTON_M");
 
     private final String value;
 
@@ -17,7 +17,7 @@ public enum MouseButtonType {
         return Arrays.stream(MouseButtonType.values())
                 .filter(it -> it.value.equalsIgnoreCase(msg))
                 .findFirst()
-                .orElse(BUTTON1);
+                .orElse(BUTTON_L);
     }
 
     public String getStringValue() {

@@ -27,7 +27,7 @@ public class ActionProcessService {
     }
 
     public void loadConfigurationFromFile() {
-        getConfiguration(Arrays.stream(Objects.requireNonNull(FileServiceWrapper.read())
+        setConfiguration(Arrays.stream(Objects.requireNonNull(FileServiceWrapper.read())
                 .trim()
                 .replaceAll("[ \\t\\x0B\\f\\r]", "")
                 .split("\n")).toList());
@@ -42,10 +42,13 @@ public class ActionProcessService {
         container.getData().forEach(ActionsInterface::execute);
     }
 
-    public ActionProcessService getConfiguration(List<String> actionLines) {
+    public ActionProcessService setConfiguration(List<String> actionLines) {
         container.clear();
         actionLines.forEach(line -> {
-                    String type = getActionType(line);
+                    ActionType type = getActionType(line);
+                    if (type == ActionType.DEFAULT) {
+                        return;
+                    }
                     Map<String, String> map = getActionMap(line);
                     ActionsInterface action = getAction(type, map);
                     container.add(action);
@@ -56,8 +59,8 @@ public class ActionProcessService {
         return this;
     }
 
-    private ActionsInterface getAction(String type, Map<String, String> map) {
-        ActionsInterface action = switch (ActionType.getType(type)) {
+    private ActionsInterface getAction(ActionType actionType, Map<String, String> map) {
+        ActionsInterface action = switch (actionType) {
             case MOUSE_CLICK -> new MouseClick();
             case LOG -> new Log();
             case SLEEP -> new Sleep();
@@ -67,8 +70,13 @@ public class ActionProcessService {
         return action.fieldInjection(map);
     }
 
-    private String getActionType(String line) {
-        return line.substring(0, line.indexOf('['));
+    private ActionType getActionType(String line) {
+        try {
+            return ActionType.getType(line.substring(0, line.indexOf('[')));
+        } catch (StringIndexOutOfBoundsException e) {
+            log.error("ActionType is not parse");
+            return ActionType.DEFAULT;
+        }
     }
 
     private Map<String, String> getActionMap(String line) {

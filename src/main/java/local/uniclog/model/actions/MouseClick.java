@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.awt.event.InputEvent.*;
 import static java.lang.String.format;
-import static local.uniclog.model.MouseButtonType.BUTTON1;
+import static local.uniclog.model.MouseButtonType.BUTTON_L;
 
 @Slf4j
 @Data
@@ -24,7 +24,7 @@ public class MouseClick implements ActionsInterface {
     @Builder.Default
     private Point point = new Point(0, 0);
     @Builder.Default
-    private MouseButtonType action = BUTTON1;
+    private MouseButtonType action = BUTTON_L;
     @Builder.Default
     private Integer count = 0;
     @Builder.Default
@@ -36,9 +36,9 @@ public class MouseClick implements ActionsInterface {
     @SneakyThrows
     public void execute(String... args) {
         switch (action) {
-            case BUTTON1 -> mouseAction(BUTTON1_DOWN_MASK);
-            case BUTTON2 -> mouseAction(BUTTON2_DOWN_MASK);
-            case BUTTON3 -> mouseAction(BUTTON3_DOWN_MASK);
+            case BUTTON_L -> mouseAction(BUTTON1_DOWN_MASK);
+            case BUTTON_M -> mouseAction(BUTTON2_DOWN_MASK);
+            case BUTTON_R -> mouseAction(BUTTON3_DOWN_MASK);
             default -> log.debug("MouseClick: {}", getType());
         }
         log.debug("MouseClick: {}", this);
