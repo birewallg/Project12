@@ -1,5 +1,6 @@
 package local.uniclog.ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -7,11 +8,10 @@ import javafx.stage.Stage;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.MouseButtonType;
 import local.uniclog.model.actions.MouseClick;
-import local.uniclog.services.FileServiceWrapper;
-import local.uniclog.services.JnaKeyHookService;
-import local.uniclog.services.MouseServiceWrapper;
+import local.uniclog.services.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static local.uniclog.model.MouseButtonType.BUTTON1;
@@ -38,6 +38,7 @@ public class AppController {
     private ChoiceBox<ActionType> setActionChoiceBox;
 
     private boolean initializeHookListener = true;
+    private final ActionProcessService actionProcessService = new ActionProcessService();
 
     // Main Controls Block ============================================
     public void onExit() {
@@ -109,13 +110,20 @@ public class AppController {
         MouseClick action = MouseClick.builder()
                 .action(setMouseActionChoiceBox.getValue())
                 .point(MouseServiceWrapper.getMousePointer())
-                .count(Integer.getInteger(setMouseActionCountTextField.getText(), 0))
-                .period(Long.getLong(setMouseActionPeriodTextField.getText(), 0L))
-                .sleepAfter(Long.getLong(setMouseActionSleepAfterTextField.getText(), 0L))
+                .count(DataUtils.getInteger(setMouseActionCountTextField.getText(), 0))
+                .period(DataUtils.getLong(setMouseActionPeriodTextField.getText(), 0L))
+                .sleepAfter(DataUtils.getLong(setMouseActionSleepAfterTextField.getText(), 0L))
                 .build();
 
         textAreaConsole.setText(textAreaConsole.getText()
                 + "\n"
                 + action.toString());
+    }
+
+    public void onRunAction(ActionEvent actionEvent) {
+        actionProcessService.getConfiguration(
+                Arrays.stream(textAreaConsole.getText().trim().replaceAll("[ \\t\\x0B\\f\\r]", "")
+                        .split("\n")).toList());
+        actionProcessService.executeActionContainer();
     }
 }
