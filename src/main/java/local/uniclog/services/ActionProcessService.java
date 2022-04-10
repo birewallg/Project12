@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -26,20 +25,9 @@ public class ActionProcessService {
         return this;
     }
 
-    public void loadConfigurationFromFile() {
-        setConfiguration(Arrays.stream(Objects.requireNonNull(FileServiceWrapper.read())
-                .trim()
-                .replaceAll("[ \\t\\x0B\\f\\r]", "")
-                .split("\n")).toList());
-    }
-
     public ActionProcessService clear() {
         container.clear();
         return this;
-    }
-
-    public void executeActionContainer() {
-        container.getData().forEach(ActionsInterface::execute);
     }
 
     public ActionProcessService setConfiguration(List<String> actionLines) {

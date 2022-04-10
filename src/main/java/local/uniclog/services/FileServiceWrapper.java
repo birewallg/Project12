@@ -8,22 +8,21 @@ import java.util.Scanner;
 
 @Slf4j
 public class FileServiceWrapper {
-    public static final String CONFIG_LIST_JSON = "config_list.json";
 
     private FileServiceWrapper() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void write(String object) {
-        try (var writer = new FileWriter(CONFIG_LIST_JSON)) {
+    public static void write(String object, String path) {
+        try (var writer = new FileWriter(path)) {
             writer.write(object);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
 
-    public static String read() {
-        try (var reader = new FileReader(CONFIG_LIST_JSON); var scan = new Scanner(reader)) {
+    public static String read(String path) {
+        try (var reader = new FileReader(path); var scan = new Scanner(reader)) {
             var builder = new StringBuilder();
             while (scan.hasNextLine()) {
                 builder.append(scan.nextLine()).append("\n");

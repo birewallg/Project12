@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.MouseButtonType;
@@ -15,7 +16,10 @@ import local.uniclog.services.MouseServiceWrapper;
 import local.uniclog.utils.DataUtils;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+
 import static local.uniclog.model.MouseButtonType.BUTTON_L;
+import static local.uniclog.utils.ConfigConstants.DEFAULT_FILE_PATH;
 
 @Slf4j
 public class AppController {
@@ -75,14 +79,47 @@ public class AppController {
      * Button: Load configuration
      */
     public void onLoad() {
-        textAreaConsole.setText(FileServiceWrapper.read());
+        FileChooser fileChooser = new FileChooser();
+        //Set to user directory or go to default if cannot access
+        String userDirectoryString = System.getProperty("user.home");
+        File userDirectory = new File(userDirectoryString);
+        if (!userDirectory.canRead()) {
+            userDirectory = new File(DEFAULT_FILE_PATH);
+        }
+        fileChooser.setInitialDirectory(userDirectory);
+        File file = fileChooser.showOpenDialog(exit.getScene().getWindow());
+        if (file != null) {
+            Alert alert = new Alert(Alert.AlertType.NONE, "Load config from [" + file.getPath() + "]?", ButtonType.YES, ButtonType.NO);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                textAreaConsole.clear();
+                textAreaConsole.setText(FileServiceWrapper.read(file.getPath()));
+            }
+        }
     }
 
     /**
      * Button: Save configuration to file
      */
     public void onSave() {
-        FileServiceWrapper.write(textAreaConsole.getText());
+        FileChooser fileChooser = new FileChooser();
+        //Set to user directory or go to default if cannot access
+        String userDirectoryString = System.getProperty("user.home");
+        File userDirectory = new File(userDirectoryString);
+        if (!userDirectory.canRead()) {
+            userDirectory = new File(DEFAULT_FILE_PATH);
+        }
+        fileChooser.setInitialDirectory(userDirectory);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(exit.getScene().getWindow());
+        if (file != null) {
+            Alert alert = new Alert(Alert.AlertType.NONE, "Save config to [" + file.getPath() + "]?", ButtonType.YES, ButtonType.NO);
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                FileServiceWrapper.write(textAreaConsole.getText(), file.getPath());
+            }
+        }
     }
 
     /**
