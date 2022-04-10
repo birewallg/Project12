@@ -31,7 +31,7 @@ public class Log implements ActionsInterface {
 
     private void setFieldValue(String key, String value) {
         switch (key) {
-            case "description" -> description = value;
+            case "description" -> setDescription(value);
             default -> log.debug("Field: {}, not set: {}", key, value);
         }
     }

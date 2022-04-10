@@ -2,7 +2,7 @@ package local.uniclog.model.actions;
 
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
-import local.uniclog.services.DataUtils;
+import local.uniclog.utils.DataUtils;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +32,7 @@ public class Sleep implements ActionsInterface {
 
     private void setFieldValue(String key, String value) {
         switch (key) {
-            case "time" -> time = DataUtils.getLong(value, 0);
+            case "time" -> setTime(DataUtils.getLong(value, 0));
             default -> log.debug("Field: {}, not set: {}", key, value);
         }
     }

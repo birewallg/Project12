@@ -1,6 +1,9 @@
-package local.uniclog.services;
+package local.uniclog.utils;
 
 public class DataUtils {
+    private DataUtils() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Get Integer value from String

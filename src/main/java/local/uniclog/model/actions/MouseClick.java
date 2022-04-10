@@ -3,7 +3,7 @@ package local.uniclog.model.actions;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
 import local.uniclog.model.MouseButtonType;
-import local.uniclog.services.DataUtils;
+import local.uniclog.utils.DataUtils;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,12 +52,12 @@ public class MouseClick implements ActionsInterface {
 
     private void setFieldValue(String key, String value) {
         switch (key) {
-            case "x" -> point.setLocation((double) DataUtils.getInteger(value, 0), point.getY());
-            case "y" -> point.setLocation(point.getX(), (double) DataUtils.getInteger(value, 0));
-            case "action" -> action = MouseButtonType.getType(value);
-            case "count" -> count = DataUtils.getInteger(value, 0);
-            case "wait" -> period = DataUtils.getLong(value, 0);
-            case "sleepAfter" -> sleepAfter = DataUtils.getLong(value, 0);
+            case "x" -> setPoint(new Point(DataUtils.getInteger(value, 0), (int) point.getY()));
+            case "y" -> setPoint(new Point((int) point.getX(), DataUtils.getInteger(value, 0)));
+            case "action" -> setAction(MouseButtonType.getType(value));
+            case "count" -> setCount(DataUtils.getInteger(value, 0));
+            case "wait" -> setPeriod(DataUtils.getLong(value, 0));
+            case "sleepAfter" -> setSleepAfter(DataUtils.getLong(value, 0));
             default -> log.debug("Field: {}, not set: {}", key, value);
         }
     }

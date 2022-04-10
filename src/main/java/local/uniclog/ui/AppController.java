@@ -1,6 +1,5 @@
 package local.uniclog.ui;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -8,7 +7,11 @@ import javafx.stage.Stage;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.MouseButtonType;
 import local.uniclog.model.actions.MouseClick;
-import local.uniclog.services.*;
+import local.uniclog.services.ActionProcessService;
+import local.uniclog.services.FileServiceWrapper;
+import local.uniclog.services.JnaKeyHookService;
+import local.uniclog.services.MouseServiceWrapper;
+import local.uniclog.utils.DataUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
@@ -120,7 +123,7 @@ public class AppController {
                 + action.toString());
     }
 
-    public void onRunAction(ActionEvent actionEvent) {
+    public void onRunAction() {
         actionProcessService.getConfiguration(
                 Arrays.stream(textAreaConsole.getText().trim().replaceAll("[ \\t\\x0B\\f\\r]", "")
                         .split("\n")).toList());
