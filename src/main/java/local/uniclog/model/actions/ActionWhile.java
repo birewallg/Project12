@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static java.lang.String.format;
 
@@ -29,7 +30,8 @@ public class ActionWhile implements ActionsInterface {
 
     @Override
     public ActionsInterface fieldInjection(Map<String, String> args) {
-        args.forEach(this::setFieldValue);
+        if (Objects.nonNull(args))
+            args.forEach(this::setFieldValue);
         return this;
     }
 
