@@ -3,6 +3,7 @@ package local.uniclog.services;
 import local.uniclog.model.ActionContainer;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
+import local.uniclog.model.actions.Default;
 import local.uniclog.model.actions.Log;
 import local.uniclog.model.actions.MouseClick;
 import local.uniclog.model.actions.Sleep;
@@ -53,7 +54,7 @@ public class ActionProcessService {
             case LOG -> new Log();
             case SLEEP -> new Sleep();
 
-            default -> new Log("default");
+            default -> new Default();
         };
         return action.fieldInjection(map);
     }

@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.String.format;
+
 @Slf4j
 @Data
 @Builder
@@ -22,6 +24,7 @@ public class Sleep implements ActionsInterface {
     @Override
     public void execute(String... args) {
         TimeUnit.MILLISECONDS.sleep(time);
+        log.debug("Sleep: {}", this);
     }
 
     @Override
@@ -35,6 +38,11 @@ public class Sleep implements ActionsInterface {
             case "time" -> setTime(DataUtils.getLong(value, 0));
             default -> log.debug("Field: {}, not set: {}", key, value);
         }
+    }
+
+    @Override
+    public String toString() {
+        return format("%s [time=%s]", getType().name(), time);
     }
 
     @Override

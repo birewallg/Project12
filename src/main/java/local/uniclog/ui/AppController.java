@@ -7,8 +7,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import local.uniclog.model.ActionType;
+import local.uniclog.model.ActionsInterface;
 import local.uniclog.model.MouseButtonType;
 import local.uniclog.model.actions.MouseClick;
+import local.uniclog.model.actions.Sleep;
 import local.uniclog.services.ActionProcessExecuteService;
 import local.uniclog.services.FileServiceWrapper;
 import local.uniclog.services.JnaKeyHookService;
@@ -25,6 +27,11 @@ import static local.uniclog.utils.ConfigConstants.DEFAULT_FILE_PATH;
 public class AppController {
     private static final String GUI_BUTTON_RED = "gui-button-red";
     private static final String GUI_BUTTON_GREEN = "gui-button-green";
+
+    @FXML
+    private TextField setSleepActionCountTextField;
+    @FXML
+    private Pane setSleepPane;
     @FXML
     private Button onRunActionButton;
     @FXML
@@ -70,8 +77,12 @@ public class AppController {
         setActionChoiceBox.getSelectionModel()
                 .selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     setMousePane.setVisible(false);
-                    if (newValue.equals(ActionType.MOUSE_CLICK))
-                        setMousePane.setVisible(true);
+                    setSleepPane.setVisible(false);
+                    switch (newValue) {
+                        case MOUSE_CLICK -> setMousePane.setVisible(true);
+                        case SLEEP -> setSleepPane.setVisible(true);
+                        default -> log.debug("Action not choose");
+                    }
                 });
     }
 
@@ -142,7 +153,7 @@ public class AppController {
     }
 
     /**
-     * Add mouse info to TextArea Console
+     * Button: Add mouse info to TextArea Console
      *
      * @param ignore ignore
      */
@@ -154,6 +165,24 @@ public class AppController {
                 .period(DataUtils.getLong(setMouseActionPeriodTextField.getText(), 0L))
                 .sleepAfter(DataUtils.getLong(setMouseActionSleepAfterTextField.getText(), 0L))
                 .build();
+        setTextToConsole(action);
+    }
+
+    /**
+     * Button: Add sleep action info to TextArea Console
+     */
+    public void setSleepActionReaderAction() {
+        setSleepInfo();
+    }
+
+    public void setSleepInfo() {
+        Sleep action = Sleep.builder()
+                .time(DataUtils.getLong(setSleepActionCountTextField.getText(), 0L))
+                .build();
+        setTextToConsole(action);
+    }
+
+    private void setTextToConsole(ActionsInterface action) {
         Platform.runLater(() -> textAreaConsole
                 .setText(textAreaConsole.getText()
                         + "\n"
