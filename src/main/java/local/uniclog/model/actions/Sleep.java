@@ -24,7 +24,7 @@ public class Sleep implements ActionsInterface {
     @Override
     public void execute(String... args) {
         TimeUnit.MILLISECONDS.sleep(time);
-        log.debug("Sleep: {}", this);
+        log.debug("{}: {}", getType().name(), this);
     }
 
     @Override

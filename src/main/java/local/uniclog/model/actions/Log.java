@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+import static java.lang.String.format;
+
 @Slf4j
 @Data
 @Builder
@@ -20,7 +22,7 @@ public class Log implements ActionsInterface {
 
     @Override
     public void execute(String... args) {
-        log.debug(getType().toString());
+        log.debug("{}: {}", getType().name(), this);
     }
 
     @Override
@@ -34,6 +36,11 @@ public class Log implements ActionsInterface {
             case "description" -> setDescription(value);
             default -> log.debug("Field: {}, not set: {}", key, value);
         }
+    }
+
+    @Override
+    public String toString() {
+        return format("%s [description=%s]", getType().name(), description);
     }
 
     @Override

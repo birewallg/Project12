@@ -39,9 +39,9 @@ public class MouseClick implements ActionsInterface {
             case BUTTON_L -> mouseAction(BUTTON1_DOWN_MASK);
             case BUTTON_M -> mouseAction(BUTTON2_DOWN_MASK);
             case BUTTON_R -> mouseAction(BUTTON3_DOWN_MASK);
-            default -> log.debug("MouseClick: {}", getType());
+            default -> log.debug("{}: {}", getType().name(), this);
         }
-        log.debug("MouseClick: {}", this);
+        log.debug("{}: {}", getType().name(), this);
     }
 
     @Override
