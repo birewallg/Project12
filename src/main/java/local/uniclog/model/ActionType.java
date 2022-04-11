@@ -16,6 +16,8 @@ public enum ActionType {
     MOUSE_CLICK("MOUSE_CLICK"),
     SLEEP("SLEEP"),
     LOG("LOG"),
+    WHILE("WHILE"),
+    END("END"),
 
     DEFAULT("DEFAULT");
 
