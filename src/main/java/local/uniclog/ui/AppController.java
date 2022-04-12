@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
 import local.uniclog.model.MouseButtonType;
+import local.uniclog.model.actions.ActionEnd;
+import local.uniclog.model.actions.ActionWhile;
 import local.uniclog.model.actions.MouseClick;
 import local.uniclog.model.actions.Sleep;
 import local.uniclog.services.ActionProcessExecuteService;
@@ -28,6 +30,12 @@ public class AppController {
     private static final String GUI_BUTTON_RED = "gui-button-red";
     private static final String GUI_BUTTON_GREEN = "gui-button-green";
 
+    @FXML
+    private Pane setEndPane;
+    @FXML
+    private TextField setWhileActionCountTextField;
+    @FXML
+    private Pane setWhilePane;
     @FXML
     private TextField setSleepActionCountTextField;
     @FXML
@@ -78,9 +86,13 @@ public class AppController {
                 .selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     setMousePane.setVisible(false);
                     setSleepPane.setVisible(false);
+                    setWhilePane.setVisible(false);
+                    setEndPane.setVisible(false);
                     switch (newValue) {
                         case MOUSE_CLICK -> setMousePane.setVisible(true);
                         case SLEEP -> setSleepPane.setVisible(true);
+                        case WHILE -> setWhilePane.setVisible(true);
+                        case END -> setEndPane.setVisible(true);
                         default -> log.debug("Action not choose");
                     }
                 });
@@ -172,13 +184,21 @@ public class AppController {
      * Button: Add sleep action info to TextArea Console
      */
     public void setSleepActionReaderAction() {
-        setSleepInfo();
-    }
-
-    public void setSleepInfo() {
         Sleep action = Sleep.builder()
                 .time(DataUtils.getLong(setSleepActionCountTextField.getText(), 0L))
                 .build();
+        setTextToConsole(action);
+    }
+
+    public void setWhileActionReaderAction() {
+        ActionWhile action = ActionWhile.builder()
+                .count(DataUtils.getInteger(setWhileActionCountTextField.getText(), 0))
+                .build();
+        setTextToConsole(action);
+    }
+
+    public void setEndActionReaderAction() {
+        ActionEnd action = new ActionEnd();
         setTextToConsole(action);
     }
 

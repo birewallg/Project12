@@ -56,12 +56,25 @@
             </children>
         </Pane>
         <Label layoutX="643.0" layoutY="51.0" prefHeight="17.0" prefWidth="106.0" text="Choice Action"/>
-        <Pane fx:id="setSleepPane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0">
+        <Pane fx:id="setSleepPane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0" visible="false">
             <Label layoutX="7.0" text="Time"/>
             <TextField fx:id="setSleepActionCountTextField" layoutX="6.0" layoutY="21.0" prefHeight="25.0"
                        prefWidth="126.0" promptText="count" text="1000"/>
             <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
                     onAction="#setSleepActionReaderAction" prefHeight="25.0" prefWidth="126.0"
+                    styleClass="gui-button-green" text="Set Action"/>
+        </Pane>
+        <Pane fx:id="setWhilePane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0" visible="false">
+            <Label layoutX="7.0" text="Count"/>
+            <TextField fx:id="setWhileActionCountTextField" layoutX="6.0" layoutY="21.0" prefHeight="25.0"
+                       prefWidth="126.0" promptText="count" text="0"/>
+            <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
+                    onAction="#setWhileActionReaderAction" prefHeight="25.0" prefWidth="126.0"
+                    styleClass="gui-button-green" text="Set Action"/>
+        </Pane>
+        <Pane fx:id="setEndPane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0" visible="false">
+            <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
+                    onAction="#setEndActionReaderAction" prefHeight="25.0" prefWidth="126.0"
                     styleClass="gui-button-green" text="Set Action"/>
         </Pane>
     </children>
