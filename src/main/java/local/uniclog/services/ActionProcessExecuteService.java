@@ -1,6 +1,9 @@
 package local.uniclog.services;
 
+import local.uniclog.model.ActionContainer;
+import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
+import local.uniclog.model.actions.ActionWhile;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,12 +49,30 @@ public class ActionProcessExecuteService {
 
         @Override
         public void run() {
-            for (ActionsInterface action : service.getContainer().getData()) {
+            ActionContainer container = service.getContainer();
+            int size = container.getData().size();
+            int index = 0;
+            while (index < size) {
                 if (!ActionProcessExecuteService.hook.get()) {
                     break;
                 }
+                ActionsInterface action = container.getAction(index);
+
+                if (action.getType().equals(ActionType.WHILE)) {
+                    if (((ActionWhile) action).getCount() > 0) {
+                        container.setWhileLoopCount(((ActionWhile) action).getCount() - 1);
+                        container.setWhileLoopIndex(index);
+                    }
+                } else if (action.getType().equals(ActionType.END) && container.getWhileLoopCount() > 0) {
+                    container.setWhileLoopCount((container.getWhileLoopCount() - 1));
+                    index = container.getWhileLoopIndex();
+                }
+
                 action.execute();
+
+                index++;
             }
+
             actionCallBack.accept(true);
             hook.set(false);
         }

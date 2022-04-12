@@ -3,10 +3,7 @@ package local.uniclog.services;
 import local.uniclog.model.ActionContainer;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
-import local.uniclog.model.actions.Default;
-import local.uniclog.model.actions.Log;
-import local.uniclog.model.actions.MouseClick;
-import local.uniclog.model.actions.Sleep;
+import local.uniclog.model.actions.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +40,7 @@ public class ActionProcessService {
                     container.add(action);
                 }
         );
+        container.add(getAction(ActionType.END, null));
         log.debug("{}", actionLines);
         log.debug("{}", container);
         return this;
@@ -53,6 +51,8 @@ public class ActionProcessService {
             case MOUSE_CLICK -> new MouseClick();
             case LOG -> new Log();
             case SLEEP -> new Sleep();
+            case WHILE -> new ActionWhile();
+            case END -> new ActionEnd();
 
             default -> new Default();
         };
