@@ -24,8 +24,8 @@ public class Sleep implements ActionsInterface {
     @SneakyThrows
     @Override
     public void execute(String... args) {
-        TimeUnit.MILLISECONDS.sleep(time);
         log.debug("{}: {}", getType().name(), this);
+        TimeUnit.MILLISECONDS.sleep(time);
     }
 
     @Override
