@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toMap;
 
 @Slf4j
@@ -60,18 +61,21 @@ public class ActionProcessService {
     }
 
     private ActionType getActionType(String line) {
-        try {
-            return ActionType.getType(line.substring(0, line.indexOf('[')));
-        } catch (StringIndexOutOfBoundsException e) {
-            log.error("ActionType is not parse");
-            return ActionType.DEFAULT;
-        }
+        return Arrays.stream(ActionType.values())
+                .filter(it -> line.startsWith(it.name()))
+                .findFirst()
+                .orElse(ActionType.DEFAULT);
     }
 
     private Map<String, String> getActionMap(String line) {
-        String map = line.substring(line.indexOf('[') + 1, line.indexOf(']'));
-        return Arrays.stream(map.split(","))
-                .map(param -> param.split("="))
-                .collect(toMap(it -> it[0], it -> it[1]));
+        try {
+            String map = line.substring(line.indexOf('[') + 1, line.indexOf(']'));
+            return Arrays.stream(map.split(","))
+                    .map(param -> param.split("="))
+                    .collect(toMap(it -> it[0], it -> it[1]));
+        } catch (IndexOutOfBoundsException e) {
+            log.debug("ActionMap is not parse");
+            return emptyMap();
+        }
     }
 }
