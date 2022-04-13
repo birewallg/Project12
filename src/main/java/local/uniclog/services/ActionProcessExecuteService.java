@@ -43,11 +43,16 @@ public class ActionProcessExecuteService {
 
         public ActionProcessExecuteThread(String actionsListAsString, Consumer<Boolean> actionCallBack) {
             this.actionCallBack = actionCallBack;
-            service.setConfiguration(stream(actionsListAsString.trim().replaceAll("[ \\t\\x0B\\f\\r]", "").split("\n")).toList());
+            service.setConfiguration(stream(actionsListAsString.trim()
+                    .replaceAll("[ \\t\\x0B\\f\\r]", "")
+                    .split("\n"))
+                    .toList());
+            log.debug("ActionProcessExecuteThread init");
         }
 
         @Override
         public void run() {
+            log.debug("ActionProcessExecuteThread start");
             ActionContainer container = service.getContainer();
             int size = container.getData().size();
             int index = 0;
@@ -56,30 +61,35 @@ public class ActionProcessExecuteService {
                     break;
                 }
                 ActionsInterface action = container.getAction(index);
-
-                if (action instanceof ActionWhile it && it.getCount() > 0) {
-                    container.whileModelStackPush(new WhileModel(index, it.getCount() - 1));
-
-                } else if (action instanceof ActionEnd) {
-                    WhileModel whileModel = container.whileModelStackPeekFirst();
-                    if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
-                        index = whileModel.setIteration();
-                    } else {
-                        container.whileModelStackPollFirst();
-                        whileModel = container.whileModelStackPeekFirst();
-                        if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
-                            index = whileModel.setIteration();
-                        }
-                    }
-                }
-
                 action.execute();
 
+                index = correctIndexByAction(index, container, action);
                 index++;
             }
 
             actionCallBack.accept(true);
             hook.set(false);
+            log.debug("ActionProcessExecuteThread stop");
         }
+
+        private Integer correctIndexByAction(int index, ActionContainer container, ActionsInterface action) {
+            if (action instanceof ActionWhile it && it.getCount() > 0) {
+                container.whileModelStackPush(new WhileModel(index, it.getCount() - 1));
+
+            } else if (action instanceof ActionEnd) {
+                WhileModel whileModel = container.whileModelStackPeekFirst();
+                if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
+                    index = whileModel.setIteration();
+                } else {
+                    container.whileModelStackPollFirst();
+                    whileModel = container.whileModelStackPeekFirst();
+                    if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
+                        index = whileModel.setIteration();
+                    }
+                }
+            }
+            return index;
+        }
+
     }
 }
