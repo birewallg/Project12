@@ -74,7 +74,7 @@ public class ActionProcessService {
                     .map(param -> param.split("="))
                     .collect(toMap(it -> it[0], it -> it[1]));
         } catch (IndexOutOfBoundsException e) {
-            log.debug("ActionMap is not parse");
+            log.debug("ActionMap is empty - {}", line);
             return emptyMap();
         }
     }
