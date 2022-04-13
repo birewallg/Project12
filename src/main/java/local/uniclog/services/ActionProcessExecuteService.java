@@ -3,9 +3,11 @@ package local.uniclog.services;
 import local.uniclog.model.ActionContainer;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
+import local.uniclog.model.WhileModel;
 import local.uniclog.model.actions.ActionWhile;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -60,12 +62,25 @@ public class ActionProcessExecuteService {
 
                 if (action.getType().equals(ActionType.WHILE)) {
                     if (((ActionWhile) action).getCount() > 0) {
-                        container.setWhileLoopCount(((ActionWhile) action).getCount() - 1);
-                        container.setWhileLoopIndex(index);
+                        container.whileModelStackPush(new WhileModel(index, ((ActionWhile) action).getCount() - 1));
                     }
-                } else if (action.getType().equals(ActionType.END) && container.getWhileLoopCount() > 0) {
-                    container.setWhileLoopCount((container.getWhileLoopCount() - 1));
-                    index = container.getWhileLoopIndex();
+                } else if (action.getType().equals(ActionType.END)) {
+                    WhileModel whileModel = container.whileModelStackPeekFirst();
+                    if (Objects.nonNull(whileModel)) {
+                        if (whileModel.getCount() > 0) {
+                            whileModel.setCount(whileModel.getCount() - 1);
+                            index = whileModel.getIndex();
+                        } else {
+                            container.whileModelStackPollFirst();
+                            whileModel = container.whileModelStackPeekFirst();
+                            if (Objects.nonNull(whileModel)) {
+                                if (whileModel.getCount() > 0) {
+                                    whileModel.setCount(whileModel.getCount() - 1);
+                                    index = whileModel.getIndex();
+                                }
+                            }
+                        }
+                    }
                 }
 
                 action.execute();
