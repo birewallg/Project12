@@ -3,12 +3,13 @@ package local.uniclog.model;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
 
 @Data
 public class ActionContainer {
     private ArrayList<ActionsInterface> data = new ArrayList<>();
-    private LinkedList<WhileModel> whileModelStack = new LinkedList<>();
+    private Deque<WhileModel> whileModelStack = new LinkedList<>();
 
     public void whileModelStackPush(WhileModel model) {
         whileModelStack.push(model);

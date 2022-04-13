@@ -1,9 +1,9 @@
 package local.uniclog.services;
 
 import local.uniclog.model.ActionContainer;
-import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
 import local.uniclog.model.WhileModel;
+import local.uniclog.model.actions.ActionEnd;
 import local.uniclog.model.actions.ActionWhile;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,10 +43,7 @@ public class ActionProcessExecuteService {
 
         public ActionProcessExecuteThread(String actionsListAsString, Consumer<Boolean> actionCallBack) {
             this.actionCallBack = actionCallBack;
-            service.setConfiguration(
-                    stream(actionsListAsString.trim()
-                            .replaceAll("[ \\t\\x0B\\f\\r]", "")
-                            .split("\n")).toList());
+            service.setConfiguration(stream(actionsListAsString.trim().replaceAll("[ \\t\\x0B\\f\\r]", "").split("\n")).toList());
         }
 
         @Override
@@ -60,25 +57,18 @@ public class ActionProcessExecuteService {
                 }
                 ActionsInterface action = container.getAction(index);
 
-                if (action.getType().equals(ActionType.WHILE)) {
-                    if (((ActionWhile) action).getCount() > 0) {
-                        container.whileModelStackPush(new WhileModel(index, ((ActionWhile) action).getCount() - 1));
-                    }
-                } else if (action.getType().equals(ActionType.END)) {
+                if (action instanceof ActionWhile it && it.getCount() > 0) {
+                    container.whileModelStackPush(new WhileModel(index, it.getCount() - 1));
+
+                } else if (action instanceof ActionEnd) {
                     WhileModel whileModel = container.whileModelStackPeekFirst();
-                    if (Objects.nonNull(whileModel)) {
-                        if (whileModel.getCount() > 0) {
-                            whileModel.setCount(whileModel.getCount() - 1);
-                            index = whileModel.getIndex();
-                        } else {
-                            container.whileModelStackPollFirst();
-                            whileModel = container.whileModelStackPeekFirst();
-                            if (Objects.nonNull(whileModel)) {
-                                if (whileModel.getCount() > 0) {
-                                    whileModel.setCount(whileModel.getCount() - 1);
-                                    index = whileModel.getIndex();
-                                }
-                            }
+                    if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
+                        index = whileModel.setIteration();
+                    } else {
+                        container.whileModelStackPollFirst();
+                        whileModel = container.whileModelStackPeekFirst();
+                        if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
+                            index = whileModel.setIteration();
                         }
                     }
                 }

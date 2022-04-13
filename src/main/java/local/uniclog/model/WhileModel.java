@@ -1,11 +1,16 @@
 package local.uniclog.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 @AllArgsConstructor
 public class WhileModel {
-    private Integer index;
+    private final Integer index;
+    @Getter
     private Integer count;
+
+    public Integer setIteration() {
+        --count;
+        return index;
+    }
 }
