@@ -5,6 +5,7 @@ import local.uniclog.model.ActionsInterface;
 import local.uniclog.model.WhileModel;
 import local.uniclog.model.actions.ActionEnd;
 import local.uniclog.model.actions.ActionWhile;
+import local.uniclog.model.actions.ActionWhileBrakeByColor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -75,6 +76,24 @@ public class ActionProcessExecuteService {
         private Integer correctIndexByAction(int index, ActionContainer container, ActionsInterface action) {
             if (action instanceof ActionWhile it && it.getCount() > 0) {
                 container.whileModelStackPush(new WhileModel(index, it.getCount() - 1));
+
+            } else if (action instanceof ActionWhileBrakeByColor it) {
+                if (it.checkColorChange()) {
+                    int whileCounts = 0;
+                    for (int i = index; i < container.getData().size(); i++) {
+                        if (container.getData().get(i) instanceof ActionWhile) {
+                            whileCounts++;
+                        }
+                        if (container.getData().get(i) instanceof ActionEnd) {
+                            whileCounts--;
+                            if (whileCounts < 0) {
+                                index = i + 1;
+                                container.whileModelStackPollFirst();
+                                break;
+                            }
+                        }
+                    }
+                }
 
             } else if (action instanceof ActionEnd) {
                 WhileModel whileModel = container.whileModelStackPeekFirst();

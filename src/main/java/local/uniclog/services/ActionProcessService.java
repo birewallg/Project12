@@ -29,7 +29,7 @@ public class ActionProcessService {
         return this;
     }
 
-    public ActionProcessService setConfiguration(List<String> actionLines) {
+    public void setConfiguration(List<String> actionLines) {
         container.clear();
         actionLines.forEach(line -> {
                     ActionType type = getActionType(line);
@@ -42,15 +42,13 @@ public class ActionProcessService {
                 }
         );
         container.add(getAction(ActionType.END, null));
-        log.debug("{}", actionLines);
         log.debug("{}", container);
-        return this;
     }
 
     private ActionsInterface getAction(ActionType actionType, Map<String, String> map) {
         ActionsInterface action = switch (actionType) {
             case MOUSE_CLICK -> new MouseClick();
-            case LOG -> new Log();
+            case WHILE_BRAKE_BY_COLOR -> new ActionWhileBrakeByColor();
             case SLEEP -> new Sleep();
             case WHILE -> new ActionWhile();
             case END -> new ActionEnd();

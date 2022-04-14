@@ -15,7 +15,7 @@ import java.util.Arrays;
 public enum ActionType {
     MOUSE_CLICK("MOUSE_CLICK"),
     SLEEP("SLEEP"),
-    LOG("LOG"),
+    WHILE_BRAKE_BY_COLOR("WHILE_BRAKE_BY_COLOR"),
     WHILE("WHILE"),
     END("END"),
 

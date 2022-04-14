@@ -97,7 +97,7 @@ public class AppController {
                         case SLEEP -> setSleepPane.setVisible(true);
                         case WHILE -> setWhilePane.setVisible(true);
                         case END -> setEndPane.setVisible(true);
-                        case WHILE_BRAKE -> setWhileBreakPane.setVisible(true);
+                        case WHILE_BRAKE_BY_COLOR -> setWhileBreakPane.setVisible(true);
                         default -> log.debug("Action not choose");
                     }
                 });
@@ -230,7 +230,7 @@ public class AppController {
      * @param ignore ignore
      */
     public void setMouseColorInfo(Boolean ignore) {
-        ActionWhileBrake action = ActionWhileBrake.builder()
+        ActionWhileBrakeByColor action = ActionWhileBrakeByColor.builder()
                 .point(MouseServiceWrapper.getMousePointer())
                 .color(MouseServiceWrapper.getPixelColor())
                 .build();

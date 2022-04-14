@@ -19,8 +19,8 @@ public class ActionContainer {
         return whileModelStack.peekFirst();
     }
 
-    public WhileModel whileModelStackPollFirst() {
-        return whileModelStack.pollFirst();
+    public void whileModelStackPollFirst() {
+        whileModelStack.pollFirst();
     }
 
     public void add(ActionsInterface action) {
