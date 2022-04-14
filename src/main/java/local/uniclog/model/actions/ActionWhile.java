@@ -25,7 +25,7 @@ public class ActionWhile implements ActionsInterface {
 
     @Override
     public void execute(String... args) {
-        log.debug("{}: {}", getType().name(), this);
+        log.debug("{}", this);
     }
 
     @Override

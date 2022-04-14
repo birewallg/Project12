@@ -12,7 +12,7 @@ import static java.lang.String.format;
 public class ActionEnd implements ActionsInterface {
     @Override
     public void execute(String... args) {
-        log.debug("{}: {}", getType().name(), this);
+        log.debug("{}", this);
     }
 
     @Override

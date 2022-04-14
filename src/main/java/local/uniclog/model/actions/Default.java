@@ -9,7 +9,7 @@ import java.util.Map;
 public class Default implements ActionsInterface {
     @Override
     public void execute(String... args) {
-        log.debug("{}: {}", getType().name(), this);
+        log.debug("{}", this);
     }
 
     @Override
