@@ -9,10 +9,7 @@ import javafx.stage.Stage;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
 import local.uniclog.model.MouseButtonType;
-import local.uniclog.model.actions.ActionEnd;
-import local.uniclog.model.actions.ActionWhile;
-import local.uniclog.model.actions.MouseClick;
-import local.uniclog.model.actions.Sleep;
+import local.uniclog.model.actions.*;
 import local.uniclog.services.ActionProcessExecuteService;
 import local.uniclog.services.FileServiceWrapper;
 import local.uniclog.services.JnaKeyHookService;
@@ -30,6 +27,12 @@ public class AppController {
     private static final String GUI_BUTTON_RED = "gui-button-red";
     private static final String GUI_BUTTON_GREEN = "gui-button-green";
 
+    @FXML
+    private Button setMouseBrakeActionReaderButton;
+    @FXML
+    private TextField setWhileBreakActionColorTextField;
+    @FXML
+    private Pane setWhileBreakPane;
     @FXML
     private Pane setEndPane;
     @FXML
@@ -88,11 +91,13 @@ public class AppController {
                     setSleepPane.setVisible(false);
                     setWhilePane.setVisible(false);
                     setEndPane.setVisible(false);
+                    setWhileBreakPane.setVisible(false);
                     switch (newValue) {
                         case MOUSE_CLICK -> setMousePane.setVisible(true);
                         case SLEEP -> setSleepPane.setVisible(true);
                         case WHILE -> setWhilePane.setVisible(true);
                         case END -> setEndPane.setVisible(true);
+                        case WHILE_BRAKE -> setWhileBreakPane.setVisible(true);
                         default -> log.debug("Action not choose");
                     }
                 });
@@ -190,6 +195,9 @@ public class AppController {
         setTextToConsole(action);
     }
 
+    /**
+     * Button: Add While Action info to TextArea Console
+     */
     public void setWhileActionReaderAction() {
         ActionWhile action = ActionWhile.builder()
                 .count(DataUtils.getInteger(setWhileActionCountTextField.getText(), 0))
@@ -197,6 +205,48 @@ public class AppController {
         setTextToConsole(action);
     }
 
+    /**
+     * Button: Add While Break Action info to TextArea Console
+     */
+    public void setWhileBreakActionReaderAction() {
+        if (initializeHookListener) {
+            setMouseBrakeActionReaderButton.setText("Stop");
+            setMouseBrakeActionReaderButton.getStyleClass().removeAll();
+            setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_RED);
+        } else {
+            setMouseBrakeActionReaderButton.setText("Get Color");
+            setMouseBrakeActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
+            setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
+        }
+
+        JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
+        jnaKeyHookService.initialize(initializeHookListener, this::setMouseColorInfo, 162, true);
+        initializeHookListener = !initializeHookListener;
+    }
+
+    /**
+     * Button: Add mouse info to TextArea Console
+     *
+     * @param ignore ignore
+     */
+    public void setMouseColorInfo(Boolean ignore) {
+        ActionWhileBrake action = ActionWhileBrake.builder()
+                .point(MouseServiceWrapper.getMousePointer())
+                .color(MouseServiceWrapper.getPixelColor())
+                .build();
+        setTextToConsole(action);
+
+        Platform.runLater(() -> {
+            setMouseBrakeActionReaderButton.setText("Get Color");
+            setMouseBrakeActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
+            setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
+        });
+        initializeHookListener = true;
+    }
+
+    /**
+     * Button: Add While End Action info to TextArea Console
+     */
     public void setEndActionReaderAction() {
         ActionEnd action = new ActionEnd();
         setTextToConsole(action);
