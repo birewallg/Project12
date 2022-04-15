@@ -78,37 +78,47 @@ public class ActionProcessExecuteService {
                 container.whileModelStackPush(new WhileModel(index, it.getCount() - 1));
 
             } else if (action instanceof ActionWhileBrakeByColor it) {
-                if (it.checkColorChange()) {
-                    int whileCounts = 0;
-                    for (int i = index; i < container.getData().size(); i++) {
-                        if (container.getData().get(i) instanceof ActionWhile) {
-                            whileCounts++;
-                        }
-                        if (container.getData().get(i) instanceof ActionEnd) {
-                            whileCounts--;
-                            if (whileCounts < 0) {
-                                index = i + 1;
-                                container.whileModelStackPollFirst();
-                                break;
-                            }
-                        }
-                    }
-                }
+                index = correctByActionWhileBrakeByColor(index, container, it);
 
             } else if (action instanceof ActionEnd) {
-                WhileModel whileModel = container.whileModelStackPeekFirst();
-                if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
-                    index = whileModel.setIteration();
-                } else {
-                    container.whileModelStackPollFirst();
-                    whileModel = container.whileModelStackPeekFirst();
-                    if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
-                        index = whileModel.setIteration();
+                index = correctByActionEnd(index, container);
+            }
+
+            return index;
+        }
+
+        private Integer correctByActionWhileBrakeByColor(int index, ActionContainer container, ActionWhileBrakeByColor action) {
+            if (action.checkColorChange()) {
+                int whileCounts = 0;
+                for (int i = index; i < container.getData().size(); i++) {
+                    if (container.getData().get(i) instanceof ActionWhile) {
+                        whileCounts++;
+                    }
+                    if (container.getData().get(i) instanceof ActionEnd) {
+                        whileCounts--;
+                        if (whileCounts < 0) {
+                            index = i + 1;
+                            container.whileModelStackPollFirst();
+                            break;
+                        }
                     }
                 }
             }
             return index;
         }
 
+        private Integer correctByActionEnd(int index, ActionContainer container) {
+            WhileModel whileModel = container.whileModelStackPeekFirst();
+            if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
+                index = whileModel.setIteration();
+            } else {
+                container.whileModelStackPollFirst();
+                whileModel = container.whileModelStackPeekFirst();
+                if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
+                    index = whileModel.setIteration();
+                }
+            }
+            return index;
+        }
     }
 }
