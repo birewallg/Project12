@@ -18,6 +18,7 @@ public enum ActionType {
     WHILE_BRAKE_BY_COLOR("WHILE_BRAKE_BY_COLOR"),
     WHILE("WHILE"),
     END("END"),
+    KEY_PRESS("KEY_PRESS"),
 
     DEFAULT("DEFAULT");
 
