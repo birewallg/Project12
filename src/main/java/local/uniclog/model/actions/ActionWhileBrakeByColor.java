@@ -31,6 +31,14 @@ public class ActionWhileBrakeByColor implements ActionsInterface {
         log.debug("{}", this);
     }
 
+    /**
+     * equal = true, color = true -> false
+     * equal = true, color = false -> true
+     * equal = false, color = true -> true
+     * equal = false, color = false -> false
+     *
+     * @return color changes
+     */
     @SneakyThrows
     public boolean checkColorChange() {
         return equal != getRobot().getPixelColor(point.x, point.y).equals(color);
