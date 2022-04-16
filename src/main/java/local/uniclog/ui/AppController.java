@@ -28,6 +28,14 @@ public class AppController {
     private static final String GUI_BUTTON_GREEN = "gui-button-green";
 
     @FXML
+    private TextField setActionKeyPressSleepAfterTextField;
+    @FXML
+    private Button setActionKeyPressReaderButton;
+    @FXML
+    private TextField setActionKeyPressTextField;
+    @FXML
+    private Pane setActionKeyPressPane;
+    @FXML
     private Button setMouseBrakeActionReaderButton;
     @FXML
     private TextField setWhileBreakActionColorTextField;
@@ -92,12 +100,14 @@ public class AppController {
                     setWhilePane.setVisible(false);
                     setEndPane.setVisible(false);
                     setWhileBreakPane.setVisible(false);
+                    setActionKeyPressPane.setVisible(false);
                     switch (newValue) {
                         case MOUSE_CLICK -> setMousePane.setVisible(true);
                         case SLEEP -> setSleepPane.setVisible(true);
                         case WHILE -> setWhilePane.setVisible(true);
                         case END -> setEndPane.setVisible(true);
                         case WHILE_BRAKE_BY_COLOR -> setWhileBreakPane.setVisible(true);
+                        case KEY_PRESS -> setActionKeyPressPane.setVisible(true);
                         default -> log.debug("Action not choose");
                     }
                 });
@@ -170,11 +180,11 @@ public class AppController {
     }
 
     /**
-     * Button: Add mouse info to TextArea Console
+     * Callback: Add mouse info to TextArea Console
      *
      * @param ignore ignore
      */
-    public void setMouseInfo(Boolean ignore) {
+    public void setMouseInfo(Integer ignore) {
         MouseClick action = MouseClick.builder()
                 .action(setMouseActionChoiceBox.getValue())
                 .point(MouseServiceWrapper.getMousePointer())
@@ -225,11 +235,11 @@ public class AppController {
     }
 
     /**
-     * Button: Add mouse info to TextArea Console
+     * Callback: Add mouse color info to TextArea Console
      *
      * @param ignore ignore
      */
-    public void setMouseColorInfo(Boolean ignore) {
+    public void setMouseColorInfo(Integer ignore) {
         ActionWhileBrakeByColor action = ActionWhileBrakeByColor.builder()
                 .point(MouseServiceWrapper.getMousePointer())
                 .color(MouseServiceWrapper.getPixelColor())
@@ -240,6 +250,55 @@ public class AppController {
             setMouseBrakeActionReaderButton.setText("Get Color");
             setMouseBrakeActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
+        });
+        initializeHookListener = true;
+    }
+
+
+    public void setActionKeyPressReaderActionSingle() {
+        ActionKeyPress action = ActionKeyPress.builder()
+                .text(setActionKeyPressTextField.getText())
+                .sleepAfter(DataUtils.getLong(setActionKeyPressSleepAfterTextField.getText(), 0))
+                .build();
+        setTextToConsole(action);
+    }
+
+    /**
+     * Button: Add Key Press info to TextArea Console
+     */
+    public void setActionKeyPressReaderAction() {
+        if (initializeHookListener) {
+            setActionKeyPressReaderButton.setText("Stop");
+            setActionKeyPressReaderButton.getStyleClass().removeAll();
+            setActionKeyPressReaderButton.getStyleClass().add(GUI_BUTTON_RED);
+        } else {
+            setActionKeyPressReaderButton.setText("Listen Key Code");
+            setActionKeyPressReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
+            setActionKeyPressReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
+        }
+
+        JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
+        jnaKeyHookService.initialize(initializeHookListener, this::setKeyPressInfo, -1, true);
+        initializeHookListener = !initializeHookListener;
+    }
+
+    /**
+     * Callback: Add Key Press info to TextArea Console
+     *
+     * @param keyCode key codes by action press
+     */
+    public void setKeyPressInfo(Integer keyCode) {
+        ActionKeyPress action = ActionKeyPress.builder()
+                .keyCode(keyCode)
+                .text(setActionKeyPressTextField.getText())
+                .sleepAfter(DataUtils.getLong(setActionKeyPressSleepAfterTextField.getText(), 0))
+                .build();
+        setTextToConsole(action);
+
+        Platform.runLater(() -> {
+            setActionKeyPressReaderButton.setText("Listen Key Code");
+            setActionKeyPressReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
+            setActionKeyPressReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
         });
         initializeHookListener = true;
     }
@@ -261,7 +320,7 @@ public class AppController {
     }
 
     public void onRunAction() {
-        onRunActionCompleteByUser(initializeRunExecute);
+        onRunActionCompleteByUser(162);
         // hook ctrl to stop
         JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
         jnaKeyHookService.initialize(initializeRunExecute, this::onRunActionCompleteByUser, 162, true);
@@ -271,8 +330,8 @@ public class AppController {
 
     }
 
-    public void onRunActionCompleteByUser(Boolean complete) {
-        if (complete.equals(false)) {
+    public void onRunActionCompleteByUser(Integer complete) {
+        if (complete.equals(162)) {
             Platform.runLater(() -> {
                 onRunActionButton.setText("Stop");
                 onRunActionButton.getStyleClass().add(GUI_BUTTON_RED);
