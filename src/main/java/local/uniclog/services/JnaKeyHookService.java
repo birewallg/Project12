@@ -18,7 +18,7 @@ import static com.sun.jna.Pointer.nativeValue;
 public class JnaKeyHookService {
     private static final AtomicBoolean hook = new AtomicBoolean(false);
 
-    public boolean initialize(boolean hook, Consumer<Boolean> actionCallBack, int keyCode, boolean stopByHook) {
+    public boolean initialize(boolean hook, Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
         if (JnaKeyHookService.hook.get() == hook) {
             return hook;
         }
@@ -39,11 +39,11 @@ public class JnaKeyHookService {
 
     private static class JnaKeyHookThread implements Runnable {
         private WinUser.HHOOK hHook;
-        private final Consumer<Boolean> actionCallBack;
+        private final Consumer<Integer> actionCallBack;
         private final int keyCode;
         private final boolean stopByHook;
 
-        private JnaKeyHookThread(Consumer<Boolean> actionCallBack, int keyCode, boolean stopByHook) {
+        private JnaKeyHookThread(Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
             this.actionCallBack = actionCallBack;
             this.keyCode = keyCode;
             this.stopByHook = stopByHook;
@@ -83,11 +83,18 @@ public class JnaKeyHookService {
         private void handleKeyDown(int vkCode) {
             log.debug("Key = {}", vkCode);
 
-            if (vkCode == keyCode) {
-                actionCallBack.accept(true);
-                if (stopByHook) {
-                    JnaKeyHookService.hook.set(false);
-                }
+            if (keyCode != -1 && vkCode == keyCode) {
+                initCallBack(vkCode);
+            }
+            if (keyCode == -1) {
+                initCallBack(vkCode);
+            }
+        }
+
+        private void initCallBack(int vkCode) {
+            actionCallBack.accept(vkCode);
+            if (stopByHook) {
+                JnaKeyHookService.hook.set(false);
             }
         }
     }

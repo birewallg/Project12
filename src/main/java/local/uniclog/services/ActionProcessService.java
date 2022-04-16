@@ -52,6 +52,7 @@ public class ActionProcessService {
             case SLEEP -> new Sleep();
             case WHILE -> new ActionWhile();
             case END -> new ActionEnd();
+            case KEY_PRESS -> new ActionKeyPress();
 
             default -> new Default();
         };

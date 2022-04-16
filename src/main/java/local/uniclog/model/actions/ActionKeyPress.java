@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 
@@ -20,14 +21,19 @@ import static java.lang.String.format;
 @AllArgsConstructor
 public class ActionKeyPress implements ActionsInterface {
     @Builder.Default
-    private String keys = "";
+    private String text = "";
     @Builder.Default
     private Integer keyCode = null;
+    @Builder.Default
+    private Long sleepAfter = 0L;
 
+    @SneakyThrows
     @Override
     public void execute(String... args) {
-        actionPressText(keys);
+        log.debug("{}", this);
+        actionPressText(text);
         actionPressKey(keyCode);
+        TimeUnit.MILLISECONDS.sleep(sleepAfter);
     }
 
     private void actionPressText(String keys) {
@@ -39,14 +45,17 @@ public class ActionKeyPress implements ActionsInterface {
         }
     }
 
-    @SneakyThrows
     private void actionPressKey(Integer code) {
-        if (Objects.nonNull(code)) {
-            Robot robot = getRobot();
-            robot.keyPress(code);
-            robot.delay(100);
-            robot.keyRelease(code);
-            robot.delay(100);
+        try {
+            if (Objects.nonNull(code)) {
+                Robot robot = getRobot();
+                robot.keyPress(code);
+                robot.delay(100);
+                robot.keyRelease(code);
+                robot.delay(100);
+            }
+        } catch (AWTException | IllegalArgumentException ex) {
+            log.error(ex.getMessage());
         }
     }
 
@@ -59,19 +68,25 @@ public class ActionKeyPress implements ActionsInterface {
 
     private void setFieldValue(String key, String value) {
         switch (key) {
-            case "keys" -> setKeys(value);
-            case "keyCode" -> setKeyCode(DataUtils.getKeyCodeByString(value));
-
+            case "text" -> setText(value);
+            case "keyCode" -> setKeyCode(DataUtils.getInteger(value, 0));
+            case "sleepAfter" -> setSleepAfter(DataUtils.getLong(value, 0));
             default -> log.debug("Field: {}, not set: {}", key, value);
         }
     }
 
     @Override
     public String toString() {
-        return format("%s [keys=%s, keyCode=%d]",
-                getType().name(),
-                keys, // todo convert to string value
-                keyCode);
+        StringBuilder sb = new StringBuilder();
+        sb.append(format("%s [", getType().name()));
+        if (!text.isBlank()) sb.append(format("text=%s", text));
+        if (Objects.nonNull(keyCode)) {
+            if (!text.isBlank()) sb.append(", ");
+            sb.append(format("keyCode=%s", keyCode));
+        }
+        if (sleepAfter != 0) sb.append(format(", sleepAfter=%d", sleepAfter));
+        sb.append("]");
+        return sb.toString();
     }
 
     @Override

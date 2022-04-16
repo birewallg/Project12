@@ -27,16 +27,16 @@ public class MouseClick implements ActionsInterface {
     @Builder.Default
     private MouseButtonType action = BUTTON_L;
     @Builder.Default
-    private Integer count = 0;
+    private Integer count = 1;
     @Builder.Default
-    private Long period = 50L;
+    private Long period = 0L;
     @Builder.Default
     private Long sleepAfter = 0L;
 
     @Override
     @SneakyThrows
     public void execute(String... args) {
-        log.debug("{}: {}", getType().name(), this);
+        log.debug("{}", this);
         switch (action) {
             case BUTTON_L -> mouseAction(BUTTON1_DOWN_MASK);
             case BUTTON_M -> mouseAction(BUTTON2_DOWN_MASK);
@@ -72,7 +72,8 @@ public class MouseClick implements ActionsInterface {
                 robot.mouseMove(point.x, point.y);
                 robot.mousePress(buttonCode);
                 robot.mouseRelease(buttonCode);
-                TimeUnit.MILLISECONDS.sleep(period);
+                if (period > 0)
+                    TimeUnit.MILLISECONDS.sleep(period);
                 loopCount++;
                 if (loopCount.equals(count))
                     TimeUnit.MILLISECONDS.sleep(sleepAfter);
@@ -85,15 +86,14 @@ public class MouseClick implements ActionsInterface {
 
     @Override
     public String toString() {
-        return format(
-                "%s [action=%s, x=%d, y=%d, count=%d, wait=%d, sleepAfter=%d]",
-                getType().name(),
-                action,
-                point.x, point.y,
-                count,
-                period,
-                sleepAfter
-        );
+        StringBuilder sb = new StringBuilder();
+        sb.append(format("%s [", getType().name()));
+        sb.append(format("action=%s, x=%d, y=%d", action, point.x, point.y));
+        if (count != 1) sb.append(format(", count=%d", count));
+        if (period > 0) sb.append(format(", wait=%d", period));
+        if (sleepAfter != 0) sb.append(format(", sleepAfter=%d", sleepAfter));
+        sb.append("]");
+        return sb.toString();
     }
 
     @Override
