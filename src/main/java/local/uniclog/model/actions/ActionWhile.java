@@ -36,9 +36,10 @@ public class ActionWhile implements ActionsInterface {
     }
 
     private void setFieldValue(String key, String value) {
-        switch (key) {
-            case "count" -> setCount(DataUtils.getInteger(value, 0));
-            default -> log.debug("Field: {}, not set: {}", key, value);
+        if ("count".equals(key)) {
+            setCount(DataUtils.getInteger(value, 0));
+        } else {
+            log.debug("Field: {}, not set: {}", key, value);
         }
     }
 

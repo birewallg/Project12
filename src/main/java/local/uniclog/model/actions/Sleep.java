@@ -38,9 +38,10 @@ public class Sleep implements ActionsInterface {
     }
 
     private void setFieldValue(String key, String value) {
-        switch (key) {
-            case "time" -> setTime(DataUtils.getLong(value, 0));
-            default -> log.debug("Field: {}, not set: {}", key, value);
+        if ("time".equals(key)) {
+            setTime(DataUtils.getLong(value, 0));
+        } else {
+            log.debug("Field: {}, not set: {}", key, value);
         }
     }
 
