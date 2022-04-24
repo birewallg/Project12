@@ -320,7 +320,7 @@ public class AppController {
     }
 
     public void onRunAction() {
-        onRunActionCompleteByUser(162);
+        onRunActionCompleteByUser(-1);
         // hook ctrl to stop
         JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
         jnaKeyHookService.initialize(initializeRunExecute, this::onRunActionCompleteByUser, 162, true);
@@ -331,7 +331,7 @@ public class AppController {
     }
 
     public void onRunActionCompleteByUser(Integer complete) {
-        if (complete.equals(162)) {
+        if (complete.equals(-1) && !initializeRunExecute) {
             Platform.runLater(() -> {
                 onRunActionButton.setText("Stop");
                 onRunActionButton.getStyleClass().add(GUI_BUTTON_RED);
