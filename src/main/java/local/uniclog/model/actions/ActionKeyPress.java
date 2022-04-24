@@ -29,7 +29,7 @@ public class ActionKeyPress implements ActionsInterface {
 
     @SneakyThrows
     @Override
-    public void execute(String... args) {
+    public void execute(String... args) throws InterruptedException {
         log.debug("{}", this);
         actionPressText(text);
         actionPressKey(keyCode);

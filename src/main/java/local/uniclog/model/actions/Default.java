@@ -8,7 +8,7 @@ import java.util.Map;
 @Slf4j
 public class Default implements ActionsInterface {
     @Override
-    public void execute(String... args) {
+    public void execute(String... args) throws InterruptedException {
         log.debug("{}", this);
     }
 

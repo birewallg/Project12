@@ -24,7 +24,7 @@ public class ActionWhile implements ActionsInterface {
     private Integer count = 0;
 
     @Override
-    public void execute(String... args) {
+    public void execute(String... args) throws InterruptedException {
         log.debug("{}", this);
     }
 

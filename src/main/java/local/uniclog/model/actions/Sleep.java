@@ -3,7 +3,10 @@ package local.uniclog.model.actions;
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
 import local.uniclog.utils.DataUtils;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -21,9 +24,8 @@ public class Sleep implements ActionsInterface {
     @Builder.Default
     private Long time = 0L;
 
-    @SneakyThrows
     @Override
-    public void execute(String... args) {
+    public void execute(String... args) throws InterruptedException {
         log.debug("{}", this);
         TimeUnit.MILLISECONDS.sleep(time);
     }

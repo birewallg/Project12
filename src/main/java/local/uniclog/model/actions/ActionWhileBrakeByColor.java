@@ -27,7 +27,7 @@ public class ActionWhileBrakeByColor implements ActionsInterface {
     private Boolean equal = false;
 
     @Override
-    public void execute(String... args) {
+    public void execute(String... args) throws InterruptedException {
         log.debug("{}", this);
     }
 

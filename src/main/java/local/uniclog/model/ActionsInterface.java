@@ -6,10 +6,16 @@ import java.util.Map;
 import static local.uniclog.model.ActionType.DEFAULT;
 
 public interface ActionsInterface {
-    void execute(String... args);
+
+    /**
+     * Action process
+     *
+     * @param args args
+     * @throws InterruptedException exception
+     */
+    void execute(String... args) throws InterruptedException;
 
     default Robot getRobot() throws AWTException {
-        // todo may be JNI ??
         return new Robot();
     }
 

@@ -35,7 +35,7 @@ public class MouseClick implements ActionsInterface {
 
     @Override
     @SneakyThrows
-    public void execute(String... args) {
+    public void execute(String... args) throws InterruptedException {
         log.debug("{}", this);
         switch (action) {
             case BUTTON_L -> mouseAction(BUTTON1_DOWN_MASK);
