@@ -5,9 +5,10 @@ import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.platform.win32.WinUser.LowLevelKeyboardProc;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -17,24 +18,37 @@ import static com.sun.jna.Pointer.nativeValue;
 @Slf4j
 public class JnaKeyHookService {
     private static final AtomicBoolean hook = new AtomicBoolean(false);
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public boolean initialize(boolean hook, Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
+    private JnaKeyHookService() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static boolean initialize(boolean hook, Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
         if (JnaKeyHookService.hook.get() == hook) {
             return hook;
         }
+        JnaKeyHookService.stop();
         JnaKeyHookService.hook.set(hook);
         if (!JnaKeyHookService.hook.get()) {
             return false;
         }
+
         var jnaKeyHookThread = new JnaKeyHookThread(actionCallBack, keyCode, stopByHook);
-        var thread = new Thread(jnaKeyHookThread);
-        thread.start();
+        synchronized (JnaKeyHookService.hook) {
+            executorService = Executors.newSingleThreadExecutor();
+            executorService.execute(jnaKeyHookThread);
+            executorService.shutdown();
+        }
 
         return true;
     }
 
     public static void stop() {
         JnaKeyHookService.hook.set(false);
+        synchronized (hook) {
+            executorService.shutdownNow();
+        }
     }
 
     private static class JnaKeyHookThread implements Runnable {
@@ -49,7 +63,7 @@ public class JnaKeyHookService {
             this.stopByHook = stopByHook;
         }
 
-        @SneakyThrows
+
         @Override
         public void run() {
             var hMod = Kernel32.INSTANCE.GetModuleHandle(null);
@@ -70,13 +84,21 @@ public class JnaKeyHookService {
             log.debug("Hooked");
 
             var msg = new WinUser.MSG();
-            while (JnaKeyHookService.hook.get()) {
-                User32.INSTANCE.PeekMessage(msg, null, 0, 0, 0);
-                TimeUnit.MILLISECONDS.sleep(100);
-            }
+            try {
+                while (JnaKeyHookService.hook.get()) {
+                    User32.INSTANCE.PeekMessage(msg, null, 0, 0, 0);
 
-            if (User32.INSTANCE.UnhookWindowsHookEx(hHook)) {
-                log.debug("Unhooked");
+                    TimeUnit.MILLISECONDS.sleep(100);
+                }
+                if (User32.INSTANCE.UnhookWindowsHookEx(hHook)) {
+                    log.debug("Unhooked");
+                }
+
+            } catch (InterruptedException e) {
+                if (User32.INSTANCE.UnhookWindowsHookEx(hHook)) {
+                    log.debug("Unhooked");
+                }
+                Thread.currentThread().interrupt();
             }
         }
 

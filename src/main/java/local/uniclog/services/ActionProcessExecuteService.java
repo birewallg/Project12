@@ -9,6 +9,8 @@ import local.uniclog.model.actions.ActionWhileBrakeByColor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
@@ -17,29 +19,42 @@ import static java.util.Arrays.stream;
 @Slf4j
 public class ActionProcessExecuteService {
     private static final AtomicBoolean hook = new AtomicBoolean(false);
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public boolean initialize(boolean hook, String actionsList, Consumer<Boolean> actionCallBack) {
+    private ActionProcessExecuteService() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static boolean initialize(boolean hook, String actionsList, Consumer<Boolean> actionCallBack) {
         if (ActionProcessExecuteService.hook.get() == hook) {
             return hook;
         }
+
+        ActionProcessExecuteService.stop();
         ActionProcessExecuteService.hook.set(hook);
         if (!ActionProcessExecuteService.hook.get()) {
             return false;
         }
 
         var processKeyHookThread = new ActionProcessExecuteService.ActionProcessExecuteThread(actionsList, actionCallBack);
-        var thread = new Thread(processKeyHookThread);
-        thread.start();
-
+        synchronized (ActionProcessExecuteService.hook) {
+            executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(processKeyHookThread);
+            executorService.shutdown();
+        }
         return true;
     }
 
     public static void stop() {
         ActionProcessExecuteService.hook.set(false);
+        synchronized (hook) {
+            executorService.shutdownNow();
+        }
     }
 
+    @Slf4j
     private static class ActionProcessExecuteThread implements Runnable {
-        private final ActionProcessService service = new ActionProcessService();
+        private final ActionService service = new ActionService();
         private final Consumer<Boolean> actionCallBack;
 
         public ActionProcessExecuteThread(String actionsListAsString, Consumer<Boolean> actionCallBack) {
@@ -57,17 +72,25 @@ public class ActionProcessExecuteService {
             ActionContainer container = service.getContainer();
             int size = container.getData().size();
             int index = 0;
-            while (index < size) {
-                if (!ActionProcessExecuteService.hook.get()) {
-                    break;
+            try {
+                while (index < size) {
+                    if (!ActionProcessExecuteService.hook.get()) {
+                        break;
+                    }
+                    ActionsInterface action = container.getAction(index);
+                    action.execute();
+
+                    index = correctIndexByAction(index, container, action);
+                    index++;
                 }
-                ActionsInterface action = container.getAction(index);
-                action.execute();
-
-                index = correctIndexByAction(index, container, action);
-                index++;
+                stop();
+            } catch (InterruptedException e) {
+                stop();
+                Thread.currentThread().interrupt();
             }
+        }
 
+        private void stop() {
             actionCallBack.accept(true);
             hook.set(false);
             log.debug("ActionProcessExecuteThread stop");

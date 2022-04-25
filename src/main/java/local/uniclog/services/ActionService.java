@@ -16,15 +16,15 @@ import static java.util.stream.Collectors.toMap;
 
 @Slf4j
 @Data
-public class ActionProcessService {
+public class ActionService {
     private ActionContainer container = new ActionContainer();
 
-    public ActionProcessService addAction(ActionsInterface instruction) {
+    public ActionService addAction(ActionsInterface instruction) {
         container.add(instruction);
         return this;
     }
 
-    public ActionProcessService clear() {
+    public ActionService clear() {
         container.clear();
         return this;
     }

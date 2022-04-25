@@ -168,14 +168,16 @@ public class AppController {
             setMouseActionReaderButton.setText("Stop Action Read");
             setMouseActionReaderButton.getStyleClass().removeAll();
             setMouseActionReaderButton.getStyleClass().add(GUI_BUTTON_RED);
+
+            JnaKeyHookService.initialize(initializeHookListener, this::setMouseInfo, 162, false);
         } else {
             setMouseActionReaderButton.setText("Start Action Read");
             setMouseActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setMouseActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
+
+            JnaKeyHookService.stop();
         }
 
-        JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
-        jnaKeyHookService.initialize(initializeHookListener, this::setMouseInfo, 162, false);
         initializeHookListener = !initializeHookListener;
     }
 
@@ -223,14 +225,14 @@ public class AppController {
             setMouseBrakeActionReaderButton.setText("Stop");
             setMouseBrakeActionReaderButton.getStyleClass().removeAll();
             setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_RED);
+            JnaKeyHookService.initialize(initializeHookListener, this::setMouseColorInfo, 162, true);
         } else {
             setMouseBrakeActionReaderButton.setText("Get Color");
             setMouseBrakeActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
+            JnaKeyHookService.stop();
         }
 
-        JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
-        jnaKeyHookService.initialize(initializeHookListener, this::setMouseColorInfo, 162, true);
         initializeHookListener = !initializeHookListener;
     }
 
@@ -271,14 +273,14 @@ public class AppController {
             setActionKeyPressReaderButton.setText("Stop");
             setActionKeyPressReaderButton.getStyleClass().removeAll();
             setActionKeyPressReaderButton.getStyleClass().add(GUI_BUTTON_RED);
+            JnaKeyHookService.initialize(initializeHookListener, this::setKeyPressInfo, -1, true);
         } else {
             setActionKeyPressReaderButton.setText("Listen Key Code");
             setActionKeyPressReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setActionKeyPressReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
+            JnaKeyHookService.stop();
         }
 
-        JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
-        jnaKeyHookService.initialize(initializeHookListener, this::setKeyPressInfo, -1, true);
         initializeHookListener = !initializeHookListener;
     }
 
@@ -321,13 +323,7 @@ public class AppController {
 
     public void onRunAction() {
         onRunActionCompleteByUser(-1);
-        // hook ctrl to stop
-        JnaKeyHookService jnaKeyHookService = new JnaKeyHookService();
-        jnaKeyHookService.initialize(initializeRunExecute, this::onRunActionCompleteByUser, 162, true);
-        // start action execute
-        ActionProcessExecuteService actionProcessExecuteService = new ActionProcessExecuteService();
-        actionProcessExecuteService.initialize(initializeRunExecute, textAreaConsole.getText(), this::onRunActionCompleteCallback);
-
+        initializeRunExecute = !initializeRunExecute;
     }
 
     public void onRunActionCompleteByUser(Integer complete) {
@@ -336,9 +332,14 @@ public class AppController {
                 onRunActionButton.setText("Stop");
                 onRunActionButton.getStyleClass().add(GUI_BUTTON_RED);
             });
-            initializeRunExecute = true;
+
+            // hook ctrl to stop
+            JnaKeyHookService.initialize(true, this::onRunActionCompleteByUser, 162, true);
+            // start action execute
+            ActionProcessExecuteService.initialize(true, textAreaConsole.getText(), this::onRunActionCompleteCallback);
         } else {
             ActionProcessExecuteService.stop();
+            JnaKeyHookService.stop();
 
             Platform.runLater(() -> {
                 onRunActionButton.setText("Run");
@@ -346,7 +347,6 @@ public class AppController {
                 onRunActionButton.getStyleClass().add(GUI_BUTTON_GREEN);
                 onRunActionButton.setDisable(true);
             });
-            initializeRunExecute = false;
         }
     }
 
