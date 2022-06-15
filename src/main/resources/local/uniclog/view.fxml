@@ -46,12 +46,12 @@
                 </ChoiceBox>
                 <TextField fx:id="setMouseActionCountTextField" layoutX="6.0" layoutY="59.0" prefHeight="25.0"
                            prefWidth="126.0" promptText="count" text="1"/>
-                <TextField fx:id="setMouseActionPeriodTextField" layoutX="6.0" layoutY="106.0" prefHeight="25.0"
+                <TextField fx:id="setMouseActionDelayTimeTextField" layoutX="6.0" layoutY="106.0" prefHeight="25.0"
                            prefWidth="126.0" promptText="wait"/>
                 <TextField fx:id="setMouseActionSleepAfterTextField" layoutX="5.0" layoutY="153.0" prefHeight="25.0"
                            prefWidth="126.0" promptText="sleepAfter"/>
                 <Label layoutX="7.0" layoutY="39.0" text="Count"/>
-                <Label layoutX="7.0" layoutY="86.0" text="Period"/>
+                <Label layoutX="7.0" layoutY="86.0" text="Delay Time"/>
                 <Label layoutX="7.0" layoutY="133.0" text="Sleep After"/>
             </children>
         </Pane>

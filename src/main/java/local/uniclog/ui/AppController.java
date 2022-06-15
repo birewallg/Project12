@@ -58,7 +58,7 @@ public class AppController {
     @FXML
     private TextField setMouseActionCountTextField;
     @FXML
-    private TextField setMouseActionPeriodTextField;
+    private TextField setMouseActionDelayTimeTextField;
     @FXML
     private TextField setMouseActionSleepAfterTextField;
     @FXML
@@ -191,7 +191,7 @@ public class AppController {
                 .action(setMouseActionChoiceBox.getValue())
                 .point(MouseServiceWrapper.getMousePointer())
                 .count(DataUtils.getInteger(setMouseActionCountTextField.getText(), 0))
-                .period(DataUtils.getLong(setMouseActionPeriodTextField.getText(), 0L))
+                .period(DataUtils.getLong(setMouseActionDelayTimeTextField.getText(), 0L))
                 .sleepAfter(DataUtils.getLong(setMouseActionSleepAfterTextField.getText(), 0L))
                 .build();
         setTextToConsole(action);
