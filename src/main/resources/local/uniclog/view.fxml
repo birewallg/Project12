@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import java.lang.String?>
-<AnchorPane prefHeight="389.0" prefWidth="761.0" stylesheets="@style/css.css" xmlns="http://javafx.com/javafx/16"
+<AnchorPane prefHeight="389.0" prefWidth="761.0" stylesheets="@style/css.css" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="local.uniclog.ui.AppController">
     <children>
         <ToggleButton fx:id="exit" layoutX="421.0" mnemonicParsing="false" onAction="#onExit" prefHeight="25.0"
@@ -29,11 +29,11 @@
         <Label layoutX="24.0" layoutY="29.0" prefHeight="17.0" prefWidth="97.0" text="Context"/>
         <ChoiceBox fx:id="setActionChoiceBox" layoutX="619.0" layoutY="75.0" prefHeight="25.0" prefWidth="126.0">
         </ChoiceBox>
-        <Pane fx:id="setMousePane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0" visible="false">
+        <Pane fx:id="setMousePane" layoutX="616.0" layoutY="128.0" prefHeight="257.0" prefWidth="135.0" visible="false">
             <children>
-                <Button fx:id="setMouseActionReaderButton" layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
+                <Button fx:id="setMouseActionReaderButton" layoutX="5.0" layoutY="224.0" mnemonicParsing="false"
                         onAction="#setMouseActionReaderAction" prefHeight="25.0" prefWidth="126.0"
-                        styleClass="gui-button-green" text="Start Action Read"/>
+                        styleClass="gui-button-green" text="Scan Action (Ctrl)"/>
                 <ChoiceBox fx:id="setMouseActionChoiceBox" layoutX="5.0" layoutY="8.0" prefHeight="25.0"
                            prefWidth="126.0">
                     <items>
@@ -44,58 +44,72 @@
                         </FXCollections>
                     </items>
                 </ChoiceBox>
-                <TextField fx:id="setMouseActionCountTextField" layoutX="6.0" layoutY="59.0" prefHeight="25.0"
+                <TextField fx:id="setMouseActionCountTextField" layoutX="6.0" layoutY="52.0" prefHeight="25.0"
                            prefWidth="126.0" promptText="count" text="1"/>
-                <TextField fx:id="setMouseActionDelayTimeTextField" layoutX="6.0" layoutY="106.0" prefHeight="25.0"
+                <TextField fx:id="setMouseActionDelayTimeTextField" layoutX="6.0" layoutY="97.0" prefHeight="25.0"
                            prefWidth="126.0" promptText="wait"/>
-                <TextField fx:id="setMouseActionSleepAfterTextField" layoutX="5.0" layoutY="153.0" prefHeight="25.0"
+                <TextField fx:id="setMouseActionSleepAfterTextField" layoutX="5.0" layoutY="144.0" prefHeight="25.0"
                            prefWidth="126.0" promptText="sleepAfter"/>
-                <Label layoutX="7.0" layoutY="39.0" text="Count"/>
-                <Label layoutX="7.0" layoutY="86.0" text="Delay Time"/>
-                <Label layoutX="7.0" layoutY="133.0" text="Sleep After"/>
+                <Label layoutX="7.0" layoutY="36.0" text="Count"/>
+                <Label layoutX="7.0" layoutY="79.0" text="Delay Time"/>
+                <Label layoutX="7.0" layoutY="125.0" text="Sleep After Click"/>
+                <Button layoutX="5.0" layoutY="192.0" mnemonicParsing="false"
+                        onAction="#setMouseActionNoCoordsButtonAction" prefHeight="25.0" prefWidth="126.0"
+                        styleClass="gui-button-green" text="Add (No Coords)"/>
             </children>
         </Pane>
         <Label layoutX="643.0" layoutY="51.0" prefHeight="17.0" prefWidth="106.0" text="Choice Action"/>
         <Pane fx:id="setSleepPane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0" visible="false">
-            <Label layoutX="7.0" text="Time"/>
-            <TextField fx:id="setSleepActionCountTextField" layoutX="6.0" layoutY="21.0" prefHeight="25.0"
-                       prefWidth="126.0" promptText="count" text="1000"/>
-            <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false" onAction="#setSleepActionReaderAction"
-                    prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green" text="Set Action"/>
+            <children>
+                <Label layoutX="7.0" text="Time"/>
+                <TextField fx:id="setSleepActionCountTextField" layoutX="6.0" layoutY="21.0" prefHeight="25.0"
+                           prefWidth="126.0" promptText="count" text="1000"/>
+                <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false" onAction="#setSleepActionReaderAction"
+                        prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green" text="Set Action"/>
+            </children>
         </Pane>
         <Pane fx:id="setWhilePane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0" visible="false">
-            <Label layoutX="7.0" text="Count"/>
-            <TextField fx:id="setWhileActionCountTextField" layoutX="6.0" layoutY="21.0" prefHeight="25.0"
-                       prefWidth="126.0" promptText="count" text="0"/>
-            <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false" onAction="#setWhileActionReaderAction"
-                    prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green" text="Set Action"/>
+            <children>
+                <Label layoutX="7.0" text="Count"/>
+                <TextField fx:id="setWhileActionCountTextField" layoutX="6.0" layoutY="21.0" prefHeight="25.0"
+                           prefWidth="126.0" promptText="count" text="0"/>
+                <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false" onAction="#setWhileActionReaderAction"
+                        prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green" text="Set Action"/>
+            </children>
         </Pane>
         <Pane fx:id="setEndPane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0" visible="false">
-            <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false" onAction="#setEndActionReaderAction"
-                    prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green" text="Set Action"/>
+            <children>
+                <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false" onAction="#setEndActionReaderAction"
+                        prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green" text="Set Action"/>
+            </children>
         </Pane>
 
         <Pane fx:id="setWhileBreakPane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0"
               visible="false">
-            <Button fx:id="setMouseBrakeActionReaderButton" layoutX="5.0" layoutY="10.0" mnemonicParsing="false"
-                    onAction="#setWhileBreakActionReaderAction" prefHeight="25.0" prefWidth="126.0"
-                    styleClass="gui-button-green" text="Get Color"/>
+            <children>
+                <Button fx:id="setMouseBrakeActionReaderButton" layoutX="5.0" layoutY="10.0" mnemonicParsing="false"
+                        onAction="#setWhileBreakActionReaderAction" prefHeight="25.0" prefWidth="126.0"
+                        styleClass="gui-button-green" text="Get Color"/>
+            </children>
         </Pane>
         <Pane fx:id="setActionKeyPressPane" layoutX="616.0" layoutY="128.0" prefHeight="237.0" prefWidth="135.0"
               visible="false">
-            <Label layoutX="7.0" layoutY="1.0" text="Text"/>
-            <Label layoutX="7.0" layoutY="50.0" text="Sleep After"/>
+            <children>
+                <Label layoutX="7.0" layoutY="1.0" text="Text"/>
+                <Label layoutX="7.0" layoutY="50.0" text="Sleep After"/>
 
-            <TextField fx:id="setActionKeyPressTextField" layoutX="6.0" layoutY="21.0" prefHeight="25.0"
-                       prefWidth="126.0" promptText="text"/>
-            <TextField fx:id="setActionKeyPressSleepAfterTextField" layoutX="6.0" layoutY="66.0" prefHeight="25.0"
-                       prefWidth="126.0" promptText="sleepAfter"/>
-            <Button layoutX="5.0" layoutY="99.0" mnemonicParsing="false" onAction="#setActionKeyPressReaderActionSingle"
-                    prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green" text="Set Key Code"/>
+                <TextField fx:id="setActionKeyPressTextField" layoutX="6.0" layoutY="21.0" prefHeight="25.0"
+                           prefWidth="126.0" promptText="text"/>
+                <TextField fx:id="setActionKeyPressSleepAfterTextField" layoutX="6.0" layoutY="66.0" prefHeight="25.0"
+                           prefWidth="126.0" promptText="sleepAfter"/>
+                <Button layoutX="5.0" layoutY="99.0" mnemonicParsing="false"
+                        onAction="#setActionKeyPressReaderActionSingle" prefHeight="25.0" prefWidth="126.0"
+                        styleClass="gui-button-green" text="Set Key Code"/>
 
-            <Button fx:id="setActionKeyPressReaderButton" layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
-                    onAction="#setActionKeyPressReaderAction" prefHeight="25.0" prefWidth="126.0"
-                    styleClass="gui-button-green" text="Listen Key Code"/>
+                <Button fx:id="setActionKeyPressReaderButton" layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
+                        onAction="#setActionKeyPressReaderAction" prefHeight="25.0" prefWidth="126.0"
+                        styleClass="gui-button-green" text="Listen Key Code"/>
+            </children>
         </Pane>
     </children>
 </AnchorPane>

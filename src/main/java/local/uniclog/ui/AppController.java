@@ -165,13 +165,13 @@ public class AppController {
      */
     public void setMouseActionReaderAction() {
         if (initializeHookListener) {
-            setMouseActionReaderButton.setText("Stop Action Read");
+            setMouseActionReaderButton.setText("Scan Action (Ctrl)");
             setMouseActionReaderButton.getStyleClass().removeAll();
             setMouseActionReaderButton.getStyleClass().add(GUI_BUTTON_RED);
 
             JnaKeyHookService.initialize(initializeHookListener, this::setMouseInfo, 162, false);
         } else {
-            setMouseActionReaderButton.setText("Start Action Read");
+            setMouseActionReaderButton.setText("Scan Action (Ctrl)");
             setMouseActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setMouseActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
 
@@ -190,6 +190,16 @@ public class AppController {
         MouseClick action = MouseClick.builder()
                 .action(setMouseActionChoiceBox.getValue())
                 .point(MouseServiceWrapper.getMousePointer())
+                .count(DataUtils.getInteger(setMouseActionCountTextField.getText(), 0))
+                .period(DataUtils.getLong(setMouseActionDelayTimeTextField.getText(), 0L))
+                .sleepAfter(DataUtils.getLong(setMouseActionSleepAfterTextField.getText(), 0L))
+                .build();
+        setTextToConsole(action);
+    }
+
+    public void setMouseActionNoCoordsButtonAction() {
+        MouseClick action = MouseClick.builder()
+                .action(setMouseActionChoiceBox.getValue())
                 .count(DataUtils.getInteger(setMouseActionCountTextField.getText(), 0))
                 .period(DataUtils.getLong(setMouseActionDelayTimeTextField.getText(), 0L))
                 .sleepAfter(DataUtils.getLong(setMouseActionSleepAfterTextField.getText(), 0L))

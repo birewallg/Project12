@@ -23,7 +23,7 @@ import static local.uniclog.model.MouseButtonType.BUTTON_L;
 @AllArgsConstructor
 public class MouseClick implements ActionsInterface {
     @Builder.Default
-    private Point point = new Point(0, 0);
+    private Point point = null;
     @Builder.Default
     private MouseButtonType action = BUTTON_L;
     @Builder.Default
@@ -54,8 +54,12 @@ public class MouseClick implements ActionsInterface {
 
     private void setFieldValue(String key, String value) {
         switch (key) {
-            case "x" -> setPoint(new Point(DataUtils.getInteger(value, 0), (int) point.getY()));
-            case "y" -> setPoint(new Point((int) point.getX(), DataUtils.getInteger(value, 0)));
+            case "x" -> setPoint(new Point(
+                    DataUtils.getInteger(value, 0),
+                    (Objects.nonNull(point)) ? (int) point.getY() : 0));
+            case "y" -> setPoint(new Point(
+                    (Objects.nonNull(point)) ? (int) point.getX() : 0,
+                    DataUtils.getInteger(value, 0)));
             case "action" -> setAction(MouseButtonType.getType(value));
             case "count" -> setCount(DataUtils.getInteger(value, 0));
             case "wait" -> setPeriod(DataUtils.getLong(value, 0));
@@ -69,7 +73,8 @@ public class MouseClick implements ActionsInterface {
             Integer loopCount = 0;
             while (!loopCount.equals(count)) {
                 Robot robot = getRobot();
-                robot.mouseMove(point.x, point.y);
+                if (Objects.nonNull(point))
+                    robot.mouseMove(point.x, point.y);
                 robot.mousePress(buttonCode);
                 robot.mouseRelease(buttonCode);
                 if (period > 0)
@@ -88,7 +93,8 @@ public class MouseClick implements ActionsInterface {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(format("%s [", getType().name()));
-        sb.append(format("action=%s, x=%d, y=%d", action, point.x, point.y));
+        sb.append(format("action=%s", action));
+        if (Objects.nonNull(point)) sb.append(format(", x=%d, y=%d", point.x, point.y));
         if (count != 1) sb.append(format(", count=%d", count));
         if (period > 0) sb.append(format(", wait=%d", period));
         if (sleepAfter != 0) sb.append(format(", sleepAfter=%d", sleepAfter));
