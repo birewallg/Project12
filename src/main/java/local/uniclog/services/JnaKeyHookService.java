@@ -52,10 +52,10 @@ public class JnaKeyHookService {
     }
 
     private static class JnaKeyHookThread implements Runnable {
-        private WinUser.HHOOK hHook;
         private final Consumer<Integer> actionCallBack;
         private final int keyCode;
         private final boolean stopByHook;
+        private WinUser.HHOOK hHook;
 
         private JnaKeyHookThread(Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
             this.actionCallBack = actionCallBack;
@@ -104,11 +104,7 @@ public class JnaKeyHookService {
 
         private void handleKeyDown(int vkCode) {
             log.debug("Key = {}", vkCode);
-
-            if (keyCode != -1 && vkCode == keyCode) {
-                initCallBack(vkCode);
-            }
-            if (keyCode == -1) {
+            if (keyCode == -1 || vkCode == keyCode) {
                 initCallBack(vkCode);
             }
         }
