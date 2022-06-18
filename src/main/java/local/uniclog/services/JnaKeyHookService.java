@@ -24,6 +24,15 @@ public class JnaKeyHookService {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * Key hook thread initialize
+     *
+     * @param hook           hook state
+     * @param actionCallBack callback
+     * @param keyCode        kode to hook
+     * @param stopByHook     stop or not by hook
+     * @return hook state
+     */
     public static boolean initialize(boolean hook, Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
         if (JnaKeyHookService.hook.get() == hook) {
             return hook;

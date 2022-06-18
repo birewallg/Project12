@@ -25,6 +25,14 @@ public class ActionProcessExecuteService {
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * ActionProcessExecute thread initialize
+     *
+     * @param hook           hook state
+     * @param actionsList    action's list: text commands
+     * @param actionCallBack callback
+     * @return hook state
+     */
     public static boolean initialize(boolean hook, String actionsList, Consumer<Boolean> actionCallBack) {
         if (ActionProcessExecuteService.hook.get() == hook) {
             return hook;
