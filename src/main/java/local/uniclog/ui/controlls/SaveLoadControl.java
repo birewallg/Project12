@@ -3,7 +3,7 @@ package local.uniclog.ui.controlls;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
-import local.uniclog.services.FileServiceWrapper;
+import local.uniclog.services.support.FileServiceWrapper;
 
 import java.io.File;
 
