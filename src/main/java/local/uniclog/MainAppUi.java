@@ -14,9 +14,9 @@ import static javafx.stage.StageStyle.UNDECORATED;
 public class MainAppUi extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view.fxml"));
-        Parent root = loader.load();
-        final Point delta = new Point(0, 0);
+        var loader = new FXMLLoader(getClass().getResource("view.fxml"));
+        var root = (Parent) loader.load();
+        var delta = new Point(0, 0);
         root.setOnMousePressed(mouseEvent -> {
             root.requestFocus();
             delta.setLocation(stage.getX() - mouseEvent.getScreenX(), stage.getY() - mouseEvent.getScreenY());
@@ -25,7 +25,7 @@ public class MainAppUi extends Application {
             stage.setX(mouseEvent.getScreenX() + delta.getX());
             stage.setY(mouseEvent.getScreenY() + delta.getY());
         });
-        Scene scene = new Scene(root);
+        var scene = new Scene(root);
         stage.setOpacity(0.95);
         stage.initStyle(UNDECORATED);
         stage.setTitle("Simple Clicker");
