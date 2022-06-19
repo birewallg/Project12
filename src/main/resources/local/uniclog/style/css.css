@@ -2,6 +2,18 @@
     -fx-background-image: url("background.jpg");
 }
 
+.root-class {
+    -fx-background-image: url("background.jpg");
+}
+
+.pane-style {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+.list-view-style {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
 .text-area-style .content {
     -fx-background-color: linear-gradient(#808e8f, #425a6e);
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 0, 0, 0, 1);

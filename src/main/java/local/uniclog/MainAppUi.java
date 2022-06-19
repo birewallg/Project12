@@ -26,7 +26,7 @@ public class MainAppUi extends Application {
             stage.setY(mouseEvent.getScreenY() + delta.getY());
         });
         var scene = new Scene(root);
-        stage.setOpacity(0.95);
+        stage.setOpacity(0.90);
         stage.initStyle(UNDECORATED);
         stage.setTitle("Simple Clicker");
         // stage.setAlwaysOnTop(true)

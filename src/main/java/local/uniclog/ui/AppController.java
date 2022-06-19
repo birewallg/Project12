@@ -286,6 +286,9 @@ public class AppController {
         );
     }
 
+    /**
+     * Button: Run Script
+     */
     public void onRunAction() {
         onRunActionCompleteByUser(null);
     }
@@ -316,5 +319,12 @@ public class AppController {
             onRunActionButton.setDisable(false);
         });
         ThreadControlService.stopRunExecuteThread();
+    }
+
+    /**
+     * Button: New Macros Script
+     */
+    public void newMacrosButtonAction() {
+
     }
 }
