@@ -32,7 +32,7 @@
         <Pane fx:id="setMousePane" layoutX="616.0" layoutY="128.0" prefHeight="257.0" prefWidth="135.0" visible="false">
             <children>
                 <Button fx:id="setMouseActionReaderButton" layoutX="5.0" layoutY="224.0" mnemonicParsing="false"
-                        onAction="#setMouseActionReaderAction" prefHeight="25.0" prefWidth="126.0"
+                        onAction="#setMouseActionReaderButton" prefHeight="25.0" prefWidth="126.0"
                         styleClass="gui-button-green" text="Scan Action (Ctrl)"/>
                 <ChoiceBox fx:id="setMouseActionChoiceBox" layoutX="5.0" layoutY="8.0" prefHeight="25.0"
                            prefWidth="126.0">
@@ -54,7 +54,7 @@
                 <Label layoutX="7.0" layoutY="79.0" text="Delay Time"/>
                 <Label layoutX="7.0" layoutY="125.0" text="Sleep After Click"/>
                 <Button layoutX="5.0" layoutY="192.0" mnemonicParsing="false"
-                        onAction="#setMouseActionNoCoordsButtonAction" prefHeight="25.0" prefWidth="126.0"
+                        onAction="#setMouseActionNoCoordsButton" prefHeight="25.0" prefWidth="126.0"
                         styleClass="gui-button-green" text="Add (No Coords)"/>
             </children>
         </Pane>

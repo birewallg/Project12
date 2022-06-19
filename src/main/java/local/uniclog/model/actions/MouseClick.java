@@ -72,7 +72,7 @@ public class MouseClick implements ActionsInterface {
         try {
             Integer loopCount = 0;
             while (!loopCount.equals(count)) {
-                Robot robot = getRobot();
+                var robot = getRobot();
                 if (Objects.nonNull(point))
                     robot.mouseMove(point.x, point.y);
                 robot.mousePress(buttonCode);
@@ -91,7 +91,7 @@ public class MouseClick implements ActionsInterface {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.append(format("%s [", getType().name()));
         sb.append(format("action=%s", action));
         if (Objects.nonNull(point)) sb.append(format(", x=%d, y=%d", point.x, point.y));

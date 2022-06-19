@@ -48,7 +48,7 @@ public class ActionKeyPress implements ActionsInterface {
     private void actionPressKey(Integer code) {
         try {
             if (Objects.nonNull(code)) {
-                Robot robot = getRobot();
+                var robot = getRobot();
                 robot.keyPress(code);
                 robot.delay(100);
                 robot.keyRelease(code);
@@ -77,7 +77,7 @@ public class ActionKeyPress implements ActionsInterface {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.append(format("%s [", getType().name()));
         if (!text.isBlank()) sb.append(format("text=%s", text));
         if (Objects.nonNull(keyCode)) {

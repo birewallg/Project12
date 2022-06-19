@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static com.sun.jna.Pointer.nativeValue;
+import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
 
 @Slf4j
 public class JnaKeyHookService {
@@ -21,7 +22,7 @@ public class JnaKeyHookService {
     private static ExecutorService executorService = Executors.newCachedThreadPool();
 
     private JnaKeyHookService() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(TEMPLATE_UTILITY_CLASS);
     }
 
     /**

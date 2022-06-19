@@ -2,6 +2,7 @@ package local.uniclog.model.actions;
 
 import local.uniclog.model.ActionType;
 import local.uniclog.model.ActionsInterface;
+import local.uniclog.services.MouseServiceWrapper;
 import local.uniclog.utils.DataUtils;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class ActionWhileBrakeByColor implements ActionsInterface {
      */
     @SneakyThrows
     public boolean checkColorChange() {
-        return equal != getRobot().getPixelColor(point.x, point.y).equals(color);
+        return equal != MouseServiceWrapper.getPixelColor(point.x, point.y).equals(color);
     }
 
     @Override

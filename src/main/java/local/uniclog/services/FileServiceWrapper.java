@@ -6,11 +6,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Scanner;
 
+import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
+
 @Slf4j
 public class FileServiceWrapper {
 
     private FileServiceWrapper() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(TEMPLATE_UTILITY_CLASS);
     }
 
     public static void write(String object, String path) {
