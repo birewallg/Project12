@@ -5,10 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import local.uniclog.model.ActionType;
-import local.uniclog.model.ActionsInterface;
-import local.uniclog.model.MouseButtonType;
-import local.uniclog.model.actions.*;
+import local.uniclog.model.actions.ActionType;
+import local.uniclog.model.actions.ActionsInterface;
+import local.uniclog.model.actions.MouseButtonType;
+import local.uniclog.model.actions.impl.*;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.services.support.MouseServiceWrapper;
 import local.uniclog.ui.controlls.SaveLoadControl;
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-import static local.uniclog.model.MouseButtonType.BUTTON_L;
+import static local.uniclog.model.actions.MouseButtonType.BUTTON_L;
 import static local.uniclog.utils.ConfigConstants.GUI_BUTTON_GREEN;
 import static local.uniclog.utils.ConfigConstants.GUI_BUTTON_RED;
 

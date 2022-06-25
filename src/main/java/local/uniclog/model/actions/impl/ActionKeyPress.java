@@ -1,7 +1,7 @@
-package local.uniclog.model.actions;
+package local.uniclog.model.actions.impl;
 
-import local.uniclog.model.ActionType;
-import local.uniclog.model.ActionsInterface;
+import local.uniclog.model.actions.ActionType;
+import local.uniclog.model.actions.ActionsInterface;
 import local.uniclog.utils.DataUtils;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;

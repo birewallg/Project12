@@ -1,11 +1,11 @@
 package local.uniclog.services;
 
-import local.uniclog.model.ActionContainer;
-import local.uniclog.model.ActionsInterface;
-import local.uniclog.model.WhileModel;
-import local.uniclog.model.actions.ActionEnd;
-import local.uniclog.model.actions.ActionWhile;
-import local.uniclog.model.actions.ActionWhileBrakeByColor;
+import local.uniclog.model.actions.ActionContainer;
+import local.uniclog.model.actions.ActionsInterface;
+import local.uniclog.model.actions.WhileModel;
+import local.uniclog.model.actions.impl.ActionEnd;
+import local.uniclog.model.actions.impl.ActionWhile;
+import local.uniclog.model.actions.impl.ActionWhileBrakeByColor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;

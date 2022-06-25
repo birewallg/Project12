@@ -1,7 +1,7 @@
-package local.uniclog.model.actions;
+package local.uniclog.model.actions.impl;
 
-import local.uniclog.model.ActionType;
-import local.uniclog.model.ActionsInterface;
+import local.uniclog.model.actions.ActionType;
+import local.uniclog.model.actions.ActionsInterface;
 import local.uniclog.utils.DataUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 
@@ -19,13 +20,14 @@ import static java.lang.String.format;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActionWhile implements ActionsInterface {
+public class Sleep implements ActionsInterface {
     @Builder.Default
-    private Integer count = 0;
+    private Long time = 0L;
 
     @Override
     public void execute(String... args) throws InterruptedException {
         log.debug("{}", this);
+        TimeUnit.MILLISECONDS.sleep(time);
     }
 
     @Override
@@ -36,8 +38,8 @@ public class ActionWhile implements ActionsInterface {
     }
 
     private void setFieldValue(String key, String value) {
-        if ("count".equals(key)) {
-            setCount(DataUtils.getInteger(value, 0));
+        if ("time".equals(key)) {
+            setTime(DataUtils.getLong(value, 0));
         } else {
             log.debug("Field: {}, not set: {}", key, value);
         }
@@ -45,11 +47,11 @@ public class ActionWhile implements ActionsInterface {
 
     @Override
     public String toString() {
-        return format("%s [count=%d]", getType().name(), count);
+        return format("%s [time=%s]", getType().name(), time);
     }
 
     @Override
     public ActionType getType() {
-        return ActionType.WHILE;
+        return ActionType.SLEEP;
     }
 }
