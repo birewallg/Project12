@@ -1,9 +1,9 @@
 package local.uniclog.services.support;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.Scanner;
 
 import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
@@ -33,6 +33,22 @@ public class FileServiceWrapper {
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
+        }
+    }
+
+    @SneakyThrows({FileNotFoundException.class, IOException.class})
+    public static <T> void saveObject(String path, T object) {
+        try (var fos = new FileOutputStream(path);
+             var oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(object);
+        }
+    }
+
+    @SneakyThrows({FileNotFoundException.class, IOException.class, ClassNotFoundException.class})
+    public static <T> T loadObject(String path, Class<T> objectType) {
+        try (var fis = new FileInputStream(path);
+             var ois = new ObjectInputStream(fis)) {
+            return objectType.cast(ois.readObject());
         }
     }
 }
