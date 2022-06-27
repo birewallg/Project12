@@ -54,23 +54,11 @@ public class FileServiceWrapper {
         }
     }
 
-    @SneakyThrows(IOException.class)
     public static void saveJson(String path, Object object, Type type) {
-        try (var fw = new FileWriter(path)) {
-            fw.write(new Gson().toJson(object, type));
-            fw.flush();
-        }
+        write(new Gson().toJson(object, type), path);
     }
 
-    @SneakyThrows(IOException.class)
     public static <T> T loadJson(String path, Type objectType) {
-        try (var fr = new FileReader(path)) {
-            int c;
-            var stringBuilder = new StringBuilder();
-            while ((c = fr.read()) != -1) {
-                stringBuilder.append((char) c);
-            }
-            return new Gson().fromJson(stringBuilder.toString(), objectType);
-        }
+        return new Gson().fromJson(read(path), objectType);
     }
 }
