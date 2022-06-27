@@ -8,7 +8,9 @@ module local.uniclog {
     requires java.desktop;
     requires com.sun.jna.platform;
     requires com.sun.jna;
+    requires com.google.gson;
 
+    opens local.uniclog.services.support to com.google.gson;
     opens local.uniclog.ui to javafx.fxml;
     exports local.uniclog;
 }
