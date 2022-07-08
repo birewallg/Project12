@@ -1,8 +1,8 @@
-package local.uniclog.model.actions;
+package local.uniclog.model.actions.impl;
 
-import local.uniclog.model.ActionType;
-import local.uniclog.model.ActionsInterface;
-import local.uniclog.model.MouseButtonType;
+import local.uniclog.model.actions.ActionType;
+import local.uniclog.model.actions.ActionsInterface;
+import local.uniclog.model.actions.MouseButtonType;
 import local.uniclog.utils.DataUtils;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.awt.event.InputEvent.*;
 import static java.lang.String.format;
-import static local.uniclog.model.MouseButtonType.BUTTON_L;
+import static local.uniclog.model.actions.MouseButtonType.BUTTON_L;
 
 @Slf4j
 @Data
@@ -72,7 +72,7 @@ public class MouseClick implements ActionsInterface {
         try {
             Integer loopCount = 0;
             while (!loopCount.equals(count)) {
-                Robot robot = getRobot();
+                var robot = getRobot();
                 if (Objects.nonNull(point))
                     robot.mouseMove(point.x, point.y);
                 robot.mousePress(buttonCode);
@@ -91,7 +91,7 @@ public class MouseClick implements ActionsInterface {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.append(format("%s [", getType().name()));
         sb.append(format("action=%s", action));
         if (Objects.nonNull(point)) sb.append(format(", x=%d, y=%d", point.x, point.y));

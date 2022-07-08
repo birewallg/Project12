@@ -1,8 +1,10 @@
 package local.uniclog.utils;
 
+import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
+
 public class DataUtils {
     private DataUtils() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(TEMPLATE_UTILITY_CLASS);
     }
 
     /**

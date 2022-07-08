@@ -1,4 +1,4 @@
-package local.uniclog.model;
+package local.uniclog.model.actions;
 
 import lombok.Data;
 

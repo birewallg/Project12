@@ -1,11 +1,11 @@
 package local.uniclog.services;
 
-import local.uniclog.model.ActionContainer;
-import local.uniclog.model.ActionsInterface;
-import local.uniclog.model.WhileModel;
-import local.uniclog.model.actions.ActionEnd;
-import local.uniclog.model.actions.ActionWhile;
-import local.uniclog.model.actions.ActionWhileBrakeByColor;
+import local.uniclog.model.actions.ActionContainer;
+import local.uniclog.model.actions.ActionsInterface;
+import local.uniclog.model.actions.WhileModel;
+import local.uniclog.model.actions.impl.ActionEnd;
+import local.uniclog.model.actions.impl.ActionWhile;
+import local.uniclog.model.actions.impl.ActionWhileBrakeByColor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static java.util.Arrays.stream;
+import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
 
 @Slf4j
 public class ActionProcessExecuteService {
@@ -22,9 +23,17 @@ public class ActionProcessExecuteService {
     private static ExecutorService executorService = Executors.newCachedThreadPool();
 
     private ActionProcessExecuteService() {
-        throw new IllegalStateException("Utility class");
+        throw new IllegalStateException(TEMPLATE_UTILITY_CLASS);
     }
 
+    /**
+     * ActionProcessExecute thread initialize
+     *
+     * @param hook           hook state
+     * @param actionsList    action's list: text commands
+     * @param actionCallBack callback
+     * @return hook state
+     */
     public static boolean initialize(boolean hook, String actionsList, Consumer<Boolean> actionCallBack) {
         if (ActionProcessExecuteService.hook.get() == hook) {
             return hook;
@@ -69,15 +78,15 @@ public class ActionProcessExecuteService {
         @Override
         public void run() {
             log.debug("ActionProcessExecuteThread start");
-            ActionContainer container = service.getContainer();
-            int size = container.getData().size();
-            int index = 0;
+            var container = service.getContainer();
+            var size = container.getData().size();
+            var index = 0;
             try {
                 while (index < size) {
                     if (!ActionProcessExecuteService.hook.get()) {
                         break;
                     }
-                    ActionsInterface action = container.getAction(index);
+                    var action = container.getAction(index);
                     action.execute();
 
                     index = correctIndexByAction(index, container, action);
@@ -92,7 +101,7 @@ public class ActionProcessExecuteService {
 
         private void stop() {
             actionCallBack.accept(true);
-            hook.set(false);
+            ActionProcessExecuteService.hook.set(false);
             log.debug("ActionProcessExecuteThread stop");
         }
 
@@ -131,7 +140,7 @@ public class ActionProcessExecuteService {
         }
 
         private Integer correctByActionEnd(int index, ActionContainer container) {
-            WhileModel whileModel = container.whileModelStackPeekFirst();
+            var whileModel = container.whileModelStackPeekFirst();
             if (Objects.nonNull(whileModel) && whileModel.getCount() > 0) {
                 index = whileModel.setIteration();
             } else {

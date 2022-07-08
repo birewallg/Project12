@@ -1,9 +1,9 @@
 package local.uniclog.services;
 
-import local.uniclog.model.ActionContainer;
-import local.uniclog.model.ActionType;
-import local.uniclog.model.ActionsInterface;
-import local.uniclog.model.actions.*;
+import local.uniclog.model.actions.ActionContainer;
+import local.uniclog.model.actions.ActionType;
+import local.uniclog.model.actions.ActionsInterface;
+import local.uniclog.model.actions.impl.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,12 +32,12 @@ public class ActionService {
     public void setConfiguration(List<String> actionLines) {
         container.clear();
         actionLines.forEach(line -> {
-                    ActionType type = getActionType(line);
+                    var type = getActionType(line);
                     if (type == ActionType.DEFAULT) {
                         return;
                     }
-                    Map<String, String> map = getActionMap(line);
-                    ActionsInterface action = getAction(type, map);
+                    var map = getActionMap(line);
+                    var action = getAction(type, map);
                     container.add(action);
                 }
         );
@@ -46,7 +46,7 @@ public class ActionService {
     }
 
     private ActionsInterface getAction(ActionType actionType, Map<String, String> map) {
-        ActionsInterface action = switch (actionType) {
+        var action = switch (actionType) {
             case MOUSE_CLICK -> new MouseClick();
             case WHILE_BRAKE_BY_COLOR -> new ActionWhileBrakeByColor();
             case SLEEP -> new Sleep();
@@ -68,7 +68,7 @@ public class ActionService {
 
     private Map<String, String> getActionMap(String line) {
         try {
-            String map = line.substring(line.indexOf('[') + 1, line.indexOf(']'));
+            var map = line.substring(line.indexOf('[') + 1, line.indexOf(']'));
             return Arrays.stream(map.split(","))
                     .map(param -> param.split("="))
                     .collect(toMap(it -> it[0], it -> it[1]));
