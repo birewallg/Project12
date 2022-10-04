@@ -2,11 +2,11 @@ package local.uniclog.model.actions.impl;
 
 import local.uniclog.model.actions.ActionsInterface;
 import local.uniclog.model.actions.types.ActionType;
+import local.uniclog.model.actions.types.EventStateType;
 import local.uniclog.utils.DataUtils;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Map;
 import java.util.Objects;
@@ -26,6 +26,8 @@ public class ActionKeyPress implements ActionsInterface {
     private Integer keyCode = null;
     @Builder.Default
     private Long sleepAfter = 0L;
+    @Builder.Default
+    private EventStateType eventStateType = EventStateType.PRESS;
 
     @SneakyThrows
     @Override
@@ -48,13 +50,14 @@ public class ActionKeyPress implements ActionsInterface {
     private void actionPressKey(Integer code) {
         try {
             if (Objects.nonNull(code)) {
-                var robot = getRobot();
-                robot.keyPress(code);
-                robot.delay(100);
-                robot.keyRelease(code);
-                robot.delay(100);
+                if (eventStateType.equals(EventStateType.DOWN) || eventStateType.equals(EventStateType.PRESS)) {
+                    User32.INSTANCE.keybd_event(code.byteValue(), (byte) 0x00, 0, 0);
+                }
+                if (eventStateType.equals(EventStateType.UP) || eventStateType.equals(EventStateType.PRESS)) {
+                    User32.INSTANCE.keybd_event(code.byteValue(), (byte) 0x00, 0x0002, 0);
+                }
             }
-        } catch (AWTException | IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             log.error(ex.getMessage());
         }
     }
@@ -71,6 +74,7 @@ public class ActionKeyPress implements ActionsInterface {
             case "text" -> setText(value);
             case "keyCode" -> setKeyCode(DataUtils.getInteger(value, 0));
             case "sleepAfter" -> setSleepAfter(DataUtils.getLong(value, 0));
+            case "state" -> setEventStateType(EventStateType.getType(value));
             default -> log.debug("Field: {}, not set: {}", key, value);
         }
     }
@@ -85,6 +89,7 @@ public class ActionKeyPress implements ActionsInterface {
             sb.append(format("keyCode=%s", keyCode));
         }
         if (sleepAfter != 0) sb.append(format(", sleepAfter=%d", sleepAfter));
+        sb.append(format(", state=%s", eventStateType));
         sb.append("]");
         return sb.toString();
     }
