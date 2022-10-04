@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import local.uniclog.model.actions.ActionsInterface;
 import local.uniclog.model.actions.impl.*;
 import local.uniclog.model.actions.types.ActionType;
+import local.uniclog.model.actions.types.EventStateType;
 import local.uniclog.model.actions.types.MouseButtonType;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.services.support.MouseServiceWrapper;
@@ -17,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
-import static local.uniclog.model.actions.types.MouseButtonType.BUTTON_L;
 import static local.uniclog.utils.ConfigConstants.GUI_BUTTON_GREEN;
 import static local.uniclog.utils.ConfigConstants.GUI_BUTTON_RED;
 
@@ -31,6 +31,8 @@ public class AppController {
     private TextField setActionKeyPressTextField;
     @FXML
     private Pane setActionKeyPressPane;
+    @FXML
+    private ChoiceBox<EventStateType> setActionKeyPressStateChoiceBox;
     @FXML
     private Button setMouseBrakeActionReaderButton;
     //@FXML
@@ -92,7 +94,9 @@ public class AppController {
 
         setActionChoiceBox.getItems().setAll(ActionType.values());
         setMouseActionChoiceBox.getItems().setAll(MouseButtonType.values());
-        setMouseActionChoiceBox.setValue(BUTTON_L);
+        setMouseActionChoiceBox.setValue(MouseButtonType.BUTTON_L);
+        setActionKeyPressStateChoiceBox.getItems().setAll(EventStateType.values());
+        setActionKeyPressStateChoiceBox.setValue(EventStateType.PRESS);
 
         setActionChoiceBox.getSelectionModel()
                 .selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -134,7 +138,7 @@ public class AppController {
     public void setMouseActionReaderButton() {
         if (ThreadControlService.getHookListenerState()) {
             setMouseActionReaderButton.setText("Scan Action (Ctrl)");
-            setMouseActionReaderButton.getStyleClass().removeAll();
+            setMouseActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_GREEN);
             setMouseActionReaderButton.getStyleClass().add(GUI_BUTTON_RED);
             ThreadControlService.startHookListenerThread(this::setMouseInfo, 162, false);
         } else {
@@ -194,12 +198,12 @@ public class AppController {
     public void setWhileBreakActionReaderAction() {
         if (ThreadControlService.getHookListenerState()) {
             setMouseBrakeActionReaderButton.setText("Stop");
-            setMouseBrakeActionReaderButton.getStyleClass().removeAll();
+            setMouseBrakeActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_GREEN);
             setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_RED);
             ThreadControlService.startHookListenerThread(this::setMouseColorInfo, 162, true);
         } else {
             setMouseBrakeActionReaderButton.setText("Get Color");
-            setMouseBrakeActionReaderButton.getStyleClass().removeAll();
+            setMouseBrakeActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
             ThreadControlService.stopHookListenerThread();
         }
@@ -219,7 +223,7 @@ public class AppController {
 
         Platform.runLater(() -> {
             setMouseBrakeActionReaderButton.setText("Get Color");
-            setMouseBrakeActionReaderButton.getStyleClass().removeAll();
+            setMouseBrakeActionReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setMouseBrakeActionReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
         });
         ThreadControlService.stopHookListenerThread();
@@ -240,12 +244,12 @@ public class AppController {
     public void setActionKeyPressReaderAction() {
         if (ThreadControlService.getHookListenerState()) {
             setActionKeyPressReaderButton.setText("Stop");
-            setActionKeyPressReaderButton.getStyleClass().removeAll();
+            setActionKeyPressReaderButton.getStyleClass().removeAll(GUI_BUTTON_GREEN);
             setActionKeyPressReaderButton.getStyleClass().add(GUI_BUTTON_RED);
             ThreadControlService.startHookListenerThread(this::setKeyPressInfo, -1, true);
         } else {
             setActionKeyPressReaderButton.setText("Listen Key Code");
-            setActionKeyPressReaderButton.getStyleClass().removeAll();
+            setActionKeyPressReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setActionKeyPressReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
             ThreadControlService.stopHookListenerThread();
         }
@@ -261,12 +265,13 @@ public class AppController {
                 .keyCode(keyCode)
                 .text(setActionKeyPressTextField.getText())
                 .sleepAfter(DataUtils.getLong(setActionKeyPressSleepAfterTextField.getText(), 0))
+                .eventStateType(setActionKeyPressStateChoiceBox.getValue())
                 .build();
         addActionTextToConsoleArea(action);
 
         Platform.runLater(() -> {
             setActionKeyPressReaderButton.setText("Listen Key Code");
-            setActionKeyPressReaderButton.getStyleClass().removeAll();
+            setActionKeyPressReaderButton.getStyleClass().removeAll(GUI_BUTTON_RED);
             setActionKeyPressReaderButton.getStyleClass().add(GUI_BUTTON_GREEN);
         });
         ThreadControlService.stopHookListenerThread();

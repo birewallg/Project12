@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<?import java.lang.String?>
+<?import java.lang.*?>
 <AnchorPane prefHeight="417.0" prefWidth="1105.0" styleClass="root-class" stylesheets="@style/css.css"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="local.uniclog.ui.AppController">
     <children>
         <ToggleButton fx:id="exit" layoutX="421.0" mnemonicParsing="false" onAction="#onExit" prefHeight="25.0"
@@ -82,16 +82,27 @@
                         </Pane>
                         <Pane fx:id="setActionKeyPressPane" prefHeight="237.0" prefWidth="135.0" visible="false">
                             <children>
-                                <Label layoutX="7.0" layoutY="1.0" text="Text"/>
-                                <Label layoutX="7.0" layoutY="50.0" text="Sleep After"/>
+                                <Label layoutX="7.0" layoutY="-4.0" text="State"/>
+                                <Label layoutX="7.0" layoutY="61.0" text="Text"/>
+                                <Label layoutX="7.0" layoutY="110.0" text="Sleep After"/>
 
-                                <TextField fx:id="setActionKeyPressTextField" layoutX="6.0" layoutY="21.0"
+                                <TextField fx:id="setActionKeyPressTextField" layoutX="6.0" layoutY="81.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="text"/>
-                                <TextField fx:id="setActionKeyPressSleepAfterTextField" layoutX="6.0" layoutY="66.0"
+                                <TextField fx:id="setActionKeyPressSleepAfterTextField" layoutX="6.0" layoutY="126.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="sleepAfter"/>
-                                <Button layoutX="5.0" layoutY="99.0" mnemonicParsing="false"
+                                <Button layoutX="5.0" layoutY="159.0" mnemonicParsing="false"
                                         onAction="#setActionKeyPressReaderActionSingle" prefHeight="25.0"
                                         prefWidth="126.0" styleClass="gui-button-green" text="Set Key Code"/>
+                                <ChoiceBox fx:id="setActionKeyPressStateChoiceBox" layoutX="5.0" layoutY="12.0"
+                                           prefHeight="25.0" prefWidth="126.0" value="PRESS">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="PRESS"/>
+                                            <String fx:value="UP"/>
+                                            <String fx:value="DOWN"/>
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
 
                                 <Button fx:id="setActionKeyPressReaderButton" layoutX="5.0" layoutY="193.0"
                                         mnemonicParsing="false" onAction="#setActionKeyPressReaderAction"
