@@ -1,7 +1,7 @@
 package local.uniclog.model.actions.impl;
 
-import local.uniclog.model.actions.ActionType;
 import local.uniclog.model.actions.ActionsInterface;
+import local.uniclog.model.actions.types.ActionType;
 import local.uniclog.utils.DataUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

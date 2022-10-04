@@ -1,9 +1,11 @@
 package local.uniclog.model.actions;
 
+import local.uniclog.model.actions.types.ActionType;
+
 import java.awt.*;
 import java.util.Map;
 
-import static local.uniclog.model.actions.ActionType.DEFAULT;
+import static local.uniclog.model.actions.types.ActionType.DEFAULT;
 
 public interface ActionsInterface {
 
