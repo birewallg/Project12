@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 import static com.sun.jna.Pointer.nativeValue;
 import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
@@ -34,7 +34,7 @@ public class JnaKeyHookService {
      * @param stopByHook     stop or not by hook
      * @return hook state
      */
-    public static boolean initialize(boolean hook, Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
+    public static boolean initialize(boolean hook, IntConsumer actionCallBack, int keyCode, boolean stopByHook) {
         if (JnaKeyHookService.hook.get() == hook) {
             return hook;
         }
@@ -62,12 +62,12 @@ public class JnaKeyHookService {
     }
 
     private static class JnaKeyHookThread implements Runnable {
-        private final Consumer<Integer> actionCallBack;
+        private final IntConsumer actionCallBack;
         private final int keyCode;
         private final boolean stopByHook;
         private WinUser.HHOOK hHook;
 
-        private JnaKeyHookThread(Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
+        private JnaKeyHookThread(IntConsumer actionCallBack, int keyCode, boolean stopByHook) {
             this.actionCallBack = actionCallBack;
             this.keyCode = keyCode;
             this.stopByHook = stopByHook;

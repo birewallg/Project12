@@ -68,8 +68,7 @@ public class AppController {
     @FXML
     private ChoiceBox<ActionType> setActionChoiceBox;
 
-    // Main Controls Block ============================================
-
+    // region Main Controls Block
     /**
      * Button: Exit
      */
@@ -85,7 +84,7 @@ public class AppController {
         var stage = (Stage) exit.getScene().getWindow();
         stage.setIconified(true);
     }
-    // ================================================================
+    // endregion
 
     public void initialize() {
         log.debug("App Controller init");
@@ -114,6 +113,7 @@ public class AppController {
                 });
     }
 
+    // region Save / Load Configuration
     /**
      * Button: Load configuration
      */
@@ -127,6 +127,7 @@ public class AppController {
     public void onSave() {
         SaveLoadControl.onSave(textAreaConsole);
     }
+    // endregion Save / Load Configuration
 
     /**
      * Button: Read Mouse Coordinates Add it to text console

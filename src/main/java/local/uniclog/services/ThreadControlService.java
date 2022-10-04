@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
 
@@ -20,7 +21,7 @@ public class ThreadControlService {
         return !ThreadControlService.initializeRunExecute.get();
     }
 
-    public static void startRunExecuteThread(String actionsList, Consumer<Boolean> actionCallBack, Consumer<Integer> jnaKeyHookCallback) {
+    public static void startRunExecuteThread(String actionsList, Consumer<Boolean> actionCallBack, IntConsumer jnaKeyHookCallback) {
         ThreadControlService.initializeRunExecute.set(true);
 
         // hook ctrl to stop
@@ -40,7 +41,7 @@ public class ThreadControlService {
         return !ThreadControlService.initializeHookListener.get();
     }
 
-    public static void startHookListenerThread(Consumer<Integer> actionCallBack, int keyCode, boolean stopByHook) {
+    public static void startHookListenerThread(IntConsumer actionCallBack, int keyCode, boolean stopByHook) {
         ThreadControlService.initializeHookListener.set(true);
         JnaKeyHookService.initialize(true, actionCallBack, keyCode, stopByHook);
     }
