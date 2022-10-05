@@ -36,4 +36,19 @@ public class DataUtils {
             return defaultValue;
         }
     }
+
+    /**
+     * Get Boolean value from String
+     *
+     * @param value        string value
+     * @param defaultValue default
+     * @return Long
+     */
+    public static Boolean getBoolean(String value, boolean defaultValue) {
+        try {
+            return Boolean.parseBoolean(value);
+        } catch (NumberFormatException ignore) {
+            return defaultValue;
+        }
+    }
 }
