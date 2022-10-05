@@ -107,7 +107,8 @@ public class ActionProcessExecuteService {
 
         private Integer correctIndexByAction(int index, ActionContainer container, ActionsInterface action) {
             if (action instanceof ActionWhile it && it.getCount() > 0) {
-                container.whileModelStackPush(new WhileModel(index, it.getCount() - 1));
+                // container.whileModelStackPush(new WhileModel(index, it.getCount() - 1))
+                container.whileModelStackPush(new WhileModel(index, it));
 
             } else if (action instanceof ActionWhileBrakeByColor it) {
                 index = correctByActionWhileBrakeByColor(index, container, it);
