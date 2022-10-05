@@ -66,6 +66,8 @@
                         <Pane fx:id="setWhilePane" prefHeight="237.0" prefWidth="135.0" visible="false">
                             <children>
                                 <Label layoutX="7.0" text="Count"/>
+                                <CheckBox fx:id="setWhileActionCountCheckBox" layoutX="7.0" layoutY="54.0"
+                                          mnemonicParsing="false" text="Eternity Loop"/>
                                 <TextField fx:id="setWhileActionCountTextField" layoutX="6.0" layoutY="21.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="count" text="0"/>
                                 <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false"

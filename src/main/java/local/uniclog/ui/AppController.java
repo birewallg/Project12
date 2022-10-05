@@ -45,6 +45,8 @@ public class AppController {
     @FXML
     private TextField setWhileActionCountTextField;
     @FXML
+    private CheckBox setWhileActionCountCheckBox;
+    @FXML
     private Pane setWhilePane;
     @FXML
     private TextField setSleepActionCountTextField;
@@ -192,6 +194,7 @@ public class AppController {
     public void setWhileActionReaderAction() {
         var action = ActionWhile.builder()
                 .count(DataUtils.getInteger(setWhileActionCountTextField.getText(), 0))
+                .eternity(setWhileActionCountCheckBox.isSelected())
                 .build();
         addActionTextToConsoleArea(action);
     }
