@@ -14,7 +14,7 @@
                       AnchorPane.topAnchor="0.0"/>
         <ToggleButton layoutX="389.0" mnemonicParsing="false" onAction="#onMin" prefHeight="24.0" prefWidth="32.0"
                       styleClass="gui-min-button" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="0.0"/>
-        <Label layoutX="24.0" layoutY="4.0" text="Uniclog Software" AnchorPane.leftAnchor="24.0"
+        <Label fx:id="topLogoLabel" layoutX="24.0" layoutY="4.0" text="Uniclog Software" AnchorPane.leftAnchor="24.0"
                AnchorPane.topAnchor="4.0"/>
         <AnchorPane layoutX="869.0" layoutY="36.0" prefHeight="367.0" prefWidth="227.0" styleClass="pane-style"
                     AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="36.0">

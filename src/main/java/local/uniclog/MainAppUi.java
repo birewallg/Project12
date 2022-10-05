@@ -31,7 +31,7 @@ public class MainAppUi extends Application {
 
         stage.setOpacity(0.90);
         stage.initStyle(UNDECORATED);
-        stage.setTitle("Simple Clicker");
+        stage.setTitle("Uniclog Software");
         // stage.setAlwaysOnTop(true)
         stage.toFront();
 

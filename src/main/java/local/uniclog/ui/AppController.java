@@ -13,6 +13,7 @@ import local.uniclog.model.actions.types.MouseButtonType;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.services.support.MouseServiceWrapper;
 import local.uniclog.ui.controlls.SaveLoadControl;
+import local.uniclog.utils.ConfigConstants;
 import local.uniclog.utils.DataUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,6 +69,8 @@ public class AppController {
     @FXML
     private ToggleButton exit;
     @FXML
+    private Label topLogoLabel;
+    @FXML
     private ChoiceBox<ActionType> setActionChoiceBox;
 
     // Main Controls Block ============================================
@@ -91,6 +94,7 @@ public class AppController {
 
     public void initialize() {
         log.debug("App Controller init");
+        topLogoLabel.setText(ConfigConstants.TOP_LOGO_TEXT);
 
         setActionChoiceBox.getItems().setAll(ActionType.values());
         setMouseActionChoiceBox.getItems().setAll(MouseButtonType.values());
