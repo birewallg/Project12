@@ -4,6 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import local.uniclog.services.ThreadControlService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,27 @@ public class SceneControlService {
     private final Point deltaMove = new Point(0, 0);
     private final Point deltaResize = new Point(0, 0);
     private int borderSizePixel = 4;
+
+    //region control button
+
+    /**
+     * Exit button, close app
+     */
+    public static void onExit() {
+        ThreadControlService.stopRunExecuteThread();
+        System.exit(0);
+    }
+
+    /**
+     * Minimize button
+     *
+     * @param stage stage
+     */
+    public static void onMin(Stage stage) {
+        stage.setIconified(true);
+    }
+
+    //endregion
 
     /**
      * Set temp values by mouse pressed

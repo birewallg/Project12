@@ -13,6 +13,7 @@ import local.uniclog.model.actions.types.MouseButtonType;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.services.support.MouseServiceWrapper;
 import local.uniclog.ui.controlls.SaveLoadControl;
+import local.uniclog.ui.controlls.SceneControlService;
 import local.uniclog.utils.ConfigConstants;
 import local.uniclog.utils.DataUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -81,16 +82,14 @@ public class AppController {
      * Button: Exit
      */
     public void onExit() {
-        ThreadControlService.stopRunExecuteThread();
-        System.exit(0);
+        SceneControlService.onExit();
     }
 
     /**
      * Button: Minimize window
      */
     public void onMin() {
-        var stage = (Stage) exit.getScene().getWindow();
-        stage.setIconified(true);
+        SceneControlService.onMin((Stage) exit.getScene().getWindow());
     }
     // ================================================================
 
