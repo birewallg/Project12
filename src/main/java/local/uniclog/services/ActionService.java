@@ -1,6 +1,6 @@
 package local.uniclog.services;
 
-import local.uniclog.model.actions.ActionContainer;
+import local.uniclog.model.ActionContainer;
 import local.uniclog.model.actions.ActionsInterface;
 import local.uniclog.model.actions.impl.*;
 import local.uniclog.model.actions.types.ActionType;

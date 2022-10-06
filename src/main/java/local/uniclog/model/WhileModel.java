@@ -1,4 +1,4 @@
-package local.uniclog.model.actions;
+package local.uniclog.model;
 
 import local.uniclog.model.actions.impl.ActionWhile;
 import lombok.AllArgsConstructor;
