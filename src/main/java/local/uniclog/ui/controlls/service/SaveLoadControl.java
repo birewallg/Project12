@@ -1,4 +1,4 @@
-package local.uniclog.ui.controlls;
+package local.uniclog.ui.controlls.service;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;

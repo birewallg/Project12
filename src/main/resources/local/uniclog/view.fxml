@@ -19,18 +19,18 @@
         <AnchorPane layoutX="869.0" layoutY="36.0" prefHeight="367.0" prefWidth="227.0" styleClass="pane-style"
                     AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="36.0">
             <children>
-                <ChoiceBox fx:id="setActionChoiceBox" layoutX="6.0" layoutY="23.0" prefHeight="25.0" prefWidth="126.0"
+                <ChoiceBox fx:id="actionChoiceBox" layoutX="6.0" layoutY="23.0" prefHeight="25.0" prefWidth="126.0"
                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0">
                 </ChoiceBox>
                 <Label layoutX="6.0" layoutY="6.0" prefHeight="17.0" prefWidth="106.0" text="Choice Action"/>
                 <AnchorPane layoutY="57.0" prefHeight="291.0" prefWidth="227.0">
                     <children>
-                        <AnchorPane fx:id="setMousePane" prefHeight="257.0" prefWidth="227.0" visible="false">
+                        <AnchorPane fx:id="mouseActionPane" prefHeight="257.0" prefWidth="227.0" visible="false">
                             <children>
-                                <Button fx:id="setMouseActionReaderButton" layoutX="5.0" layoutY="224.0"
+                                <Button fx:id="mouseActionReaderButton" layoutX="5.0" layoutY="224.0"
                                         mnemonicParsing="false" onAction="#setMouseActionReaderButton" prefHeight="25.0"
                                         prefWidth="126.0" styleClass="gui-button-green" text="Scan Action (Ctrl)"/>
-                                <ChoiceBox fx:id="setMouseActionChoiceBox" layoutX="5.0" layoutY="8.0" prefHeight="25.0"
+                                <ChoiceBox fx:id="mouseActionChoiceBox" layoutX="5.0" layoutY="8.0" prefHeight="25.0"
                                            prefWidth="126.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
@@ -40,13 +40,13 @@
                                         </FXCollections>
                                     </items>
                                 </ChoiceBox>
-                                <TextField fx:id="setMouseActionCountTextField" layoutX="6.0" layoutY="52.0"
+                                <TextField fx:id="mouseActionCountTextField" layoutX="6.0" layoutY="52.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="count" text="1"
                                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0"/>
-                                <TextField fx:id="setMouseActionDelayTimeTextField" layoutX="6.0" layoutY="97.0"
+                                <TextField fx:id="mouseActionDelayTimeTextField" layoutX="6.0" layoutY="97.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="wait"
                                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0"/>
-                                <TextField fx:id="setMouseActionSleepAfterTextField" layoutX="5.0" layoutY="144.0"
+                                <TextField fx:id="mouseActionSleepAfterTextField" layoutX="5.0" layoutY="144.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="sleepAfter"
                                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0"/>
                                 <Label layoutX="7.0" layoutY="36.0" text="Count"/>
@@ -57,10 +57,10 @@
                                         styleClass="gui-button-green" text="Add (No Coords)"/>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="setSleepPane" prefHeight="237.0" prefWidth="227.0" visible="false">
+                        <AnchorPane fx:id="sleepActionPane" prefHeight="237.0" prefWidth="227.0" visible="false">
                             <children>
                                 <Label layoutX="7.0" text="Time"/>
-                                <TextField fx:id="setSleepActionCountTextField" layoutX="6.0" layoutY="21.0"
+                                <TextField fx:id="sleepActionCountTextField" layoutX="6.0" layoutY="21.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="count" text="1000"
                                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0"/>
                                 <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
@@ -68,13 +68,13 @@
                                         styleClass="gui-button-green" text="Set Action"/>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="setWhilePane" prefHeight="237.0" prefWidth="227.0" visible="false">
+                        <AnchorPane fx:id="whileActionPane" prefHeight="237.0" prefWidth="227.0" visible="false">
                             <children>
                                 <Label layoutX="7.0" text="Count"/>
-                                <CheckBox fx:id="setWhileActionCountCheckBox" layoutX="7.0" layoutY="54.0"
+                                <CheckBox fx:id="whileActionCountCheckBox" layoutX="7.0" layoutY="54.0"
                                           mnemonicParsing="false" text="Eternity Loop" AnchorPane.leftAnchor="7.0"
                                           AnchorPane.rightAnchor="7.0"/>
-                                <TextField fx:id="setWhileActionCountTextField" layoutX="6.0" layoutY="21.0"
+                                <TextField fx:id="whileActionCountTextField" layoutX="6.0" layoutY="21.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="count" text="0"
                                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0"/>
                                 <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
@@ -82,29 +82,29 @@
                                         styleClass="gui-button-green" text="Set Action"/>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="setEndPane" prefHeight="237.0" prefWidth="227.0" visible="false">
+                        <AnchorPane fx:id="endActionPane" prefHeight="237.0" prefWidth="227.0" visible="false">
                             <children>
                                 <Button layoutX="5.0" layoutY="193.0" mnemonicParsing="false"
                                         onAction="#setEndActionReaderAction" prefHeight="25.0" prefWidth="126.0"
                                         styleClass="gui-button-green" text="Set Action"/>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="setActionKeyPressPane" prefHeight="237.0" prefWidth="227.0" visible="false">
+                        <AnchorPane fx:id="actionKeyPressPane" prefHeight="237.0" prefWidth="227.0" visible="false">
                             <children>
                                 <Label layoutX="7.0" layoutY="-4.0" text="State"/>
                                 <Label layoutX="7.0" layoutY="61.0" text="Text"/>
                                 <Label layoutX="7.0" layoutY="110.0" text="Sleep After"/>
 
-                                <TextField fx:id="setActionKeyPressTextField" layoutX="6.0" layoutY="81.0"
+                                <TextField fx:id="actionKeyPressTextField" layoutX="6.0" layoutY="81.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="text"
                                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0"/>
-                                <TextField fx:id="setActionKeyPressSleepAfterTextField" layoutX="6.0" layoutY="126.0"
+                                <TextField fx:id="actionKeyPressSleepAfterTextField" layoutX="6.0" layoutY="126.0"
                                            prefHeight="25.0" prefWidth="126.0" promptText="sleepAfter"
                                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0"/>
                                 <Button layoutX="5.0" layoutY="159.0" mnemonicParsing="false"
                                         onAction="#setActionKeyPressReaderActionSingle" prefHeight="25.0"
                                         prefWidth="126.0" styleClass="gui-button-green" text="Set Key Code"/>
-                                <ChoiceBox fx:id="setActionKeyPressStateChoiceBox" layoutX="5.0" layoutY="12.0"
+                                <ChoiceBox fx:id="actionKeyPressStateChoiceBox" layoutX="5.0" layoutY="12.0"
                                            prefHeight="25.0" prefWidth="126.0" value="PRESS" AnchorPane.leftAnchor="7.0"
                                            AnchorPane.rightAnchor="7.0">
                                     <items>
@@ -116,16 +116,16 @@
                                     </items>
                                 </ChoiceBox>
 
-                                <Button fx:id="setActionKeyPressReaderButton" layoutX="5.0" layoutY="193.0"
+                                <Button fx:id="actionKeyPressReaderButton" layoutX="5.0" layoutY="193.0"
                                         mnemonicParsing="false" onAction="#setActionKeyPressReaderAction"
                                         prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green"
                                         text="Listen Key Code"/>
                             </children>
                         </AnchorPane>
 
-                        <AnchorPane fx:id="setWhileBreakPane" prefHeight="237.0" prefWidth="227.0" visible="false">
+                        <AnchorPane fx:id="whileBreakPane" prefHeight="237.0" prefWidth="227.0" visible="false">
                             <children>
-                                <Button fx:id="setMouseBrakeActionReaderButton" layoutX="5.0" layoutY="10.0"
+                                <Button fx:id="mouseBrakeActionReaderButton" layoutX="5.0" layoutY="10.0"
                                         mnemonicParsing="false" onAction="#setWhileBreakActionReaderAction"
                                         prefHeight="25.0" prefWidth="126.0" styleClass="gui-button-green"
                                         text="Get Color"/>
