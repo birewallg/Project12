@@ -21,8 +21,11 @@ public abstract class ControlServiceAbstract {
      * @param action action
      */
     public void addActionTextToConsoleArea(ActionsInterface action) {
-        Platform.runLater(() -> cp.getTextAreaConsole()
-                .setText(String.join("\n", cp.getTextAreaConsole().getText(), action.toString()))
+        Platform.runLater(() -> {
+                    cp.getTextAreaConsole()
+                            .setText(String.join("\n", cp.getTextAreaConsole().getText(), action.toString()));
+                    cp.macrosListRefresh();
+                }
         );
     }
 }

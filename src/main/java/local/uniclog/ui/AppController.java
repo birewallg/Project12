@@ -132,7 +132,6 @@ public class AppController {
     //endregion
 
     public void initialize() {
-        macrosList.setItems(mItems);
         var cp = createControlsPack();
         ControlServiceAbstract.setCp(cp.init());
     }
@@ -234,9 +233,8 @@ public class AppController {
      */
     public void delMacrosButtonAction() {
         var index = macrosList.getSelectionModel().getSelectedIndex();
-        if (index != -1) {
-            mItems.remove(index);
-            macrosList.refresh();
-        }
+        if (index == -1) return;
+        mItems.remove(index);
+        macrosList.refresh();
     }
 }

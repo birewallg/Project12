@@ -90,8 +90,7 @@ public class SaveLoadControl extends ControlServiceAbstract {
         cp.getTextAreaConsole().setText(requireNonNull(item).getText());
         cp.getScriptNameTextField().setText(item.getName());
         if (cp.getMacrosList().getItems().isEmpty()) {
-            cp.getMacrosList().getItems().add(item);
-            cp.getMacrosList().getSelectionModel().selectLast();
+            cp.macrosListAddItem(item);
         } else {
             cp.getMacrosList().getItems()
                     .get(cp.getMacrosList().getSelectionModel().getSelectedIndex())
