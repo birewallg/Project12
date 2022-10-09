@@ -1,6 +1,7 @@
 package local.uniclog.services.support;
 
 import com.google.gson.Gson;
+import local.uniclog.ui.controlls.model.MacrosItem;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,6 +9,8 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.Scanner;
 
+import static java.util.Objects.requireNonNull;
+import static local.uniclog.utils.ConfigConstants.EMPTY;
 import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
 
 @Slf4j
@@ -17,25 +20,36 @@ public class FileServiceWrapper {
         throw new IllegalStateException(TEMPLATE_UTILITY_CLASS);
     }
 
-    public static void write(String object, String path) {
+    public static MacrosItem write(String object, String path) {
         try (var writer = new FileWriter(path)) {
             writer.write(object);
+            return new MacrosItem(getFileName(path), object, path);
         } catch (Exception e) {
             log.error(e.getMessage());
+            return null;
         }
     }
 
-    public static String read(String path) {
+    public static MacrosItem read(String path) {
         try (var reader = new FileReader(path); var scan = new Scanner(reader)) {
             var builder = new StringBuilder();
             while (scan.hasNextLine()) {
                 builder.append(scan.nextLine()).append("\n");
             }
-            return builder.toString();
+            return new MacrosItem(getFileName(path), builder.toString(), path);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
+    }
+
+    public static String getFileName(String path) {
+        if (EMPTY.equals(path) || path.lastIndexOf("\\") == -1)
+            return EMPTY;
+
+        var begin = path.lastIndexOf("\\") + 1;
+        var end = path.indexOf(".", begin);
+        return end == -1 ? path.substring(begin) : path.substring(begin, end);
     }
 
     @SneakyThrows({FileNotFoundException.class, IOException.class})
@@ -59,6 +73,6 @@ public class FileServiceWrapper {
     }
 
     public static <T> T loadJson(String path, Type objectType) {
-        return new Gson().fromJson(read(path), objectType);
+        return new Gson().fromJson(requireNonNull(read(path)).getText(), objectType);
     }
 }

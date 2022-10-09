@@ -8,7 +8,6 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileServiceWrapperTest {
-
     private static final String PATH_OF_CONFIG = "test.json";
 
     @Test
@@ -18,6 +17,14 @@ class FileServiceWrapperTest {
         var assertConfig = FileServiceWrapper.loadJson(PATH_OF_CONFIG, TestData.class);
 
         assertEquals(assertConfig, config);
+    }
+
+    @Test
+    void getFileNameTest() {
+        var path = "C:\\Users\\admin\\Desktop\\app\\app\\скрипты\\filename.txt";
+        assertEquals("filename", FileServiceWrapper.getFileName(path));
+        path = "C:\\Users\\admin\\Desktop\\app\\app\\скрипты\\filename";
+        assertEquals("filename", FileServiceWrapper.getFileName(path));
     }
 
     static class TestData {
