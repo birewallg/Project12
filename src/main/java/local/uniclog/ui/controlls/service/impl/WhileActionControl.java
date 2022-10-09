@@ -5,13 +5,19 @@ import local.uniclog.model.actions.impl.ActionWhile;
 import local.uniclog.model.actions.impl.ActionWhileBrakeByColor;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.services.support.MouseServiceWrapper;
-import local.uniclog.ui.controlls.service.ControlService;
+import local.uniclog.ui.controlls.service.ControlServiceAbstract;
 import local.uniclog.utils.DataUtils;
 
 import static java.util.Objects.isNull;
 import static local.uniclog.utils.ConfigConstants.*;
 
-public class WhileActionControl extends ControlService {
+/**
+ * App While controls
+ *
+ * @version 1.0
+ */
+public class WhileActionControl extends ControlServiceAbstract {
+
     public WhileActionControl() {
         if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
     }

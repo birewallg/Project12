@@ -2,14 +2,20 @@ package local.uniclog.ui.controlls.service.impl;
 
 import javafx.application.Platform;
 import local.uniclog.services.ThreadControlService;
-import local.uniclog.ui.controlls.service.ControlService;
+import local.uniclog.ui.controlls.service.ControlServiceAbstract;
 
 import java.util.Objects;
 
 import static java.util.Objects.isNull;
 import static local.uniclog.utils.ConfigConstants.*;
 
-public class OnRunControl extends ControlService {
+/**
+ * App Run controls
+ *
+ * @version 1.0
+ */
+public class OnRunControl extends ControlServiceAbstract {
+
     public OnRunControl() {
         if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
     }

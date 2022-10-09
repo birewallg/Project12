@@ -10,15 +10,17 @@ import local.uniclog.model.actions.types.ActionType;
 import local.uniclog.model.actions.types.EventStateType;
 import local.uniclog.model.actions.types.MouseButtonType;
 import local.uniclog.ui.controlls.model.ControlPack;
-import local.uniclog.ui.controlls.service.ControlService;
+import local.uniclog.ui.controlls.service.ControlServiceAbstract;
 import local.uniclog.ui.controlls.service.SceneControlService;
 import local.uniclog.ui.controlls.service.impl.*;
 import local.uniclog.utils.DataUtils;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * App main controller
+ */
 @Slf4j
 public class AppController {
-    //private ControlPack cp;
 
     //region : Controls Pack
     @FXML
@@ -119,7 +121,7 @@ public class AppController {
 
     public void initialize() {
         var cp = createControlsPack();
-        ControlService.setCp(cp.init());
+        ControlServiceAbstract.setCp(cp.init());
     }
 
     //region : Action: save load context
@@ -158,7 +160,7 @@ public class AppController {
      */
     public void setSleepActionReaderAction() {
         var action = Sleep.builder()
-                .time(DataUtils.getLong(ControlService.getCp().getSleepActionCountTextField().getText(), 0L))
+                .time(DataUtils.getLong(ControlServiceAbstract.getCp().getSleepActionCountTextField().getText(), 0L))
                 .build();
         new DefaultControl().addActionTextToConsoleArea(action);
     }

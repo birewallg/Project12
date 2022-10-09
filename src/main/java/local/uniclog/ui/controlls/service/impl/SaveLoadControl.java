@@ -4,7 +4,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import local.uniclog.services.support.FileServiceWrapper;
-import local.uniclog.ui.controlls.service.ControlService;
+import local.uniclog.ui.controlls.service.ControlServiceAbstract;
 
 import java.io.File;
 
@@ -15,7 +15,13 @@ import static javafx.scene.control.ButtonType.YES;
 import static local.uniclog.utils.ConfigConstants.DEFAULT_FILE_PATH;
 import static local.uniclog.utils.ConfigConstants.TEMPLATE_NOT_SET_CONTROLS;
 
-public class SaveLoadControl extends ControlService {
+/**
+ * App SaveLoad controls
+ *
+ * @version 1.0
+ */
+public class SaveLoadControl extends ControlServiceAbstract {
+
     public SaveLoadControl() {
         if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
     }

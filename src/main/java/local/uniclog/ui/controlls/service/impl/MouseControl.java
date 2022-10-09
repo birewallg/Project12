@@ -3,7 +3,7 @@ package local.uniclog.ui.controlls.service.impl;
 import local.uniclog.model.actions.impl.MouseClick;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.services.support.MouseServiceWrapper;
-import local.uniclog.ui.controlls.service.ControlService;
+import local.uniclog.ui.controlls.service.ControlServiceAbstract;
 import local.uniclog.utils.DataUtils;
 
 import java.util.Objects;
@@ -11,7 +11,13 @@ import java.util.Objects;
 import static java.util.Objects.isNull;
 import static local.uniclog.utils.ConfigConstants.*;
 
-public class MouseControl extends ControlService {
+/**
+ * App Mouse controls
+ *
+ * @version 1.0
+ */
+public class MouseControl extends ControlServiceAbstract {
+
     public MouseControl() {
         if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
     }

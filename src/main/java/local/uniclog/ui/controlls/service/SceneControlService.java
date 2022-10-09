@@ -19,7 +19,7 @@ import static local.uniclog.utils.ConfigConstants.TEMPLATE_NOT_SET_CONTROLS;
  *
  * @version 1.0
  */
-public class SceneControlService extends ControlService {
+public class SceneControlService extends ControlServiceAbstract {
 
     private final Point deltaMove = new Point(0, 0);
     private final Point deltaResize = new Point(0, 0);

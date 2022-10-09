@@ -3,13 +3,18 @@ package local.uniclog.ui.controlls.service.impl;
 import javafx.application.Platform;
 import local.uniclog.model.actions.impl.ActionKeyPress;
 import local.uniclog.services.ThreadControlService;
-import local.uniclog.ui.controlls.service.ControlService;
+import local.uniclog.ui.controlls.service.ControlServiceAbstract;
 import local.uniclog.utils.DataUtils;
 
 import static java.util.Objects.isNull;
 import static local.uniclog.utils.ConfigConstants.*;
 
-public class KeyPressControl extends ControlService {
+/**
+ * App KeyPress controls
+ *
+ * @version 1.0
+ */
+public class KeyPressControl extends ControlServiceAbstract {
 
     public KeyPressControl() {
         if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
