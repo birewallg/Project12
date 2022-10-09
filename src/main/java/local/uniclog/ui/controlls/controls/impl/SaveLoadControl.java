@@ -1,10 +1,10 @@
-package local.uniclog.ui.controlls.service.impl;
+package local.uniclog.ui.controlls.controls.impl;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import local.uniclog.services.support.FileServiceWrapper;
-import local.uniclog.ui.controlls.service.ControlServiceAbstract;
+import local.uniclog.ui.controlls.controls.ControlServiceAbstract;
 
 import java.io.File;
 

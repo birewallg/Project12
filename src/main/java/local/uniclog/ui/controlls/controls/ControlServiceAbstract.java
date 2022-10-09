@@ -1,4 +1,4 @@
-package local.uniclog.ui.controlls.service;
+package local.uniclog.ui.controlls.controls;
 
 import javafx.application.Platform;
 import local.uniclog.model.actions.ActionsInterface;

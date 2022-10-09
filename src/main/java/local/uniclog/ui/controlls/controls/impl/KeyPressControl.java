@@ -1,9 +1,9 @@
-package local.uniclog.ui.controlls.service.impl;
+package local.uniclog.ui.controlls.controls.impl;
 
 import javafx.application.Platform;
 import local.uniclog.model.actions.impl.ActionKeyPress;
 import local.uniclog.services.ThreadControlService;
-import local.uniclog.ui.controlls.service.ControlServiceAbstract;
+import local.uniclog.ui.controlls.controls.ControlServiceAbstract;
 import local.uniclog.utils.DataUtils;
 
 import static java.util.Objects.isNull;
