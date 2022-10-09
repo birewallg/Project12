@@ -1,9 +1,9 @@
-package local.uniclog.ui.controlls.controls.impl;
+package local.uniclog.ui.controlls.actions.impl;
 
 import local.uniclog.model.actions.impl.MouseClick;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.services.support.MouseServiceWrapper;
-import local.uniclog.ui.controlls.controls.ControlServiceAbstract;
+import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
 import local.uniclog.utils.DataUtils;
 
 import java.util.Objects;
