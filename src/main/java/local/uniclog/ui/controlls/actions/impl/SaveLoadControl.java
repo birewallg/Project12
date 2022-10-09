@@ -5,10 +5,12 @@ import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import local.uniclog.services.support.FileServiceWrapper;
 import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
+import local.uniclog.ui.controlls.model.MacrosItem;
 
 import java.io.File;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import static javafx.scene.control.ButtonType.NO;
 import static javafx.scene.control.ButtonType.YES;
@@ -24,13 +26,6 @@ public class SaveLoadControl extends ControlServiceAbstract {
 
     public SaveLoadControl() {
         if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
-    }
-
-    /**
-     * Button: Load configuration
-     */
-    public void onLoad() {
-        this.onLoad(cp.getTextAreaConsole());
     }
 
     /**
@@ -61,17 +56,16 @@ public class SaveLoadControl extends ControlServiceAbstract {
             var alert = new Alert(NONE, "Save config to [" + file.getPath() + "]?", YES, NO);
             alert.showAndWait();
             if (alert.getResult() == YES) {
-                FileServiceWrapper.write(textAreaConsole.getText(), file.getPath());
+                var item = FileServiceWrapper.write(textAreaConsole.getText(), file.getPath());
+                addToMacrosList(item);
             }
         }
     }
 
     /**
      * Load configuration from file
-     *
-     * @param textAreaConsole console
      */
-    private void onLoad(TextArea textAreaConsole) {
+    public void onLoad() {
         var fileChooser = new FileChooser();
         //Set to user directory or go to default if it cannot access
         var userDirectoryString = System.getProperty("user.home");
@@ -80,14 +74,29 @@ public class SaveLoadControl extends ControlServiceAbstract {
             userDirectory = new File(DEFAULT_FILE_PATH);
         }
         fileChooser.setInitialDirectory(userDirectory);
-        var file = fileChooser.showOpenDialog(textAreaConsole.getScene().getWindow());
+        var file = fileChooser.showOpenDialog(cp.getTextAreaConsole().getScene().getWindow());
         if (file != null) {
             var alert = new Alert(NONE, "Load config from [" + file.getPath() + "]?", YES, NO);
             alert.showAndWait();
             if (alert.getResult() == YES) {
-                textAreaConsole.clear();
-                textAreaConsole.setText(FileServiceWrapper.read(file.getPath()));
+                var item = FileServiceWrapper.read(file.getPath());
+                addToMacrosList(item);
             }
         }
+    }
+
+    private void addToMacrosList(MacrosItem item) {
+        cp.getTextAreaConsole().clear();
+        cp.getTextAreaConsole().setText(requireNonNull(item).getText());
+        cp.getScriptNameTextField().setText(item.getName());
+        if (cp.getMacrosList().getItems().isEmpty()) {
+            cp.getMacrosList().getItems().add(item);
+            cp.getMacrosList().getSelectionModel().selectLast();
+        } else {
+            cp.getMacrosList().getItems()
+                    .get(cp.getMacrosList().getSelectionModel().getSelectedIndex())
+                    .setName(item.getName());
+        }
+        cp.getMacrosList().refresh();
     }
 }

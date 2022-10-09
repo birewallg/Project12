@@ -1,5 +1,6 @@
 package local.uniclog.ui.controlls.model;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import local.uniclog.model.actions.types.ActionType;
@@ -38,6 +39,11 @@ public class ControlPack {
     private ToggleButton exit;
     private Label topLogoLabel;
     private ChoiceBox<ActionType> actionChoiceBox;
+    //region ListView
+    private ListView<MacrosItem> macrosList;
+    private TextField scriptNameTextField;
+    private ObservableList<MacrosItem> mItems;
+    //endregion
 
     public ControlPack init() {
         topLogoLabel.setText(ConfigConstants.TOP_LOGO_TEXT);
@@ -66,6 +72,19 @@ public class ControlPack {
                         default -> log.debug("Action not choose");
                     }
                 });
+
+
+        MultipleSelectionModel<MacrosItem> items = macrosList.getSelectionModel();
+        items.selectedItemProperty().addListener((observable, oldValue, newValue) -> scriptNameTextField.setText(newValue.toString()));
+        scriptNameTextField.setOnKeyReleased(e -> {
+            if (!macrosList.getItems().isEmpty()) {
+                macrosList.getItems()
+                        .get(macrosList.getSelectionModel().getSelectedIndex())
+                        .setName(scriptNameTextField.getText());
+                macrosList.refresh();
+            }
+        });
+
         return this;
     }
 }

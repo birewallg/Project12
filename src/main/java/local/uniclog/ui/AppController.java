@@ -1,5 +1,7 @@
 package local.uniclog.ui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -13,6 +15,7 @@ import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
 import local.uniclog.ui.controlls.actions.SceneControlService;
 import local.uniclog.ui.controlls.actions.impl.*;
 import local.uniclog.ui.controlls.model.ControlPack;
+import local.uniclog.ui.controlls.model.MacrosItem;
 import local.uniclog.utils.DataUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class AppController {
+
+    private final ObservableList<MacrosItem> mItems = FXCollections.observableArrayList();
 
     //region : Controls Pack
     @FXML
@@ -71,6 +76,10 @@ public class AppController {
     private Label topLogoLabel;
     @FXML
     private ChoiceBox<ActionType> actionChoiceBox;
+    @FXML
+    private ListView<MacrosItem> macrosList;
+    @FXML
+    private TextField scriptNameTextField;
 
     private ControlPack createControlsPack() {
         return ControlPack.builder()
@@ -98,6 +107,9 @@ public class AppController {
                 .exit(exit)
                 .topLogoLabel(topLogoLabel)
                 .actionChoiceBox(actionChoiceBox)
+                .macrosList(macrosList)
+                .scriptNameTextField(scriptNameTextField)
+                .mItems(mItems)
                 .build();
     }
     //endregion
@@ -120,6 +132,7 @@ public class AppController {
     //endregion
 
     public void initialize() {
+        macrosList.setItems(mItems);
         var cp = createControlsPack();
         ControlServiceAbstract.setCp(cp.init());
     }
@@ -212,6 +225,18 @@ public class AppController {
      * Button: New Macros Script
      */
     public void newMacrosButtonAction() {
+        var item = new MacrosItem();
+        mItems.add(item);
+    }
 
+    /**
+     * Button: Remove Macros Script
+     */
+    public void delMacrosButtonAction() {
+        var index = macrosList.getSelectionModel().getSelectedIndex();
+        if (index != -1) {
+            mItems.remove(index);
+            macrosList.refresh();
+        }
     }
 }
