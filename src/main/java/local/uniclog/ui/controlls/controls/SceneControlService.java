@@ -1,15 +1,16 @@
-package local.uniclog.ui.controlls;
+package local.uniclog.ui.controlls.controls;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import local.uniclog.services.ThreadControlService;
 
 import java.awt.*;
 
+import static java.util.Objects.isNull;
 import static javafx.scene.Cursor.*;
+import static local.uniclog.utils.ConfigConstants.TEMPLATE_NOT_SET_CONTROLS;
 
 /**
  * App control helper-service
@@ -18,13 +19,36 @@ import static javafx.scene.Cursor.*;
  *
  * @version 1.0
  */
-@NoArgsConstructor
-@AllArgsConstructor
-public class SceneControlService {
+public class SceneControlService extends ControlServiceAbstract {
 
     private final Point deltaMove = new Point(0, 0);
     private final Point deltaResize = new Point(0, 0);
-    private int borderSizePixel = 4;
+    private final int borderSizePixel = 4;
+
+    public SceneControlService() {
+        if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
+    }
+
+    //region control button
+
+    /**
+     * Exit button, close app
+     */
+    public static void onExit() {
+        ThreadControlService.stopRunExecuteThread();
+        System.exit(0);
+    }
+
+    /**
+     * Minimize button
+     *
+     * @param stage stage
+     */
+    public static void onMin(Stage stage) {
+        stage.setIconified(true);
+    }
+
+    //endregion
 
     /**
      * Set temp values by mouse pressed

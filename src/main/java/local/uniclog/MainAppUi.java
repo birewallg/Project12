@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import local.uniclog.ui.controlls.SceneControlService;
+import local.uniclog.ui.controlls.controls.SceneControlService;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class MainAppUi extends Application {
 
         stage.setOpacity(0.90);
         stage.initStyle(UNDECORATED);
-        stage.setTitle("Simple Clicker");
+        stage.setTitle("Uniclog Software");
         // stage.setAlwaysOnTop(true)
         stage.toFront();
 

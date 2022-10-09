@@ -1,8 +1,8 @@
 package local.uniclog.services;
 
-import local.uniclog.model.actions.ActionContainer;
+import local.uniclog.model.ActionContainer;
+import local.uniclog.model.WhileModel;
 import local.uniclog.model.actions.ActionsInterface;
-import local.uniclog.model.actions.WhileModel;
 import local.uniclog.model.actions.impl.ActionEnd;
 import local.uniclog.model.actions.impl.ActionWhile;
 import local.uniclog.model.actions.impl.ActionWhileBrakeByColor;
@@ -107,7 +107,8 @@ public class ActionProcessExecuteService {
 
         private Integer correctIndexByAction(int index, ActionContainer container, ActionsInterface action) {
             if (action instanceof ActionWhile it && it.getCount() > 0) {
-                container.whileModelStackPush(new WhileModel(index, it.getCount() - 1));
+                // container.whileModelStackPush(new WhileModel(index, it.getCount() - 1))
+                container.whileModelStackPush(new WhileModel(index, it));
 
             } else if (action instanceof ActionWhileBrakeByColor it) {
                 index = correctByActionWhileBrakeByColor(index, container, it);

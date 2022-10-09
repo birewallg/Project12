@@ -1,4 +1,4 @@
-package local.uniclog.model.actions;
+package local.uniclog.model.actions.types;
 
 import java.util.Arrays;
 

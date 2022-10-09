@@ -1,8 +1,8 @@
 package local.uniclog.model.actions.impl;
 
-import local.uniclog.model.actions.ActionType;
 import local.uniclog.model.actions.ActionsInterface;
-import local.uniclog.model.actions.MouseButtonType;
+import local.uniclog.model.actions.types.ActionType;
+import local.uniclog.model.actions.types.MouseButtonType;
 import local.uniclog.utils.DataUtils;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import static java.awt.event.InputEvent.*;
 import static java.lang.String.format;
-import static local.uniclog.model.actions.MouseButtonType.BUTTON_L;
+import static local.uniclog.model.actions.types.MouseButtonType.BUTTON_L;
 
 @Slf4j
 @Data
