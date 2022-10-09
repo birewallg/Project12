@@ -5,12 +5,12 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import local.uniclog.services.ThreadControlService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import java.awt.*;
 
+import static java.util.Objects.isNull;
 import static javafx.scene.Cursor.*;
+import static local.uniclog.utils.ConfigConstants.TEMPLATE_NOT_SET_CONTROLS;
 
 /**
  * App control helper-service
@@ -19,13 +19,15 @@ import static javafx.scene.Cursor.*;
  *
  * @version 1.0
  */
-@NoArgsConstructor
-@AllArgsConstructor
-public class SceneControlService {
+public class SceneControlService extends ControlService {
 
     private final Point deltaMove = new Point(0, 0);
     private final Point deltaResize = new Point(0, 0);
-    private int borderSizePixel = 4;
+    private final int borderSizePixel = 4;
+
+    public SceneControlService() {
+        if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
+    }
 
     //region control button
 

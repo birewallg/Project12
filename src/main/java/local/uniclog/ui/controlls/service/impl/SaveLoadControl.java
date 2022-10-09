@@ -1,21 +1,37 @@
-package local.uniclog.ui.controlls.service;
+package local.uniclog.ui.controlls.service.impl;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import local.uniclog.services.support.FileServiceWrapper;
+import local.uniclog.ui.controlls.service.ControlService;
 
 import java.io.File;
 
+import static java.util.Objects.isNull;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import static javafx.scene.control.ButtonType.NO;
 import static javafx.scene.control.ButtonType.YES;
 import static local.uniclog.utils.ConfigConstants.DEFAULT_FILE_PATH;
-import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
+import static local.uniclog.utils.ConfigConstants.TEMPLATE_NOT_SET_CONTROLS;
 
-public class SaveLoadControl {
-    private SaveLoadControl() {
-        throw new IllegalStateException(TEMPLATE_UTILITY_CLASS);
+public class SaveLoadControl extends ControlService {
+    public SaveLoadControl() {
+        if (isNull(cp)) throw new IllegalStateException(TEMPLATE_NOT_SET_CONTROLS);
+    }
+
+    /**
+     * Button: Load configuration
+     */
+    public void onLoad() {
+        this.onLoad(cp.getTextAreaConsole());
+    }
+
+    /**
+     * Button: Save configuration to file
+     */
+    public void onSave() {
+        this.onSave(cp.getTextAreaConsole());
     }
 
     /**
@@ -23,7 +39,7 @@ public class SaveLoadControl {
      *
      * @param textAreaConsole console
      */
-    public static void onSave(TextArea textAreaConsole) {
+    private void onSave(TextArea textAreaConsole) {
         var fileChooser = new FileChooser();
         //Set to user directory or go to default if it cannot access
         var userDirectoryString = System.getProperty("user.home");
@@ -49,7 +65,7 @@ public class SaveLoadControl {
      *
      * @param textAreaConsole console
      */
-    public static void onLoad(TextArea textAreaConsole) {
+    private void onLoad(TextArea textAreaConsole) {
         var fileChooser = new FileChooser();
         //Set to user directory or go to default if it cannot access
         var userDirectoryString = System.getProperty("user.home");

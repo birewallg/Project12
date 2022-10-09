@@ -10,5 +10,6 @@ public class ConfigConstants {
     public static final String GUI_BUTTON_RED = "gui-button-red";
     public static final String GUI_BUTTON_GREEN = "gui-button-green";
     public static final String TEMPLATE_UTILITY_CLASS = "Utility class";
+    public static final String TEMPLATE_NOT_SET_CONTROLS = "Warn: not set controls";
     public static final String TEMPLATE_CONFIG_PATH = "config.bin";
 }

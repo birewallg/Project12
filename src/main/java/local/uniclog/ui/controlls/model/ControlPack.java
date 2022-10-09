@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Getter
 @Builder
-public class ControlsPack {
+public class ControlPack {
     private TextField actionKeyPressSleepAfterTextField;
     private Button actionKeyPressReaderButton;
     private TextField actionKeyPressTextField;
@@ -39,7 +39,7 @@ public class ControlsPack {
     private Label topLogoLabel;
     private ChoiceBox<ActionType> actionChoiceBox;
 
-    public void init() {
+    public ControlPack init() {
         topLogoLabel.setText(ConfigConstants.TOP_LOGO_TEXT);
 
         actionChoiceBox.getItems().setAll(ActionType.values());
@@ -66,5 +66,6 @@ public class ControlsPack {
                         default -> log.debug("Action not choose");
                     }
                 });
+        return this;
     }
 }
