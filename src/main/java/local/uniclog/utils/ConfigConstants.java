@@ -12,4 +12,6 @@ public class ConfigConstants {
     public static final String TEMPLATE_UTILITY_CLASS = "Utility class";
     public static final String TEMPLATE_NOT_SET_CONTROLS = "Warn: not set controls";
     public static final String TEMPLATE_CONFIG_PATH = "config.bin";
+    public static final String TEMPLATE_NEW_MACROS = "New Macros";
+    public static final String EMPTY = "";
 }

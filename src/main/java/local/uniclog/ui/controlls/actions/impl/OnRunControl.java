@@ -1,8 +1,8 @@
-package local.uniclog.ui.controlls.controls.impl;
+package local.uniclog.ui.controlls.actions.impl;
 
 import javafx.application.Platform;
 import local.uniclog.services.ThreadControlService;
-import local.uniclog.ui.controlls.controls.ControlServiceAbstract;
+import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
 
 import java.util.Objects;
 

@@ -1,5 +1,6 @@
 package local.uniclog.ui.controlls.model;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import local.uniclog.model.actions.types.ActionType;
@@ -9,6 +10,9 @@ import local.uniclog.utils.ConfigConstants;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
+import static java.util.Objects.isNull;
+import static local.uniclog.utils.ConfigConstants.EMPTY;
 
 @Slf4j
 @Getter
@@ -38,6 +42,11 @@ public class ControlPack {
     private ToggleButton exit;
     private Label topLogoLabel;
     private ChoiceBox<ActionType> actionChoiceBox;
+    //region ListView
+    private ListView<MacrosItem> macrosList;
+    private TextField scriptNameTextField;
+    private ObservableList<MacrosItem> mItems;
+    //endregion
 
     public ControlPack init() {
         topLogoLabel.setText(ConfigConstants.TOP_LOGO_TEXT);
@@ -66,6 +75,38 @@ public class ControlPack {
                         default -> log.debug("Action not choose");
                     }
                 });
+
+        macrosList.setItems(mItems);
+        MultipleSelectionModel<MacrosItem> items = macrosList.getSelectionModel();
+        items.selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                    if (isNull(newValue)) return;
+                    scriptNameTextField.setText(newValue.getName());
+                    textAreaConsole.setText(newValue.getText());
+                }
+        );
+
+        textAreaConsole.setOnKeyReleased(event -> macrosListRefresh());
+        scriptNameTextField.setOnKeyReleased(event -> macrosListRefresh());
+
         return this;
+    }
+
+    public void macrosListRefresh() {
+        var index = macrosList.getSelectionModel().getSelectedIndex();
+        MacrosItem item;
+        if (index == -1) {
+            item = new MacrosItem(scriptNameTextField.getText(), textAreaConsole.getText(), EMPTY);
+            macrosListAddItem(item);
+        } else {
+            item = macrosList.getItems().get(index);
+            item.setName(scriptNameTextField.getText());
+            item.setText(textAreaConsole.getText());
+        }
+        macrosList.refresh();
+    }
+
+    public void macrosListAddItem(MacrosItem item) {
+        macrosList.getItems().add(item);
+        macrosList.getSelectionModel().selectLast();
     }
 }

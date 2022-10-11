@@ -1,4 +1,4 @@
-package local.uniclog.ui.controlls.controls;
+package local.uniclog.ui.controlls.actions;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;

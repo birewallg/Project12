@@ -1,4 +1,4 @@
-package local.uniclog.ui.controlls.controls;
+package local.uniclog.ui.controlls.actions;
 
 import javafx.application.Platform;
 import local.uniclog.model.actions.ActionsInterface;
@@ -21,8 +21,11 @@ public abstract class ControlServiceAbstract {
      * @param action action
      */
     public void addActionTextToConsoleArea(ActionsInterface action) {
-        Platform.runLater(() -> cp.getTextAreaConsole()
-                .setText(String.join("\n", cp.getTextAreaConsole().getText(), action.toString()))
+        Platform.runLater(() -> {
+                    cp.getTextAreaConsole()
+                            .setText(String.join("\n", cp.getTextAreaConsole().getText(), action.toString()));
+                    cp.macrosListRefresh();
+                }
         );
     }
 }
