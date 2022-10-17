@@ -4,8 +4,6 @@ import javafx.application.Platform;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
 
-import java.util.Objects;
-
 import static java.util.Objects.isNull;
 import static local.uniclog.utils.ConfigConstants.*;
 
@@ -28,7 +26,7 @@ public class OnRunControl extends ControlServiceAbstract {
     }
 
     public void onRunActionCompleteByUser(Integer complete) {
-        if (Objects.isNull(complete) && ThreadControlService.getRunExecuteState()) {
+        if (isNull(complete) && ThreadControlService.getRunExecuteState()) {
             Platform.runLater(() -> {
                 cp.getOnRunActionButton().setText("Stop");
                 cp.getOnRunActionButton().getStyleClass().add(GUI_BUTTON_RED);
