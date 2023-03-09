@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
 import static local.uniclog.utils.ConfigConstants.EMPTY;
 
 @Slf4j
@@ -108,5 +109,19 @@ public class ControlPack {
     public void macrosListAddItem(MacrosItem item) {
         macrosList.getItems().add(item);
         macrosList.getSelectionModel().selectLast();
+    }
+
+    public void addMacrosItemToList(MacrosItem item) {
+        textAreaConsole.clear();
+        textAreaConsole.setText(requireNonNull(item).getText());
+        scriptNameTextField.setText(item.getName());
+        if (macrosList.getItems().isEmpty()) {
+            macrosListAddItem(item);
+        } else {
+            macrosList.getItems()
+                    .get(macrosList.getSelectionModel().getSelectedIndex())
+                    .setName(item.getName());
+        }
+        macrosListRefresh();
     }
 }

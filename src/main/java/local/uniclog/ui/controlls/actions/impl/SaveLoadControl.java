@@ -5,12 +5,10 @@ import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import local.uniclog.services.support.FileServiceWrapper;
 import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
-import local.uniclog.ui.controlls.model.MacrosItem;
 
 import java.io.File;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import static javafx.scene.control.ButtonType.NO;
 import static javafx.scene.control.ButtonType.YES;
@@ -57,7 +55,7 @@ public class SaveLoadControl extends ControlServiceAbstract {
             alert.showAndWait();
             if (alert.getResult() == YES) {
                 var item = FileServiceWrapper.write(textAreaConsole.getText(), file.getPath());
-                addToMacrosList(item);
+                cp.addMacrosItemToList(item);
             }
         }
     }
@@ -80,22 +78,8 @@ public class SaveLoadControl extends ControlServiceAbstract {
             alert.showAndWait();
             if (alert.getResult() == YES) {
                 var item = FileServiceWrapper.read(file.getPath());
-                addToMacrosList(item);
+                cp.addMacrosItemToList(item);
             }
         }
-    }
-
-    private void addToMacrosList(MacrosItem item) {
-        cp.getTextAreaConsole().clear();
-        cp.getTextAreaConsole().setText(requireNonNull(item).getText());
-        cp.getScriptNameTextField().setText(item.getName());
-        if (cp.getMacrosList().getItems().isEmpty()) {
-            cp.macrosListAddItem(item);
-        } else {
-            cp.getMacrosList().getItems()
-                    .get(cp.getMacrosList().getSelectionModel().getSelectedIndex())
-                    .setName(item.getName());
-        }
-        cp.getMacrosList().refresh();
     }
 }
