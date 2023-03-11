@@ -11,6 +11,7 @@ module local.uniclog {
     requires com.google.gson;
 
     opens local.uniclog.services.support to com.google.gson;
+    opens local.uniclog.services to com.google.gson;
     opens local.uniclog.ui to javafx.fxml;
     exports local.uniclog;
 }
