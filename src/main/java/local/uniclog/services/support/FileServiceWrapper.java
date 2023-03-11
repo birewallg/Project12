@@ -1,11 +1,10 @@
 package local.uniclog.services.support;
 
 import com.google.gson.Gson;
-import local.uniclog.ui.controlls.model.MacrosItem;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.Scanner;
 
@@ -20,23 +19,23 @@ public class FileServiceWrapper {
         throw new IllegalStateException(TEMPLATE_UTILITY_CLASS);
     }
 
-    public static MacrosItem write(String object, String path) {
+    public static <T> T saveObjectAsText(T object, String path) {
         try (var writer = new FileWriter(path)) {
-            writer.write(object);
-            return new MacrosItem(getFileName(path), object, path);
+            writer.write(object.toString());
+            return object;
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
     }
 
-    public static MacrosItem read(String path) {
+    public static String loadObjectFromTextFile(String path) {
         try (var reader = new FileReader(path); var scan = new Scanner(reader)) {
             var builder = new StringBuilder();
             while (scan.hasNextLine()) {
                 builder.append(scan.nextLine()).append("\n");
             }
-            return new MacrosItem(getFileName(path), builder.toString(), path);
+            return builder.toString();
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -52,27 +51,11 @@ public class FileServiceWrapper {
         return end == -1 ? path.substring(begin) : path.substring(begin, end);
     }
 
-    @SneakyThrows({FileNotFoundException.class, IOException.class})
-    public static <T> void saveObject(String path, T object) {
-        try (var fos = new FileOutputStream(path);
-             var oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(object);
-        }
+    public static void saveObjectAsJson(String path, Object object, Type type) {
+        saveObjectAsText(new Gson().toJson(object, type), path);
     }
 
-    @SneakyThrows({FileNotFoundException.class, IOException.class, ClassNotFoundException.class})
-    public static <T> T loadObject(String path, Class<T> objectType) {
-        try (var fis = new FileInputStream(path);
-             var ois = new ObjectInputStream(fis)) {
-            return objectType.cast(ois.readObject());
-        }
-    }
-
-    public static void saveJson(String path, Object object, Type type) {
-        write(new Gson().toJson(object, type), path);
-    }
-
-    public static <T> T loadJson(String path, Type objectType) {
-        return new Gson().fromJson(requireNonNull(read(path)).getText(), objectType);
+    public static <T> T loadObjectFromJson(String path, Type objectType) {
+        return new Gson().fromJson(requireNonNull(loadObjectFromTextFile(path)), objectType);
     }
 }

@@ -13,8 +13,8 @@ class FileServiceWrapperTest {
     @Test
     void saveLoadJsonTest() {
         var config = new TestData();
-        FileServiceWrapper.saveJson(PATH_OF_CONFIG, config, TestData.class);
-        var assertConfig = FileServiceWrapper.loadJson(PATH_OF_CONFIG, TestData.class);
+        FileServiceWrapper.saveObjectAsJson(PATH_OF_CONFIG, config, TestData.class);
+        var assertConfig = FileServiceWrapper.loadObjectFromJson(PATH_OF_CONFIG, TestData.class);
 
         assertEquals(assertConfig, config);
     }

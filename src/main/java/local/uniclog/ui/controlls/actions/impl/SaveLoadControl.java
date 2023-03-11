@@ -5,6 +5,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import local.uniclog.services.support.FileServiceWrapper;
 import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
+import local.uniclog.ui.controlls.model.MacrosItem;
 
 import java.io.File;
 
@@ -54,7 +55,9 @@ public class SaveLoadControl extends ControlServiceAbstract {
             var alert = new Alert(NONE, "Save config to [" + file.getPath() + "]?", YES, NO);
             alert.showAndWait();
             if (alert.getResult() == YES) {
-                var item = FileServiceWrapper.write(textAreaConsole.getText(), file.getPath());
+                var path = file.getPath();
+                var object = FileServiceWrapper.saveObjectAsText(textAreaConsole.getText(), path);
+                var item = new MacrosItem(FileServiceWrapper.getFileName(path), object, path);
                 cp.addMacrosItemToList(item);
             }
         }
@@ -77,7 +80,9 @@ public class SaveLoadControl extends ControlServiceAbstract {
             var alert = new Alert(NONE, "Load config from [" + file.getPath() + "]?", YES, NO);
             alert.showAndWait();
             if (alert.getResult() == YES) {
-                var item = FileServiceWrapper.read(file.getPath());
+                var path = file.getPath();
+                var object = FileServiceWrapper.loadObjectFromTextFile(file.getPath());
+                var item = new MacrosItem(FileServiceWrapper.getFileName(path), object, path);
                 cp.addMacrosItemToList(item);
             }
         }
