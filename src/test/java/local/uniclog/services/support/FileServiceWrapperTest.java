@@ -2,10 +2,12 @@ package local.uniclog.services.support;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileServiceWrapperTest {
     private static final String PATH_OF_CONFIG = "test.json";
@@ -17,6 +19,7 @@ class FileServiceWrapperTest {
         var assertConfig = FileServiceWrapper.loadObjectFromJson(PATH_OF_CONFIG, TestData.class);
 
         assertEquals(assertConfig, config);
+        assertTrue(new File(PATH_OF_CONFIG).delete());
     }
 
     @Test
