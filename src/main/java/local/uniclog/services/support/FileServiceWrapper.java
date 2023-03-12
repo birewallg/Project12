@@ -56,6 +56,10 @@ public class FileServiceWrapper {
     }
 
     public static <T> T loadObjectFromJson(String path, Type objectType) {
-        return new Gson().fromJson(requireNonNull(loadObjectFromTextFile(path)), objectType);
+        try {
+            return new Gson().fromJson(requireNonNull(loadObjectFromTextFile(path)), objectType);
+        } catch (NullPointerException ex) {
+            return null;
+        }
     }
 }
