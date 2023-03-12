@@ -1,6 +1,5 @@
-package local.uniclog.services;
+package local.uniclog.services.support;
 
-import local.uniclog.services.support.MouseServiceWrapper;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
