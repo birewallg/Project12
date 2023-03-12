@@ -28,6 +28,7 @@ class DataConfigServiceTest {
     @Test
     void initializeConfigTest() {
         assertNotNull(service);
+        assertNotNull(service.getItems());
     }
 
     @Test
