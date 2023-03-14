@@ -58,7 +58,7 @@ public class SaveLoadControl extends ControlServiceAbstract {
                 var path = file.getPath();
                 var object = FileServiceWrapper.saveObjectAsText(textAreaConsole.getText(), path);
                 var item = new MacrosItem(FileServiceWrapper.getFileName(path), object, path);
-                cp.addMacrosItemToList(item);
+                addMacrosItemToList(item);
             }
         }
     }
@@ -83,7 +83,7 @@ public class SaveLoadControl extends ControlServiceAbstract {
                 var path = file.getPath();
                 var object = FileServiceWrapper.loadObjectFromTextFile(file.getPath());
                 var item = new MacrosItem(FileServiceWrapper.getFileName(path), object, path);
-                cp.addMacrosItemToList(item);
+                addMacrosItemToList(item);
             }
         }
     }

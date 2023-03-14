@@ -11,6 +11,7 @@ import local.uniclog.model.actions.impl.Sleep;
 import local.uniclog.model.actions.types.ActionType;
 import local.uniclog.model.actions.types.EventStateType;
 import local.uniclog.model.actions.types.MouseButtonType;
+import local.uniclog.services.DataConfigService;
 import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
 import local.uniclog.ui.controlls.actions.SceneControlService;
 import local.uniclog.ui.controlls.actions.impl.*;
@@ -81,7 +82,7 @@ public class AppController {
     @FXML
     private TextField scriptNameTextField;
 
-    private ControlPack createControlsPack() {
+    private ControlPack buildControlsPack() {
         return ControlPack.builder()
                 .actionKeyPressSleepAfterTextField(actionKeyPressSleepAfterTextField)
                 .actionKeyPressReaderButton(actionKeyPressReaderButton)
@@ -114,6 +115,14 @@ public class AppController {
     }
     //endregion
 
+    /**
+     * Controller post construct
+     */
+    public void initialize() {
+        ControlServiceAbstract.setDataConfigService(new DataConfigService());
+        ControlServiceAbstract.setControlPack(buildControlsPack().initialize());
+    }
+
     //region : Controls Pack Main Controls Block
 
     /**
@@ -131,12 +140,7 @@ public class AppController {
     }
     //endregion
 
-    public void initialize() {
-        var cp = createControlsPack();
-        ControlServiceAbstract.setCp(cp.init());
-    }
-
-    //region : Action: save load context
+    //region : Actions: save load context
 
     /**
      * Button: Load configuration
@@ -152,6 +156,8 @@ public class AppController {
         new SaveLoadControl().onSave();
     }
     //endregion
+
+    //region : Actions: ui buttons
 
     /**
      * Button: Read Mouse Coordinates Add it to text console
@@ -237,4 +243,6 @@ public class AppController {
         mItems.remove(index);
         macrosList.refresh();
     }
+
+    // endregion
 }
