@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Type;
 import java.util.Scanner;
 
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 import static local.uniclog.utils.ConfigConstants.EMPTY;
 import static local.uniclog.utils.ConfigConstants.TEMPLATE_UTILITY_CLASS;
@@ -51,14 +52,17 @@ public class FileServiceWrapper {
         return end == -1 ? path.substring(begin) : path.substring(begin, end);
     }
 
-    public static void saveObjectAsJson(String path, Object object, Type type) {
-        saveObjectAsText(new Gson().toJson(object, type), path);
+    public static <T> T saveObjectAsJson(String path, T object, Type type) {
+        if (nonNull(saveObjectAsText(new Gson().toJson(object, type), path))) {
+            return object;
+        } else return null;
     }
 
     public static <T> T loadObjectFromJson(String path, Type objectType) {
         try {
             return new Gson().fromJson(requireNonNull(loadObjectFromTextFile(path)), objectType);
-        } catch (NullPointerException ex) {
+        } catch (NullPointerException e) {
+            log.error(e.getMessage());
             return null;
         }
     }
