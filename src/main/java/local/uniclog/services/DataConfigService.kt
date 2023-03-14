@@ -7,17 +7,12 @@ import local.uniclog.services.support.FileServiceWrapper.saveObjectAsJson as sav
 
 class DataConfigService {
 
-    private data class DataConfig(val items: MutableSet<MacrosItem>)
+    private data class DataConfig(val items: MutableList<MacrosItem> = arrayListOf())
 
     private val config: DataConfig
 
     init {
-        val createConfig: () -> DataConfig = {
-            val config = DataConfig(hashSetOf())
-            saveConfig(config)
-            config
-        }
-        config = loadConfig() ?: createConfig()
+        config = loadConfig() ?: saveConfig(DataConfig())
     }
 
     private fun saveConfig(config: DataConfig) = save(TEMPLATE_CONFIG_PATH, config, DataConfig::class.java)
@@ -28,7 +23,18 @@ class DataConfigService {
      *
      * @return коллекция обьектов макросов
      */
-    fun getItems(): Set<MacrosItem> = config.items
+    fun getItems(): List<MacrosItem> = config.items
+
+    /**
+     * Замена элемента по индексу
+     *
+     * @param index index
+     * @param item расположение файла
+     */
+    fun modifyItemByIndex(index: Int, item: MacrosItem) {
+        config.items[index] = item
+        saveConfig(config)
+    }
 
     /**
      * Добавление нового конфига в список
