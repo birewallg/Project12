@@ -9,7 +9,7 @@ class DataConfigService {
 
     private data class DataConfig(val items: MutableSet<MacrosItem>)
 
-    private var config: DataConfig
+    private val config: DataConfig
 
     init {
         val createConfig: () -> DataConfig = {
@@ -20,10 +20,13 @@ class DataConfigService {
         config = loadConfig() ?: createConfig()
     }
 
+    private fun saveConfig(config: DataConfig) = save(TEMPLATE_CONFIG_PATH, config, DataConfig::class.java)
+    private fun loadConfig(): DataConfig? = load(TEMPLATE_CONFIG_PATH, DataConfig::class.java)
+
     /**
      * Получение конфига
      *
-     * @return Set&lt;MacrosItem&gt;
+     * @return коллекция обьектов макросов
      */
     fun getItems(): Set<MacrosItem> = config.items
 
@@ -46,8 +49,5 @@ class DataConfigService {
         config.items.remove(item)
         saveConfig(config)
     }
-
-    private fun saveConfig(config: DataConfig) = save(TEMPLATE_CONFIG_PATH, config, DataConfig::class.java)
-    private fun loadConfig(): DataConfig? = load(TEMPLATE_CONFIG_PATH, DataConfig::class.java)
 
 }
