@@ -11,7 +11,6 @@ import local.uniclog.model.actions.impl.Sleep;
 import local.uniclog.model.actions.types.ActionType;
 import local.uniclog.model.actions.types.EventStateType;
 import local.uniclog.model.actions.types.MouseButtonType;
-import local.uniclog.services.DataConfigService;
 import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
 import local.uniclog.ui.controlls.actions.SceneControlService;
 import local.uniclog.ui.controlls.actions.impl.*;
@@ -119,8 +118,7 @@ public class AppController {
      * Controller post construct
      */
     public void initialize() {
-        ControlServiceAbstract.setDataConfigService(new DataConfigService());
-        ControlServiceAbstract.setControlPack(buildControlsPack().initialize());
+        ControlServiceAbstract.initializeControl(buildControlsPack().initialize());
     }
 
     //region : Controls Pack Main Controls Block
@@ -231,7 +229,7 @@ public class AppController {
      */
     public void newMacrosButtonAction() {
         var item = new MacrosItem();
-        mItems.add(item);
+        ControlServiceAbstract.macrosListAddItem(item);
     }
 
     /**
@@ -240,8 +238,7 @@ public class AppController {
     public void delMacrosButtonAction() {
         var index = macrosList.getSelectionModel().getSelectedIndex();
         if (index == -1) return;
-        mItems.remove(index);
-        macrosList.refresh();
+        ControlServiceAbstract.macrosListRemoveItem(index);
     }
 
     // endregion
