@@ -22,7 +22,7 @@
                 <ChoiceBox fx:id="actionChoiceBox" layoutX="6.0" layoutY="23.0" prefHeight="25.0" prefWidth="126.0"
                            AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0">
                 </ChoiceBox>
-                <Label layoutX="6.0" layoutY="6.0" prefHeight="17.0" prefWidth="106.0" text="Choice Action"/>
+                <Label layoutX="6.0" layoutY="6.0" prefHeight="17.0" prefWidth="106.0" text="Choose action"/>
                 <AnchorPane layoutY="57.0" prefHeight="291.0" prefWidth="227.0">
                     <children>
                         <AnchorPane fx:id="mouseActionPane" prefHeight="257.0" prefWidth="227.0" visible="false">
