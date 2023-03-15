@@ -10,7 +10,6 @@ import local.uniclog.ui.controlls.model.MacrosItem;
 import java.io.File;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
 import static javafx.scene.control.Alert.AlertType.NONE;
 import static javafx.scene.control.ButtonType.NO;
 import static javafx.scene.control.ButtonType.YES;
@@ -56,8 +55,10 @@ public class SaveLoadControl extends ControlServiceAbstract {
             var alert = new Alert(NONE, "Save config to [" + file.getPath() + "]?", YES, NO);
             alert.showAndWait();
             if (alert.getResult() == YES) {
-                var item = FileServiceWrapper.write(textAreaConsole.getText(), file.getPath());
-                addToMacrosList(item);
+                var path = file.getPath();
+                var object = FileServiceWrapper.saveObjectAsText(textAreaConsole.getText(), path);
+                var item = new MacrosItem(FileServiceWrapper.getFileName(path), object, path);
+                addMacrosItemToList(item);
             }
         }
     }
@@ -79,23 +80,11 @@ public class SaveLoadControl extends ControlServiceAbstract {
             var alert = new Alert(NONE, "Load config from [" + file.getPath() + "]?", YES, NO);
             alert.showAndWait();
             if (alert.getResult() == YES) {
-                var item = FileServiceWrapper.read(file.getPath());
-                addToMacrosList(item);
+                var path = file.getPath();
+                var object = FileServiceWrapper.loadObjectFromTextFile(file.getPath());
+                var item = new MacrosItem(FileServiceWrapper.getFileName(path), object, path);
+                addMacrosItemToList(item);
             }
         }
-    }
-
-    private void addToMacrosList(MacrosItem item) {
-        cp.getTextAreaConsole().clear();
-        cp.getTextAreaConsole().setText(requireNonNull(item).getText());
-        cp.getScriptNameTextField().setText(item.getName());
-        if (cp.getMacrosList().getItems().isEmpty()) {
-            cp.macrosListAddItem(item);
-        } else {
-            cp.getMacrosList().getItems()
-                    .get(cp.getMacrosList().getSelectionModel().getSelectedIndex())
-                    .setName(item.getName());
-        }
-        cp.getMacrosList().refresh();
     }
 }

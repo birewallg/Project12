@@ -81,7 +81,7 @@ public class AppController {
     @FXML
     private TextField scriptNameTextField;
 
-    private ControlPack createControlsPack() {
+    private ControlPack buildControlsPack() {
         return ControlPack.builder()
                 .actionKeyPressSleepAfterTextField(actionKeyPressSleepAfterTextField)
                 .actionKeyPressReaderButton(actionKeyPressReaderButton)
@@ -114,6 +114,13 @@ public class AppController {
     }
     //endregion
 
+    /**
+     * Controller post construct
+     */
+    public void initialize() {
+        ControlServiceAbstract.initializeControl(buildControlsPack().initialize());
+    }
+
     //region : Controls Pack Main Controls Block
 
     /**
@@ -131,12 +138,7 @@ public class AppController {
     }
     //endregion
 
-    public void initialize() {
-        var cp = createControlsPack();
-        ControlServiceAbstract.setCp(cp.init());
-    }
-
-    //region : Action: save load context
+    //region : Actions: save load context
 
     /**
      * Button: Load configuration
@@ -152,6 +154,8 @@ public class AppController {
         new SaveLoadControl().onSave();
     }
     //endregion
+
+    //region : Actions: ui buttons
 
     /**
      * Button: Read Mouse Coordinates Add it to text console
@@ -225,7 +229,7 @@ public class AppController {
      */
     public void newMacrosButtonAction() {
         var item = new MacrosItem();
-        mItems.add(item);
+        ControlServiceAbstract.macrosListAddItem(item);
     }
 
     /**
@@ -234,7 +238,8 @@ public class AppController {
     public void delMacrosButtonAction() {
         var index = macrosList.getSelectionModel().getSelectedIndex();
         if (index == -1) return;
-        mItems.remove(index);
-        macrosList.refresh();
+        ControlServiceAbstract.macrosListRemoveItem(index);
     }
+
+    // endregion
 }

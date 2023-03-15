@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import static java.util.Objects.isNull;
-import static local.uniclog.utils.ConfigConstants.EMPTY;
 
 @Slf4j
 @Getter
@@ -48,7 +47,7 @@ public class ControlPack {
     private ObservableList<MacrosItem> mItems;
     //endregion
 
-    public ControlPack init() {
+    public ControlPack initialize() {
         topLogoLabel.setText(ConfigConstants.TOP_LOGO_TEXT);
 
         actionChoiceBox.getItems().setAll(ActionType.values());
@@ -85,28 +84,7 @@ public class ControlPack {
                 }
         );
 
-        textAreaConsole.setOnKeyReleased(event -> macrosListRefresh());
-        scriptNameTextField.setOnKeyReleased(event -> macrosListRefresh());
-
         return this;
     }
 
-    public void macrosListRefresh() {
-        var index = macrosList.getSelectionModel().getSelectedIndex();
-        MacrosItem item;
-        if (index == -1) {
-            item = new MacrosItem(scriptNameTextField.getText(), textAreaConsole.getText(), EMPTY);
-            macrosListAddItem(item);
-        } else {
-            item = macrosList.getItems().get(index);
-            item.setName(scriptNameTextField.getText());
-            item.setText(textAreaConsole.getText());
-        }
-        macrosList.refresh();
-    }
-
-    public void macrosListAddItem(MacrosItem item) {
-        macrosList.getItems().add(item);
-        macrosList.getSelectionModel().selectLast();
-    }
 }
