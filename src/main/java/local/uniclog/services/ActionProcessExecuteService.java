@@ -63,12 +63,12 @@ public class ActionProcessExecuteService {
 
     @Slf4j
     private static class ActionProcessExecuteThread implements Runnable {
-        private final ActionService service = new ActionService();
+        private final ActionService service;
         private final Consumer<Boolean> actionCallBack;
 
         public ActionProcessExecuteThread(String actionsListAsString, Consumer<Boolean> actionCallBack) {
             this.actionCallBack = actionCallBack;
-            service.setConfiguration(stream(actionsListAsString.trim()
+            service = new ActionService(stream(actionsListAsString.trim()
                     .replaceAll("[ \\t\\x0B\\f\\r]", "")
                     .split("\n"))
                     .toList());
