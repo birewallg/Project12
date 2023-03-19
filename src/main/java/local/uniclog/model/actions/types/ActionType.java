@@ -1,5 +1,8 @@
 package local.uniclog.model.actions.types;
 
+import local.uniclog.model.actions.ActionsInterface;
+import local.uniclog.model.actions.impl.*;
+
 import java.util.Arrays;
 
 /**
@@ -37,5 +40,17 @@ public enum ActionType {
 
     public String getStringValue() {
         return value;
+    }
+
+    public ActionsInterface getAction() {
+        return switch (this) {
+            case MOUSE_CLICK -> new MouseClick();
+            case WHILE_BRAKE_BY_COLOR -> new ActionWhileBrakeByColor();
+            case SLEEP -> new Sleep();
+            case WHILE -> new ActionWhile();
+            case END -> new ActionEnd();
+            case KEY_PRESS -> new ActionKeyPress();
+            default -> new Default();
+        };
     }
 }
