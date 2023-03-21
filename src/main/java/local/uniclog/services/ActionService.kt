@@ -4,7 +4,6 @@ import local.uniclog.model.ActionContainer
 import local.uniclog.model.actions.types.ActionType
 import local.uniclog.model.actions.types.ActionType.DEFAULT
 import local.uniclog.model.actions.types.ActionType.END
-import local.uniclog.utils.ConfigConstants.*
 import org.slf4j.LoggerFactory
 
 /**
@@ -32,17 +31,7 @@ class ActionService(actionLines: List<String>) {
         ActionType.values().firstOrNull { line.startsWith(it.name) } ?: DEFAULT
 
     private fun getParamsMap(line: String): Map<String, String> {
-        if (!line.contains("\\[(.*)]".toRegex())) {
-            logger.warn("ParamsMap is empty - {}", line)
-            return emptyMap()
-        }
-        val args = line.substring(line.indexOf(PARAM_START) + 1, line.indexOf(PARAM_END))
-        return args.split(COMMA).dropLastWhile { it.isEmpty() }
-            .map { it.split("=") }
-            .filter {
-                if (it.size != 2) logger.warn("ParamsMap ist parse - {}", line)
-                it.size == 2
-            }
-            .associate { it[0] to it[1] }
+        val regex = """(\w+)(?>=)([^,|\]]*)""".toRegex()
+        return regex.findAll(line).associate { it.groupValues[1] to it.groupValues[2] }
     }
 }
