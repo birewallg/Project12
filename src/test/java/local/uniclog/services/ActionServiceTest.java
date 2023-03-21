@@ -1,12 +1,15 @@
 package local.uniclog.services;
 
 import local.uniclog.model.actions.ActionsInterface;
+import local.uniclog.model.actions.impl.ActionKeyPress;
+import local.uniclog.model.actions.impl.ActionWhile;
+import local.uniclog.model.actions.types.EventStateType;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static local.uniclog.model.actions.types.ActionType.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ActionServiceTest {
     private ActionService service;
@@ -69,5 +72,27 @@ class ActionServiceTest {
         var actions = service.getContainer().getData().stream()
                 .map(ActionsInterface::getType).toList();
         assertEquals(expectedActionList, actions);
+    }
+
+    @Test
+    void setConfigurationCheckParamsTest() {
+        var actionList = List.of(
+                "KEY_PRESS [keyCode=52, state=PRESS]",
+                "WHILE [count=1, eternity=false]"
+        );
+        var expectedActionList = List.of(KEY_PRESS, WHILE, END);
+
+        service = new ActionService(actionList);
+        var actions = service.getContainer().getData().stream()
+                .map(ActionsInterface::getType).toList();
+        var actionKeyPress = (ActionKeyPress) service.getContainer().getData().get(0);
+        var actionWhile = (ActionWhile) service.getContainer().getData().get(1);
+        assertAll(
+                () -> assertEquals(expectedActionList, actions),
+                () -> assertEquals(52, actionKeyPress.getKeyCode()),
+                () -> assertEquals(EventStateType.PRESS, actionKeyPress.getEventStateType()),
+                () -> assertEquals(1, actionWhile.getCount()),
+                () -> assertFalse(actionWhile.getEternity())
+        );
     }
 }
