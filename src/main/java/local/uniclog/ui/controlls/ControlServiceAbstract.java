@@ -1,10 +1,10 @@
-package local.uniclog.ui.controlls.actions;
+package local.uniclog.ui.controlls;
 
 import javafx.application.Platform;
 import local.uniclog.model.actions.ActionsInterface;
 import local.uniclog.services.DataConfigService;
-import local.uniclog.ui.controlls.model.ControlPack;
-import local.uniclog.ui.controlls.model.MacrosItem;
+import local.uniclog.ui.model.ControlPack;
+import local.uniclog.ui.model.MacrosItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package local.uniclog.services
 
-import local.uniclog.ui.controlls.model.MacrosItem
+import local.uniclog.ui.model.MacrosItem
 import local.uniclog.utils.ConfigConstants.TEMPLATE_CONFIG_PATH
 import local.uniclog.services.support.FileServiceWrapper.loadObjectFromJson as load
 import local.uniclog.services.support.FileServiceWrapper.saveObjectAsJson as save

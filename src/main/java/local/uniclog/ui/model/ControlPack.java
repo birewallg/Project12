@@ -1,4 +1,4 @@
-package local.uniclog.ui.controlls.model;
+package local.uniclog.ui.model;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;

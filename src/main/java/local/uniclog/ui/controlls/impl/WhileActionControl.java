@@ -1,11 +1,11 @@
-package local.uniclog.ui.controlls.actions.impl;
+package local.uniclog.ui.controlls.impl;
 
 import javafx.application.Platform;
 import local.uniclog.model.actions.impl.ActionWhile;
 import local.uniclog.model.actions.impl.ActionWhileBrakeByColor;
 import local.uniclog.services.ThreadControlService;
 import local.uniclog.services.support.MouseServiceWrapper;
-import local.uniclog.ui.controlls.actions.ControlServiceAbstract;
+import local.uniclog.ui.controlls.ControlServiceAbstract;
 import local.uniclog.utils.DataUtils;
 
 import static java.util.Objects.isNull;

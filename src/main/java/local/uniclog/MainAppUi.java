@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import local.uniclog.ui.controlls.actions.SceneControlService;
+import local.uniclog.ui.controlls.SceneControlService;
 
 import java.io.IOException;
 

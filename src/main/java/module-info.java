@@ -13,7 +13,7 @@ module local.uniclog {
 
     opens local.uniclog.services.support to com.google.gson;
     opens local.uniclog.services to com.google.gson;
-    opens local.uniclog.ui.controlls.model to com.google.gson;
+    opens local.uniclog.ui.model to com.google.gson;
     opens local.uniclog.ui to javafx.fxml;
     exports local.uniclog;
 }

@@ -1,6 +1,6 @@
 package local.uniclog.services;
 
-import local.uniclog.ui.controlls.model.MacrosItem;
+import local.uniclog.ui.model.MacrosItem;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
