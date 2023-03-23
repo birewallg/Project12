@@ -1,7 +1,6 @@
 package local.uniclog.ui;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -24,8 +23,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class AppController {
-
-    private final ObservableList<MacrosItem> mItems = FXCollections.observableArrayList();
 
     //region : Controls Pack
     @FXML
@@ -109,7 +106,7 @@ public class AppController {
                 .actionChoiceBox(actionChoiceBox)
                 .macrosList(macrosList)
                 .scriptNameTextField(scriptNameTextField)
-                .mItems(mItems)
+                .macrosItemList(FXCollections.observableArrayList())
                 .build();
     }
     //endregion

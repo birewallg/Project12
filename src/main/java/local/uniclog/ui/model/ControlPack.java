@@ -44,7 +44,7 @@ public class ControlPack {
     //region ListView
     private ListView<MacrosItem> macrosList;
     private TextField scriptNameTextField;
-    private ObservableList<MacrosItem> mItems;
+    private ObservableList<MacrosItem> macrosItemList;
     //endregion
 
     public ControlPack initialize() {
@@ -75,7 +75,7 @@ public class ControlPack {
                     }
                 });
 
-        macrosList.setItems(mItems);
+        macrosList.setItems(macrosItemList);
         MultipleSelectionModel<MacrosItem> items = macrosList.getSelectionModel();
         items.selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                     if (isNull(newValue)) return;
