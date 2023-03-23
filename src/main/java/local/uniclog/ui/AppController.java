@@ -225,17 +225,14 @@ public class AppController {
      * Button: New Macros Script
      */
     public void newMacrosButtonAction() {
-        var item = new MacrosItem();
-        ControlServiceAbstract.macrosListAddItem(item);
+        new MacrosListControls().newMacrosButtonAction();
     }
 
     /**
      * Button: Remove Macros Script
      */
     public void delMacrosButtonAction() {
-        var index = macrosList.getSelectionModel().getSelectedIndex();
-        if (index == -1) return;
-        ControlServiceAbstract.macrosListRemoveItem(index);
+        new MacrosListControls().delMacrosButtonAction();
     }
 
     // endregion
