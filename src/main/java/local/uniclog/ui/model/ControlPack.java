@@ -40,6 +40,7 @@ public class ControlPack {
     private TextArea textAreaConsole;
     private ToggleButton exit;
     private Label topLogoLabel;
+    private Label actionPaneLabel;
     private ChoiceBox<ActionType> actionChoiceBox;
     //region ListView
     private ListView<MacrosItem> macrosList;
@@ -58,12 +59,10 @@ public class ControlPack {
 
         actionChoiceBox.getSelectionModel()
                 .selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-                    mouseActionPane.setVisible(false);
-                    sleepActionPane.setVisible(false);
-                    whileActionPane.setVisible(false);
-                    endActionPane.setVisible(false);
-                    whileBreakPane.setVisible(false);
-                    actionKeyPressPane.setVisible(false);
+                    List.of(actionPaneLabel,
+                                    mouseActionPane, sleepActionPane, whileActionPane,
+                                    endActionPane, whileBreakPane, actionKeyPressPane)
+                            .forEach(it -> it.setVisible(false));
                     switch (newValue) {
                         case MOUSE_CLICK -> mouseActionPane.setVisible(true);
                         case SLEEP -> sleepActionPane.setVisible(true);
@@ -71,7 +70,10 @@ public class ControlPack {
                         case END -> endActionPane.setVisible(true);
                         case WHILE_BRAKE_BY_COLOR -> whileBreakPane.setVisible(true);
                         case KEY_PRESS -> actionKeyPressPane.setVisible(true);
-                        default -> log.debug("Action not choose");
+                        default -> {
+                            actionPaneLabel.setVisible(true);
+                            log.debug("Action not choose");
+                        }
                     }
                 });
 

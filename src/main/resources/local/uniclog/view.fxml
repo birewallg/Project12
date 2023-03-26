@@ -3,10 +3,9 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <?import java.lang.*?>
 <AnchorPane prefHeight="417.0" prefWidth="1105.0" styleClass="root-class" stylesheets="@style/css.css"
-            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="local.uniclog.ui.AppController">
     <children>
         <ToggleButton fx:id="exit" layoutX="421.0" mnemonicParsing="false" onAction="#onExit" prefHeight="25.0"
@@ -25,6 +24,7 @@
                 <Label layoutX="6.0" layoutY="6.0" prefHeight="17.0" prefWidth="106.0" text="Choose action"/>
                 <AnchorPane layoutY="57.0" prefHeight="291.0" prefWidth="227.0">
                     <children>
+                        <Label fx:id="actionPaneLabel" layoutX="14.0" layoutY="22.0" text="Macros script builder "/>
                         <AnchorPane fx:id="mouseActionPane" prefHeight="257.0" prefWidth="227.0" visible="false">
                             <children>
                                 <Button fx:id="mouseActionReaderButton" layoutX="5.0" layoutY="224.0"

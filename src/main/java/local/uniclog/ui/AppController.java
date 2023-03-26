@@ -72,6 +72,8 @@ public class AppController {
     @FXML
     private Label topLogoLabel;
     @FXML
+    private Label actionPaneLabel;
+    @FXML
     private ChoiceBox<ActionType> actionChoiceBox;
     @FXML
     private ListView<MacrosItem> macrosList;
@@ -104,7 +106,7 @@ public class AppController {
                 .exit(exit)
                 .topLogoLabel(topLogoLabel)
                 .actionChoiceBox(actionChoiceBox)
-                .macrosList(macrosList)
+                .actionPaneLabel(actionPaneLabel)
                 .scriptNameTextField(scriptNameTextField)
                 .macrosItemList(FXCollections.observableArrayList())
                 .build();
