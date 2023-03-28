@@ -8,17 +8,18 @@ import local.uniclog.services.support.FileServiceWrapper.loadObjectFromJson as l
 import local.uniclog.services.support.FileServiceWrapper.saveObjectAsJson as save
 
 class DataConfigService {
-    private data class DataConfig(val items: MutableList<MacrosItem> = mutableListOf()) {
+    private data class DataConfig(private val items: MutableList<MacrosItem> = mutableListOf()) {
+        val clone: MutableList<MacrosItem> get() = items.toMutableList()
         @Transient
         var changed: Boolean = false
+
         fun modifyItemByIndex(index: Int, item: MacrosItem) = action { items[index] = item }
         fun addItem(item: MacrosItem) = action { items.add(item) }
         fun removeItem(item: MacrosItem) = action { items.remove(item) }
-        fun clearItems() = action { items.clear() }
+        fun clearAllItems() = action { items.clear() }
         fun <T> save(config: T) = let { changed = config !is DataConfig }
 
         private fun action(action: () -> Unit) = action.invoke().let { changed = true }
-
     }
 
     @Volatile
@@ -38,10 +39,10 @@ class DataConfigService {
     private fun loadConfig(): DataConfig? = load(TEMPLATE_CONFIG_PATH, DataConfig::class.java)
 
     fun forceSaveConfiguration(): Boolean = saveConfig(config) is DataConfig
-    fun getItemsClone(): MutableList<MacrosItem> = config.items.toMutableList()
+    fun getItemsClone(): MutableList<MacrosItem> = config.clone
     fun modifyItemByIndex(index: Int, item: MacrosItem) = config.modifyItemByIndex(index, item)
     fun addItem(item: MacrosItem) = config.addItem(item)
     fun removeItem(item: MacrosItem) = config.removeItem(item)
-    fun clearItems() = config.clearItems()
+    fun clearItems() = config.clearAllItems()
 
 }
