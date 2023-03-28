@@ -3,13 +3,11 @@ package local.uniclog.services
 import local.uniclog.ui.model.MacrosItem
 import local.uniclog.utils.ConfigConstants.CONFIG_MODIFY_PERIOD
 import local.uniclog.utils.ConfigConstants.TEMPLATE_CONFIG_PATH
-import lombok.EqualsAndHashCode
 import kotlin.concurrent.fixedRateTimer
 import local.uniclog.services.support.FileServiceWrapper.loadObjectFromJson as load
 import local.uniclog.services.support.FileServiceWrapper.saveObjectAsJson as save
 
 class DataConfigService {
-    @EqualsAndHashCode
     private data class DataConfig(val items: MutableList<MacrosItem> = mutableListOf()) {
         @Transient
         var changed: Boolean = false
@@ -17,12 +15,10 @@ class DataConfigService {
         fun addItem(item: MacrosItem) = action { items.add(item) }
         fun removeItem(item: MacrosItem) = action { items.remove(item) }
         fun clearItems() = action { items.clear() }
-        fun <T> save(config: T) = run { changed = config !is DataConfig }
+        fun <T> save(config: T) = let { changed = config !is DataConfig }
 
-        private fun action(action: () -> Unit) {
-            action()
-            changed = true
-        }
+        private fun action(action: () -> Unit) = action.invoke().let { changed = true }
+
     }
 
     @Volatile

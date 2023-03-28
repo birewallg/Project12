@@ -28,11 +28,11 @@ class DataConfigServiceTest {
 
     @Test
     void initializeConfigTest() {
-
-        assertTrue(service.getItemsClone().isEmpty());
-
-        assertNotNull(service);
-        assertNotNull(service.getItemsClone());
+        assertAll(
+                () -> assertNotNull(service),
+                () -> assertNotNull(service.getItemsClone()),
+                () -> assertTrue(service.getItemsClone().isEmpty())
+        );
     }
 
     @Test
