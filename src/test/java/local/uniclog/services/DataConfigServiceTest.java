@@ -18,6 +18,7 @@ class DataConfigServiceTest {
     @BeforeEach
     void setUp() {
         service = new DataConfigService();
+        service.forceSaveConfiguration();
     }
 
     @AfterEach
@@ -34,6 +35,7 @@ class DataConfigServiceTest {
     @Test
     void addNewItemTest() {
         service.addItem(item);
+        service.forceSaveConfiguration();
         assertEquals(List.of(item), service.getItems());
         assertEquals(List.of(item), new DataConfigService().getItems());
     }
@@ -43,6 +45,7 @@ class DataConfigServiceTest {
         var item2 = new MacrosItem("item_2", "content", TEMPLATE_CONFIG_PATH);
         service.addItem(item);
         service.addItem(item2);
+        service.forceSaveConfiguration();
         assertEquals(List.of(item, item2), service.getItems());
         assertEquals(List.of(item, item2), new DataConfigService().getItems());
     }
@@ -50,20 +53,24 @@ class DataConfigServiceTest {
     @Test
     void getItemsTest() {
         service.addItem(item);
+        service.forceSaveConfiguration();
         assertEquals(List.of(item), service.getItems());
     }
 
     @Test
     void getRemoveItemsTest() {
         service.addItem(item);
+        service.forceSaveConfiguration();
         assertEquals(List.of(item), new DataConfigService().getItems());
         service.removeItem(item);
+        service.forceSaveConfiguration();
         assertTrue(new DataConfigService().getItems().isEmpty());
     }
 
     @Test
     void modifyItemByIndexText() {
         service.addItem(item);
+        service.forceSaveConfiguration();
         assertEquals(List.of(item), new DataConfigService().getItems());
         item.setText("newText");
         service.modifyItemByIndex(0, item);

@@ -1,59 +1,49 @@
 package local.uniclog.services
 
 import local.uniclog.ui.model.MacrosItem
+import local.uniclog.utils.ConfigConstants.CONFIG_MODIFY_PERIOD
 import local.uniclog.utils.ConfigConstants.TEMPLATE_CONFIG_PATH
+import kotlin.concurrent.fixedRateTimer
 import local.uniclog.services.support.FileServiceWrapper.loadObjectFromJson as load
 import local.uniclog.services.support.FileServiceWrapper.saveObjectAsJson as save
 
 class DataConfigService {
+    data class DataConfig(val items: MutableList<MacrosItem> = mutableListOf()) {
+        @Transient
+        var changed: Boolean = false
+        fun modifyItemByIndex(index: Int, item: MacrosItem) = action { items[index] = item }
+        fun addItem(item: MacrosItem) = action { items.add(item) }
+        fun removeItem(item: MacrosItem) = action { items.remove(item) }
+        fun <T> save(config: T) {
+            changed = config !is DataConfig
+        }
 
-    private data class DataConfig(val items: MutableList<MacrosItem> = arrayListOf())
+        private fun action(action: () -> Unit) {
+            action()
+            changed = true
+        }
+    }
 
-    private val config: DataConfig
+    @Volatile
+    private var config: DataConfig
 
     init {
         config = loadConfig() ?: saveConfig(DataConfig())
+
+        fixedRateTimer(
+            name = "save-config-timer", daemon = true,
+            initialDelay = CONFIG_MODIFY_PERIOD, period = CONFIG_MODIFY_PERIOD
+        )
+        { if (config.changed) config.save(saveConfig(config)) }
     }
 
     private fun saveConfig(config: DataConfig) = save(TEMPLATE_CONFIG_PATH, config, DataConfig::class.java)
     private fun loadConfig(): DataConfig? = load(TEMPLATE_CONFIG_PATH, DataConfig::class.java)
 
-    /**
-     * Получение конфига
-     *
-     * @return коллекция обьектов макросов
-     */
+    fun forceSaveConfiguration(): DataConfig = saveConfig(config)
     fun getItems(): List<MacrosItem> = config.items
-
-    /**
-     * Замена элемента по индексу
-     *
-     * @param index index
-     * @param item расположение файла
-     */
-    fun modifyItemByIndex(index: Int, item: MacrosItem) {
-        config.items[index] = item
-        saveConfig(config)
-    }
-
-    /**
-     * Добавление нового конфига в список
-     *
-     * @param item расположение файла
-     */
-    fun addItem(item: MacrosItem) {
-        config.items.add(item)
-        saveConfig(config)
-    }
-
-    /**
-     * Удаление конфига из списока
-     *
-     * @param item обьект конфига
-     */
-    fun removeItem(item: MacrosItem) {
-        config.items.remove(item)
-        saveConfig(config)
-    }
+    fun modifyItemByIndex(index: Int, item: MacrosItem) = config.modifyItemByIndex(index, item)
+    fun addItem(item: MacrosItem) = config.addItem(item)
+    fun removeItem(item: MacrosItem) = config.removeItem(item)
 
 }
