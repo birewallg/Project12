@@ -6,6 +6,7 @@ public class ConfigConstants {
     public static final String TOP_LOGO_TEXT = "early access ver.";
     public static final String DEFAULT_FILE_PATH = "c:/";
     public static final String TEMPLATE_CONFIG_PATH = "config.ini";
+    public static final Long CONFIG_MODIFY_PERIOD = 10_000L;
     public static final String GUI_BUTTON_RED = "gui-button-red";
     public static final String GUI_BUTTON_GREEN = "gui-button-green";
     public static final String TEMPLATE_NOT_SET_CONTROLS = "Warn: not set controls";
