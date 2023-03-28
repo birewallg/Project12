@@ -18,7 +18,7 @@ class DataConfigServiceTest {
     @BeforeEach
     void setUp() {
         service = new DataConfigService();
-        service.forceSaveConfiguration();
+        service.clearItems();
     }
 
     @AfterEach
@@ -28,16 +28,19 @@ class DataConfigServiceTest {
 
     @Test
     void initializeConfigTest() {
+
+        assertTrue(service.getItemsClone().isEmpty());
+
         assertNotNull(service);
-        assertNotNull(service.getItems());
+        assertNotNull(service.getItemsClone());
     }
 
     @Test
     void addNewItemTest() {
         service.addItem(item);
         service.forceSaveConfiguration();
-        assertEquals(List.of(item), service.getItems());
-        assertEquals(List.of(item), new DataConfigService().getItems());
+        assertEquals(List.of(item), service.getItemsClone());
+        assertEquals(List.of(item), new DataConfigService().getItemsClone());
     }
 
     @Test
@@ -46,36 +49,36 @@ class DataConfigServiceTest {
         service.addItem(item);
         service.addItem(item2);
         service.forceSaveConfiguration();
-        assertEquals(List.of(item, item2), service.getItems());
-        assertEquals(List.of(item, item2), new DataConfigService().getItems());
+        assertEquals(List.of(item, item2), service.getItemsClone());
+        assertEquals(List.of(item, item2), new DataConfigService().getItemsClone());
     }
 
     @Test
     void getItemsTest() {
         service.addItem(item);
         service.forceSaveConfiguration();
-        assertEquals(List.of(item), service.getItems());
+        assertEquals(List.of(item), service.getItemsClone());
     }
 
     @Test
     void getRemoveItemsTest() {
         service.addItem(item);
         service.forceSaveConfiguration();
-        assertEquals(List.of(item), new DataConfigService().getItems());
+        assertEquals(List.of(item), new DataConfigService().getItemsClone());
         service.removeItem(item);
         service.forceSaveConfiguration();
-        assertTrue(new DataConfigService().getItems().isEmpty());
+        assertTrue(new DataConfigService().getItemsClone().isEmpty());
     }
 
     @Test
     void modifyItemByIndexText() {
         service.addItem(item);
         service.forceSaveConfiguration();
-        assertEquals(List.of(item), new DataConfigService().getItems());
+        assertEquals(List.of(item), new DataConfigService().getItemsClone());
         item.setText("newText");
         service.modifyItemByIndex(0, item);
-        var actual = service.getItems().get(0).getText();
+        var actual = service.getItemsClone().get(0).getText();
         assertEquals("newText", actual);
-        assertEquals(1, service.getItems().size());
+        assertEquals(1, service.getItemsClone().size());
     }
 }

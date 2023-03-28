@@ -29,7 +29,7 @@ public abstract class ControlServiceAbstract {
         cp.getScriptNameTextField().focusedProperty().addListener(ControlServiceAbstract::refreshIfUnfocused);
         // #PROJECT-12-T-7 начальная загрузка из конфигурации
         dataConfigService = new DataConfigService();
-        dataConfigService.getItems().forEach(ControlServiceAbstract::macrosListLoadItem);
+        dataConfigService.getItemsClone().forEach(ControlServiceAbstract::macrosListLoadItem);
     }
 
     private static <T> void refreshIfUnfocused(T observable, Boolean oldValue, Boolean newValue) {
