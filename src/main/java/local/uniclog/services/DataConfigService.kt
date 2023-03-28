@@ -7,18 +7,23 @@ import kotlin.concurrent.fixedRateTimer
 import local.uniclog.services.support.FileServiceWrapper.loadObjectFromJson as load
 import local.uniclog.services.support.FileServiceWrapper.saveObjectAsJson as save
 
+/**
+ * Сервис управляющий конфигурацией
+ */
 class DataConfigService {
     private data class DataConfig(private val items: MutableList<MacrosItem> = mutableListOf()) {
-        val clone: MutableList<MacrosItem> get() = items.toMutableList()
+        val clone: List<MacrosItem> get() = items.toList()
+
         @Transient
         var changed: Boolean = false
 
-        fun modifyItemByIndex(index: Int, item: MacrosItem) = action { items[index] = item }
         fun addItem(item: MacrosItem) = action { items.add(item) }
         fun removeItem(item: MacrosItem) = action { items.remove(item) }
         fun clearAllItems() = action { items.clear() }
-        fun <T> save(config: T) = let { changed = config !is DataConfig }
+        fun modifyItemByIndex(index: Int, item: MacrosItem) =
+            takeIf { index in items.indices }?.let { action { items[index] = item } }
 
+        fun <T> save(config: T) = let { changed = config !is DataConfig }
         private fun action(action: () -> Unit) = action.invoke().let { changed = true }
     }
 
@@ -39,7 +44,7 @@ class DataConfigService {
     private fun loadConfig(): DataConfig? = load(TEMPLATE_CONFIG_PATH, DataConfig::class.java)
 
     fun forceSaveConfiguration(): Boolean = saveConfig(config) is DataConfig
-    fun getItemsClone(): MutableList<MacrosItem> = config.clone
+    fun getItemsClone(): List<MacrosItem> = config.clone
     fun modifyItemByIndex(index: Int, item: MacrosItem) = config.modifyItemByIndex(index, item)
     fun addItem(item: MacrosItem) = config.addItem(item)
     fun removeItem(item: MacrosItem) = config.removeItem(item)

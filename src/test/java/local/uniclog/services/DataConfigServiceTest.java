@@ -72,6 +72,8 @@ class DataConfigServiceTest {
 
     @Test
     void modifyItemByIndexText() {
+        assertDoesNotThrow(() -> service.modifyItemByIndex(0, item));
+
         service.addItem(item);
         service.forceSaveConfiguration();
         assertEquals(List.of(item), new DataConfigService().getItemsClone());
@@ -80,5 +82,7 @@ class DataConfigServiceTest {
         var actual = service.getItemsClone().get(0).getText();
         assertEquals("newText", actual);
         assertEquals(1, service.getItemsClone().size());
+
+        assertDoesNotThrow(() -> service.modifyItemByIndex(5, item));
     }
 }
