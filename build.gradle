@@ -17,7 +17,7 @@ repositories {
     gradlePluginPortal()
 }
 
-tasks.withType(JavaCompile) {
+compileJava {
     options.encoding = 'UTF-8'
 }
 
@@ -29,6 +29,14 @@ application {
 javafx {
     version = '17.0.6'
     modules = ['javafx.controls', 'javafx.fxml']
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+compileKotlin {
+    destinationDirectory = compileJava.getDestinationDirectory()
 }
 
 dependencies {
@@ -55,6 +63,7 @@ jlink {
     launcher {
         name = 'app'
     }
+    forceMerge 'kotlin'
     jpackage {
         appVersion = '0.1'
         icon = "src/main/resources/local/uniclog/img/txt_icon.ico"
@@ -89,6 +98,3 @@ sonarqube {
     }
 }
 
-kotlin {
-    jvmToolchain(17)
-}
