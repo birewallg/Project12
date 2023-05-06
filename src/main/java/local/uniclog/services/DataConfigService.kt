@@ -1,5 +1,6 @@
 package local.uniclog.services
 
+import local.uniclog.services.entity.DataConfig
 import local.uniclog.ui.model.MacrosItem
 import local.uniclog.utils.ConfigConstants.CONFIG_MODIFY_PERIOD
 import local.uniclog.utils.ConfigConstants.TEMPLATE_CONFIG_PATH
@@ -11,21 +12,6 @@ import local.uniclog.services.support.FileServiceWrapper.saveObjectAsJson as sav
  * Сервис управляющий конфигурацией
  */
 class DataConfigService {
-    private data class DataConfig(private val items: MutableList<MacrosItem> = mutableListOf()) {
-        val clone: List<MacrosItem> get() = items.toList()
-
-        @Transient
-        var changed: Boolean = false
-
-        fun addItem(item: MacrosItem) = action { items.add(item) }
-        fun removeItem(item: MacrosItem) = action { items.remove(item) }
-        fun clearAllItems() = action { items.clear() }
-        fun modifyItemByIndex(index: Int, item: MacrosItem) =
-            takeIf { index in items.indices }?.let { action { items[index] = item } }
-
-        fun <T> save(config: T) = let { changed = config !is DataConfig }
-        private fun action(action: () -> Unit) = action.invoke().let { changed = true }
-    }
 
     @Volatile
     private var config: DataConfig
