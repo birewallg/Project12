@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <AnchorPane prefHeight="417.0" prefWidth="1105.0" styleClass="root-class" stylesheets="@style/css.css"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="local.uniclog.ui.AppController">
     <children>
         <ToggleButton fx:id="exit" layoutX="421.0" mnemonicParsing="false" onAction="#onExit" prefHeight="25.0"
@@ -141,11 +141,7 @@
             <children>
                 <TextArea fx:id="textAreaConsole" layoutX="14.0" layoutY="72.0" prefHeight="250.0" prefWidth="584.0"
                           styleClass="text-area-style" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="12.0"
-                          AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="72.0">
-                    <font>
-                        <Font name="System Bold" size="14.0"/>
-                    </font>
-                </TextArea>
+                          AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="72.0"/>
                 <Button fx:id="onRunActionButton" layoutX="14.0" layoutY="333.0" mnemonicParsing="false"
                         onAction="#onRunAction" prefHeight="25.0" prefWidth="97.0" styleClass="gui-button-green"
                         text="Run" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="14.0"/>
@@ -158,16 +154,16 @@
                 <Label layoutX="14.0" layoutY="3.0" prefHeight="17.0" prefWidth="584.0" text="Macros name"
                        AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="3.0"/>
                 <TextField fx:id="scriptNameTextField" layoutX="12.0" layoutY="23.0" prefHeight="25.0" prefWidth="584.0"
-                           promptText="Default" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="14.0"
-                           AnchorPane.topAnchor="23.0"/>
+                           promptText="Default" AnchorPane.leftAnchor="12.0" styleClass="scriptNameTextField"
+                           AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="23.0"/>
             </children>
         </AnchorPane>
         <AnchorPane layoutX="9.0" layoutY="36.0" prefHeight="367.0" prefWidth="241.0" styleClass="pane-style"
                     AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="9.0" AnchorPane.topAnchor="36.0">
             <children>
                 <ListView fx:id="macrosList" layoutX="14.0" layoutY="23.0" prefHeight="300.0" prefWidth="213.0"
-                          styleClass="list-view-style" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="14.0"
-                          AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="23.0"/>
+                          styleClass="list-view-style" visible="false" AnchorPane.bottomAnchor="44.0"
+                          AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="23.0"/>
                 <Button layoutX="14.0" layoutY="333.0" mnemonicParsing="false" onAction="#newMacrosButtonAction"
                         prefHeight="25.0" prefWidth="97.0" styleClass="gui-button-green" text="New"
                         AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="14.0"/>
@@ -176,6 +172,22 @@
                         AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="130.0"/>
                 <Label layoutX="14.0" layoutY="2.0" prefHeight="17.0" prefWidth="216.0" text="Macros list"
                        AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="2.0"/>
+                <TableView fx:id="macrosTable" layoutX="8.0" layoutY="19.0" maxHeight="300.0" prefHeight="300.0"
+                           prefWidth="231.0" styleClass="table-view-macrosItems" AnchorPane.bottomAnchor="47.0"
+                           AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0">
+                    <placeholder>
+                        <Label text="EMPTY"/>
+                    </placeholder>
+                    <columns>
+                        <TableColumn fx:id="tableColumnName" editable="false" prefWidth="180.0" resizable="false"
+                                     sortable="false" text="Name"/>
+                        <TableColumn fx:id="tableColumnActivation" editable="false" prefWidth="30.0" resizable="false"
+                                     sortable="false" styleClass="table-view-column-key" text="Key"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
             </children>
         </AnchorPane>
     </children>
