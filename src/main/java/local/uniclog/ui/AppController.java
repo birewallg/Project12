@@ -76,9 +76,13 @@ public class AppController {
     @FXML
     private ChoiceBox<ActionType> actionChoiceBox;
     @FXML
-    private ListView<MacrosItem> macrosList;
-    @FXML
     private TextField scriptNameTextField;
+    @FXML
+    private TableView<MacrosItem> macrosTable;
+    @FXML
+    private TableColumn<MacrosItem, String> tableColumnName;
+    @FXML
+    private TableColumn<MacrosItem, Integer> tableColumnActivation;
 
     private ControlPack buildControlsPack() {
         return ControlPack.builder()
@@ -109,6 +113,9 @@ public class AppController {
                 .actionPaneLabel(actionPaneLabel)
                 .scriptNameTextField(scriptNameTextField)
                 .macrosItemList(FXCollections.observableArrayList())
+                .macrosList(macrosTable)
+                .tableColumnName(tableColumnName)
+                .tableColumnActivation(tableColumnActivation)
                 .build();
     }
     //endregion
