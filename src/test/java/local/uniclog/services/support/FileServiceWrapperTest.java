@@ -1,6 +1,5 @@
 package local.uniclog.services.support;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -12,10 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class FileServiceWrapperTest {
     private static final String PATH_OF_CONFIG = "test.json";
 
-    @AfterEach
-    void afterEach() {
-        assertTrue(new File(PATH_OF_CONFIG).delete());
-    }
 
     @Test
     void saveLoadJsonTest() {
@@ -26,13 +21,14 @@ class FileServiceWrapperTest {
                 () -> assertEquals(loadConfig, savedConfig),
                 () -> assertEquals(savedConfig, config),
                 () -> assertEquals(loadConfig, config));
+        assertTrue(new File(PATH_OF_CONFIG).delete());
     }
 
     @Test
     void getFileNameTest() {
-        var path = "C:\\Users\\admin\\Desktop\\app\\app\\скрипты\\filename.txt";
+        var path = "C:\\Users\\admin\\Desktop\\app\\app\\scripts\\filename.txt";
         assertEquals("filename", FileServiceWrapper.getFileName(path));
-        path = "C:\\Users\\admin\\Desktop\\app\\app\\скрипты\\filename";
+        path = "C:\\Users\\admin\\Desktop\\app\\app\\scripts\\filename";
         assertEquals("filename", FileServiceWrapper.getFileName(path));
     }
 
