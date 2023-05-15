@@ -2,6 +2,7 @@ package local.uniclog.ui.model;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import local.uniclog.model.actions.types.ActionType;
 import local.uniclog.model.actions.types.EventStateType;
@@ -10,6 +11,8 @@ import local.uniclog.utils.ConfigConstants;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 import static java.util.Objects.isNull;
 
@@ -42,10 +45,12 @@ public class ControlPack {
     private Label topLogoLabel;
     private Label actionPaneLabel;
     private ChoiceBox<ActionType> actionChoiceBox;
-    //region ListView
-    private ListView<MacrosItem> macrosList;
+    //region AnchorPane Macros List
     private TextField scriptNameTextField;
     private ObservableList<MacrosItem> macrosItemList;
+    private TableView<MacrosItem> macrosList;
+    private TableColumn<MacrosItem, String> tableColumnName;
+    private TableColumn<MacrosItem, Integer> tableColumnActivation;
     //endregion
 
     public ControlPack initialize() {
@@ -86,6 +91,8 @@ public class ControlPack {
                 }
         );
 
+        tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tableColumnActivation.setCellValueFactory(new PropertyValueFactory<>("activation"));
         return this;
     }
 

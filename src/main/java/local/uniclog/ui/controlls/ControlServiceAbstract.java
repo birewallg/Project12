@@ -37,18 +37,19 @@ public abstract class ControlServiceAbstract {
     }
 
     private static void macrosListRefresh() {
-        var index = cp.getMacrosList().getSelectionModel().getSelectedIndex();
+        var macrosList = cp.getMacrosList();
+        var index = macrosList.getSelectionModel().getSelectedIndex();
         MacrosItem item;
         if (index == -1) {
             item = new MacrosItem(cp.getScriptNameTextField().getText(), cp.getTextAreaConsole().getText(), EMPTY);
             macrosListAddItem(item);
         } else {
-            item = cp.getMacrosList().getItems().get(index);
+            item = macrosList.getItems().get(index);
             item.setName(cp.getScriptNameTextField().getText());
             item.setText(cp.getTextAreaConsole().getText());
             dataConfigService.modifyItemByIndex(index, item);
         }
-        cp.getMacrosList().refresh();
+        macrosList.refresh();
     }
 
     public static void macrosListAddItem(MacrosItem item) {
@@ -56,6 +57,7 @@ public abstract class ControlServiceAbstract {
             cp.getMacrosList().getItems().add(item);
             cp.getMacrosList().getSelectionModel().selectLast();
             dataConfigService.addItem(item);
+            dataConfigService.forceSaveConfiguration();
         });
     }
 
