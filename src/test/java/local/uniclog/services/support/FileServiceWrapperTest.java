@@ -11,6 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class FileServiceWrapperTest {
     private static final String PATH_OF_CONFIG = "test.json";
 
+    @Test
+    void checkNotFoundConfigFile() {
+        assertNull(FileServiceWrapper.loadObjectFromJson(PATH_OF_CONFIG, TestData.class));
+    }
 
     @Test
     void saveLoadJsonTest() {

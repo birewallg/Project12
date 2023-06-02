@@ -1,6 +1,7 @@
 package local.uniclog.services.support;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileReader;
@@ -61,7 +62,7 @@ public class FileServiceWrapper {
     public static <T> T loadObjectFromJson(String path, Type objectType) {
         try {
             return new Gson().fromJson(requireNonNull(loadObjectFromTextFile(path)), objectType);
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | JsonSyntaxException e) {
             log.error(e.getMessage());
             return null;
         }
