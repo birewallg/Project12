@@ -36,6 +36,9 @@ object DataUtils {
 
     /**
      * Convert Int code to ASCII code
+     *
+     * @param code Int symbol
+     * @return Name by ascii code
      */
     @JvmStatic
     fun convertCodeToASCII(code: Int): String? {
@@ -48,6 +51,9 @@ object DataUtils {
 
     /**
      * Convert ASCII code to Int code
+     *
+     * @param codeName String name ascii symbol
+     * @return ascii code
      */
     @JvmStatic
     fun convertASCIIToCode(codeName: String): Int? {
