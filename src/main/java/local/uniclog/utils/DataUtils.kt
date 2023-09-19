@@ -60,7 +60,7 @@ object DataUtils {
         return when {
             codeNameMap.containsValue(codeName) -> codeNameMap.entries.firstOrNull { it.value == codeName }?.key
             codeName.length == 1 -> codeName[0].code
-            else -> """(?<=\{).*(?=})""".toRegex().find(codeName)?.groupValues?.get(0)?.toIntOrNull()
+            else -> """(?<=\{).*(?=})""".toRegex().find(codeName)?.groupValues?.last()?.toIntOrNull()
         }
     }
 
