@@ -29,7 +29,7 @@ public class MainAppUi extends Application {
         root.setOnMousePressed(mouseEvent -> controlService.setOnMousePressed(mouseEvent, root, stage));
         root.setOnMouseDragged(mouseEvent -> controlService.setOnMouseDragged(mouseEvent, scene, stage));
 
-        stage.setOpacity(0.90);
+        //stage.setOpacity(0.90);
         stage.initStyle(UNDECORATED);
         stage.setTitle("Uniclog Software");
         // stage.setAlwaysOnTop(true)

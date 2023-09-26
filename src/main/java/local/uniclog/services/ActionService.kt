@@ -28,7 +28,7 @@ class ActionService(actionLines: List<String>) {
     }
 
     private fun getActionType(line: String): ActionType =
-        ActionType.values().firstOrNull { line.startsWith(it.name) } ?: DEFAULT
+        ActionType.entries.firstOrNull { line.startsWith(it.name) } ?: DEFAULT
 
     private fun getParamsMap(line: String): Map<String, String> {
         val regex = """(\w+)(?>=)([^,|\]]*)""".toRegex()
