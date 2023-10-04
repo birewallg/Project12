@@ -26,7 +26,7 @@ class DataConfigService {
         { if (config.changed) config.save(saveConfig(config)) }
     }
 
-    private fun saveConfig(config: DataConfig) = save(TEMPLATE_CONFIG_PATH, config, DataConfig::class.java)
+    private fun saveConfig(config: DataConfig) = save(TEMPLATE_CONFIG_PATH, config)
     private fun loadConfig(): DataConfig? = load(TEMPLATE_CONFIG_PATH, DataConfig::class.java)
 
     fun forceSaveConfiguration(): Boolean = saveConfig(config) is DataConfig
