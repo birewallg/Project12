@@ -1,6 +1,7 @@
 package local.uniclog.services.support;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,10 +54,10 @@ public class FileServiceWrapper {
         return end == -1 ? path.substring(begin) : path.substring(begin, end);
     }
 
-    public static <T> T saveObjectAsJson(String path, T object, Type type) {
-        if (nonNull(saveObjectAsText(new Gson().toJson(object, type), path))) {
-            return object;
-        } else return null;
+    public static <T> T saveObjectAsJson(String path, T object) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(object, object.getClass());
+        return nonNull(saveObjectAsText(json, path)) ? object : null;
     }
 
     public static <T> T loadObjectFromJson(String path, Type objectType) {

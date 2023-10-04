@@ -19,7 +19,7 @@ class FileServiceWrapperTest {
     @Test
     void saveLoadJsonTest() {
         var config = new TestData();
-        var savedConfig = FileServiceWrapper.saveObjectAsJson(PATH_OF_CONFIG, config, TestData.class);
+        var savedConfig = FileServiceWrapper.saveObjectAsJson(PATH_OF_CONFIG, config);
         var loadConfig = FileServiceWrapper.loadObjectFromJson(PATH_OF_CONFIG, TestData.class);
         assertAll(
                 () -> assertEquals(loadConfig, savedConfig),
